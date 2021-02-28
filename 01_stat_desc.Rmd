@@ -1,0 +1,24 @@
+# Statistiques descriptives {- #stat-desc}
+
+On importe les données puis on les observe. Ci-dessous j'ai mis des fonctions de bases avec un dataframe qui n'existe pas.
+
+```{r eval=F}
+dim(d)
+names(d)
+str(d)
+
+sum(is.na(d))
+
+summary(d$x)
+unique(d$x)
+
+table(d$x,d$y,useNA="ifany")
+prop.table(table(d$x,d$y,useNA="ifany"))
+rprop(table(d$x,d$y))
+
+# corrélation
+cor(d$x,d$y,method='pearson')
+
+# test du khi-deux
+chisq.test(d$x, d$y)
+```

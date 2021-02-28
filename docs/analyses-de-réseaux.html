@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Analyses de réseaux | Toutes les méthodes du master</title>
+  <meta name="description" content="Analyses de réseaux | Toutes les méthodes du master" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Analyses de réseaux | Toutes les méthodes du master" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="pyrrhamide/regressions" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Analyses de réseaux | Toutes les méthodes du master" />
+  
+  
+  
+
+<meta name="author" content="KF" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="an-long.html"/>
+
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">Méthodes du master</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="stat-desc.html"><a href="stat-desc.html"><i class="fa fa-check"></i>Statistiques descriptives</a></li>
+<li class="chapter" data-level="" data-path="nettoyage.html"><a href="nettoyage.html"><i class="fa fa-check"></i>Nettoyage des données</a></li>
+<li class="chapter" data-level="1" data-path="reg-lin.html"><a href="reg-lin.html"><i class="fa fa-check"></i><b>1</b> Régressions linéaires (cours de JD)</a></li>
+<li class="chapter" data-level="2" data-path="reg-log.html"><a href="reg-log.html"><i class="fa fa-check"></i><b>2</b> Régressions logistiques</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="reg-log.html"><a href="reg-log.html#régression-logistique-dichotomique"><i class="fa fa-check"></i><b>2.1</b> Régression logistique dichotomique</a></li>
+<li class="chapter" data-level="2.2" data-path="reg-log.html"><a href="reg-log.html#régression-logistique-polytomique"><i class="fa fa-check"></i><b>2.2</b> Régression logistique polytomique</a></li>
+<li class="chapter" data-level="2.3" data-path="reg-log.html"><a href="reg-log.html#odds-ratio"><i class="fa fa-check"></i><b>2.3</b> Odds ratio</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="log-lin.html"><a href="log-lin.html"><i class="fa fa-check"></i><b>3</b> Régression log-linéaire (cours de MP)</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="log-lin.html"><a href="log-lin.html#modèle-de-lindépendance"><i class="fa fa-check"></i><b>3.1</b> Modèle de l’indépendance</a></li>
+<li class="chapter" data-level="3.2" data-path="log-lin.html"><a href="log-lin.html#modèles-avec-interaction"><i class="fa fa-check"></i><b>3.2</b> Modèles avec interaction</a></li>
+<li class="chapter" data-level="3.3" data-path="log-lin.html"><a href="log-lin.html#analyse-de-deviance"><i class="fa fa-check"></i><b>3.3</b> Analyse de deviance</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ap-exp.html"><a href="ap-exp.html"><i class="fa fa-check"></i><b>4</b> Approches expérimentales (cours d’OG)</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="ap-exp.html"><a href="ap-exp.html#expériences-aléatoires-contrôlées"><i class="fa fa-check"></i><b>4.1</b> Expériences aléatoires contrôlées</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="ap-exp.html"><a href="ap-exp.html#expérience-à-essais-randomisés-contrôlés-randomised-controlled-trials-rct-experiments"><i class="fa fa-check"></i><b>4.1.1</b> Expérience à essais randomisés contrôlés (<em>randomised controlled trials (RCT) experiments</em>)</a></li>
+<li class="chapter" data-level="4.1.2" data-path="ap-exp.html"><a href="ap-exp.html#expériences-par-questionnaire-randomised-survey-experiment"><i class="fa fa-check"></i><b>4.1.2</b> Expériences par questionnaire (<em>randomised survey experiment</em>)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="ap-exp.html"><a href="ap-exp.html#expériences-naturelles"><i class="fa fa-check"></i><b>4.2</b> Expériences naturelles</a></li>
+<li class="chapter" data-level="4.3" data-path="ap-exp.html"><a href="ap-exp.html#différences-de-différences-differences-in-differences"><i class="fa fa-check"></i><b>4.3</b> Différences-de-différences (<em>differences-in-differences</em>)</a></li>
+<li class="chapter" data-level="4.4" data-path="ap-exp.html"><a href="ap-exp.html#régression-par-discontinuité-regression-discontinuity-design"><i class="fa fa-check"></i><b>4.4</b> Régression par discontinuité (<em>Regression discontinuity design</em>)</a></li>
+<li class="chapter" data-level="4.5" data-path="ap-exp.html"><a href="ap-exp.html#variables-instrumentales"><i class="fa fa-check"></i><b>4.5</b> Variables instrumentales</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="an-long.html"><a href="an-long.html"><i class="fa fa-check"></i><b>5</b> Analyses longitudinales</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="an-long.html"><a href="an-long.html#pseudo-panels"><i class="fa fa-check"></i><b>5.1</b> Pseudo-panels</a></li>
+<li class="chapter" data-level="5.2" data-path="an-long.html"><a href="an-long.html#modèles-linéaires"><i class="fa fa-check"></i><b>5.2</b> Modèles linéaires</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html"><i class="fa fa-check"></i>Analyses de réseaux</a>
+<ul>
+<li class="chapter" data-level="5.3" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#bases-de-la-théorie"><i class="fa fa-check"></i><b>5.3</b> Bases de la théorie</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#matrices"><i class="fa fa-check"></i><b>5.3.1</b> Matrices</a></li>
+<li class="chapter" data-level="5.3.2" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#liens"><i class="fa fa-check"></i><b>5.3.2</b> Liens</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#structures-locales"><i class="fa fa-check"></i><b>5.4</b> Structures locales</a></li>
+<li class="chapter" data-level="5.5" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#connectivité"><i class="fa fa-check"></i><b>5.5</b> Connectivité</a></li>
+<li class="chapter" data-level="5.6" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#mesures-basiques-de-cohésion"><i class="fa fa-check"></i><b>5.6</b> Mesures basiques de cohésion</a></li>
+<li class="chapter" data-level="5.7" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#mesures-de-diversité"><i class="fa fa-check"></i><b>5.7</b> Mesures de diversité</a></li>
+<li class="chapter" data-level="5.8" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#mesures-de-centralité"><i class="fa fa-check"></i><b>5.8</b> Mesures de centralité</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Toutes les méthodes du master</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="analyses-de-réseaux" class="section level1 unnumbered">
+<h1>Analyses de réseaux</h1>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="analyses-de-réseaux.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb24-2"><a href="analyses-de-réseaux.html#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="analyses-de-réseaux.html#cb24-3" aria-hidden="true" tabindex="-1"></a>graph <span class="ot">&lt;-</span> <span class="fu">graph.data.frame</span>(links,nodes,<span class="at">directed=</span><span class="cn">TRUE</span>)</span>
+<span id="cb24-4"><a href="analyses-de-réseaux.html#cb24-4" aria-hidden="true" tabindex="-1"></a>graph <span class="ot">&lt;-</span> <span class="fu">graph.adjacency</span>(df,<span class="at">mode=</span><span class="st">&quot;directed&quot;</span>)</span></code></pre></div>
+<div id="bases-de-la-théorie" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Bases de la théorie</h2>
+<ul>
+<li><strong>Graphe</strong> : ensemble d’unités (sommets) connectées par une ou plusieurs relations (arêtes)
+<ul>
+<li>Sommets (noeuds, <em>vertices</em>) : unités</li>
+<li>Arêtes (liens, <em>edges</em>) : relations</li>
+</ul></li>
+<li>Réseaux <em>complets</em> v réseaux <em>personnels</em> (réseaux <strong>égo-centrés</strong>)</li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="analyses-de-réseaux.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Taille du réseau = nombre de noeuds</span></span>
+<span id="cb25-2"><a href="analyses-de-réseaux.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">V</span>(graph))</span>
+<span id="cb25-3"><a href="analyses-de-réseaux.html#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="analyses-de-réseaux.html#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Nombre de liens</span></span>
+<span id="cb25-5"><a href="analyses-de-réseaux.html#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">E</span>(graph))</span></code></pre></div>
+<div id="matrices" class="section level3" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Matrices</h3>
+<p>Ou comment stocker ses données avant de les traiter.</p>
+<ul>
+<li>d’adjacence
+<ul>
+<li>matrice symétrique avec liens non-orientés (du coup liens réciproques)</li>
+</ul></li>
+<li>Carrée <span class="math inline">\(n* n\)</span></li>
+<li><em>Edge list</em> : chaque paire de noeuds connectés sur une ligne d’une table</li>
+<li><em>Node list</em> : chaque ligne représente les liens d’un noeud vers tous les autres</li>
+</ul>
+</div>
+<div id="liens" class="section level3" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> Liens</h3>
+<ul>
+<li>Orientés
+<ul>
+<li>Réciproques</li>
+</ul></li>
+<li>Non-orientés</li>
+</ul>
+</div>
+</div>
+<div id="structures-locales" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Structures locales</h2>
+<p>Ou comment un réseau s’organise.</p>
+<ul>
+<li>Noeuds isolés</li>
+<li>Dyades
+<ul>
+<li>Réciprocité</li>
+</ul></li>
+<li>Triades (liens orientés)
+<ul>
+<li>Empty</li>
+<li>One-edge</li>
+<li>Two-path</li>
+<li>Triangle</li>
+</ul></li>
+<li>Triades (liens non-orientés)
+<ul>
+<li>Intransitive : liens bilatéraux uniquement</li>
+<li>Transitive : l’ami de mon ami est mon ami</li>
+<li>Trois-cycles : forme d’échange généralisé</li>
+</ul></li>
+<li>Clique : sous-ensemble de noeuds où toutes les paires de noeuds existants sont connectés.
+<ul>
+<li><em>Modularité</em> : mesure segmentation d’un réseau en <em>modules</em>. Réseau à modularité élevée a densité élevée entre les noeusd qui font partie d’un même module, densité faible entre noeuds appartenant à modules différents.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="analyses-de-réseaux.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Trois algorithmes de modularité</span></span>
+<span id="cb26-2"><a href="analyses-de-réseaux.html#cb26-2" aria-hidden="true" tabindex="-1"></a>wtc <span class="ot">&lt;-</span> <span class="fu">walktrap.community</span>(graph)</span>
+<span id="cb26-3"><a href="analyses-de-réseaux.html#cb26-3" aria-hidden="true" tabindex="-1"></a>grd <span class="ot">&lt;-</span> <span class="fu">fastgreedy.community</span>(graph)</span>
+<span id="cb26-4"><a href="analyses-de-réseaux.html#cb26-4" aria-hidden="true" tabindex="-1"></a>spn <span class="ot">&lt;-</span> <span class="fu">spinglass.community</span>(graph)</span>
+<span id="cb26-5"><a href="analyses-de-réseaux.html#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="analyses-de-réseaux.html#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Indicateur de modularité pour le réseau</span></span>
+<span id="cb26-7"><a href="analyses-de-réseaux.html#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(graph, <span class="fu">membership</span>(wtc))</span>
+<span id="cb26-8"><a href="analyses-de-réseaux.html#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(graph, <span class="fu">membership</span>(grd))</span>
+<span id="cb26-9"><a href="analyses-de-réseaux.html#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(graph, <span class="fu">membership</span>(spn))</span></code></pre></div>
+</div>
+<div id="connectivité" class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> Connectivité</h2>
+<ul>
+<li><strong>Chaîne</strong>/<em>walk</em> : parcours sur graphe non orienté allant d’un noeud à un autre en empruntant des arêtes (liens)</li>
+<li><strong>Chemin</strong> : chaîne mais pour un <strong>graphe orienté</strong></li>
+<li>Chaîne/chemin <strong>élementaire</strong> (<em>path</em>) si chaque noeud y apparaît au plus une fois.</li>
+<li><strong>Géodésique</strong> (<em>geodesic</em>) : chaine/chemin élémentaire la/le plus court(e) (<em>shortest path</em>) entre deux noeuds.</li>
+<li><strong>Cycle</strong> : départ et arrivée de la chaine/chemin élémentaire est le même noeud.</li>
+<li>Graphe <strong>connexe</strong> (<em>connected</em>) : chemin ou chaîne entre toute paire de noeuds.
+<ul>
+<li><strong>Composante</strong> : sous-graphe maximalement connecté.</li>
+</ul></li>
+<li><strong>Distance (géodésique)</strong> : nb de pas (plus courts chemins) entre un noeud et l’autre.
+<ul>
+<li>noeuds connectés ont distance 1</li>
+<li>noeuds dans composantes différentes ont distance infinie</li>
+</ul></li>
+<li><strong>Diamètre</strong> : distance la plus longue entre deux noeuds.</li>
+<li><strong>Average path length</strong> : distance moyenne entre toutes les pairs de noeuds dans un réseau (moins sensible à des outiliers que le diamètre).</li>
+<li><strong>Eccentricité</strong> : distance depuis un noeud de départ vers le noeud le plus loin dans le réseau.</li>
+<li><strong>Rayon</strong> : eccentricité minimale des noeuds. La plus petite distance à laquelle puisse se trouver un noeud de tous les autres (infini si graphe est non connecté)</li>
+</ul>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="analyses-de-réseaux.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shortest.paths</span>(graph, <span class="at">algorithm=</span><span class="st">&quot;unweighted&quot;</span>)</span>
+<span id="cb27-2"><a href="analyses-de-réseaux.html#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="analyses-de-réseaux.html#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Shortest path entre deux noeuds</span></span>
+<span id="cb27-4"><a href="analyses-de-réseaux.html#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">get.shortest.paths</span>(graph,</span>
+<span id="cb27-5"><a href="analyses-de-réseaux.html#cb27-5" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">V</span>(graph)[name<span class="sc">==</span><span class="st">&quot;name1&quot;</span>],</span>
+<span id="cb27-6"><a href="analyses-de-réseaux.html#cb27-6" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">V</span>(graph)[name<span class="sc">==</span><span class="st">&quot;name2&quot;</span>],</span>
+<span id="cb27-7"><a href="analyses-de-réseaux.html#cb27-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mode=</span><span class="st">&quot;all&quot;</span>, <span class="at">output=</span><span class="st">&quot;both&quot;</span>)</span>
+<span id="cb27-8"><a href="analyses-de-réseaux.html#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="analyses-de-réseaux.html#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Distance moyenne entre les noeuds</span></span>
+<span id="cb27-10"><a href="analyses-de-réseaux.html#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="fu">average.path.length</span>(graph)</span>
+<span id="cb27-11"><a href="analyses-de-réseaux.html#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="analyses-de-réseaux.html#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Diamètre</span></span>
+<span id="cb27-13"><a href="analyses-de-réseaux.html#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="fu">diameter</span>(graph)</span>
+<span id="cb27-14"><a href="analyses-de-réseaux.html#cb27-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-15"><a href="analyses-de-réseaux.html#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Eccentricité</span></span>
+<span id="cb27-16"><a href="analyses-de-réseaux.html#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="fu">eccentricity</span>(graph)</span>
+<span id="cb27-17"><a href="analyses-de-réseaux.html#cb27-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-18"><a href="analyses-de-réseaux.html#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Rayon : eccentricité la plus faible</span></span>
+<span id="cb27-19"><a href="analyses-de-réseaux.html#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="fu">radius</span>(graph)</span></code></pre></div>
+</div>
+<div id="mesures-basiques-de-cohésion" class="section level2" number="5.6">
+<h2><span class="header-section-number">5.6</span> Mesures basiques de cohésion</h2>
+<p>Tous les noeuds sont-ils liés entre eux? Quels types de liens existent dans le réseau et dans quelle quantité?</p>
+<ul>
+<li><strong>Transitivité</strong> : <span class="math inline">\(\frac{nombre.triades.transitives}{nombre.triades}\)</span>
+<ul>
+<li><em>égal à 1 si tous les noeuds sont liés à tous les autres noeuds</em> (connectivité complète)</li>
+<li>Excède rarement 0.2 dans réseaux aléatoires.</li>
+<li>Souvent compris entre 0.3 et 0.6 dans les réseaux empiriques.</li>
+</ul></li>
+<li><strong>Densité</strong> : <span class="math inline">\(\frac{nombre.liens.existants}{nb.liens.pouvant.existés}\)</span>
+<ul>
+<li><span class="math inline">\(\frac{L}{(n*(n-1))}\)</span> liens orientés<br />
+</li>
+<li><span class="math inline">\(\frac{L}{\frac{(n*(n-1))}{2}}\)</span> liens non-orientés</li>
+</ul></li>
+<li><strong>Coefficient de <em>clustering</em> </strong> : mesure de cohésion dans le voisinage d’un noeud (combien de mes amis sont amis entre eux). 2 mesures :
+<ul>
+<li>Mesure <em>locale</em> : on mesure d’abord pour chaque noeud <em>i</em>, le <span class="math inline">\(Cl_{i}\)</span> ensuite on prend la moyenne <span class="math inline">\(\sum_{i = 1}^{n}\)</span><span class="math inline">\(\frac{Cl_{i}}{n}\)</span>. Tends to 1.</li>
+<li>Mesure <em>globale</em> : <span class="math inline">\(\sum_{i=1}^{n}\)</span><span class="math inline">\(\frac{nombre.liens.existants.entre.amis.de.i}{nombre.liens.possibles.entre.amis.de.i}\)</span>. Tends to 0 =&gt; transitivité.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="analyses-de-réseaux.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transitivité du réseau</span></span>
+<span id="cb28-2"><a href="analyses-de-réseaux.html#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">transitivity</span>(graph)</span>
+<span id="cb28-3"><a href="analyses-de-réseaux.html#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="analyses-de-réseaux.html#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Transitivité d&#39;un noeud</span></span>
+<span id="cb28-5"><a href="analyses-de-réseaux.html#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">transitivity</span>(graph,<span class="at">type=</span><span class="st">&quot;local&quot;</span>)</span>
+<span id="cb28-6"><a href="analyses-de-réseaux.html#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="analyses-de-réseaux.html#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Densité du réseau</span></span>
+<span id="cb28-8"><a href="analyses-de-réseaux.html#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="fu">graph.density</span>(graph)</span>
+<span id="cb28-9"><a href="analyses-de-réseaux.html#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="analyses-de-réseaux.html#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Nombre d&#39;îles, i.e. clusters</span></span>
+<span id="cb28-11"><a href="analyses-de-réseaux.html#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="fu">clusters</span>(graph)</span></code></pre></div>
+</div>
+<div id="mesures-de-diversité" class="section level2" number="5.7">
+<h2><span class="header-section-number">5.7</span> Mesures de diversité</h2>
+<p>Tous mes groupes sont-ils représentés proportionnellement dans mon réseau?</p>
+<ul>
+<li>Deux familles de mesures:
+<ul>
+<li>proportion (ou pourcentage) d’une catégorie sur la totalité</li>
+<li>hétérogénéité (variance, écart-type, IQV…)</li>
+</ul></li>
+<li><strong>Indice de diversité de Blau</strong> <span class="math inline">\(\in[0;\frac{k-1}{k}]\)</span> Une seule catégorie représentée =&gt; toutes les catégories représentées équitablement (utile si plus de 2 catégories - variante de l’indice Herfindahl-Hirschmann (HHI))</li>
+<li><strong>Indice de variation qualitative, IQV</strong> <span class="math inline">\(\in[0;1]\)</span> Une seule catégorie représentée =&gt; toutes les catégories représentées équitablement (<strong>un indice POUR CHAQUE ATTRIBUT d’intérêt</strong>)</li>
+</ul>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="analyses-de-réseaux.html#cb29-1" aria-hidden="true" tabindex="-1"></a>get.Blau.index <span class="ot">&lt;-</span> <span class="cf">function</span>(x, type) {</span>
+<span id="cb29-2"><a href="analyses-de-réseaux.html#cb29-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">factor</span>(x, <span class="at">levels =</span> type);</span>
+<span id="cb29-3"><a href="analyses-de-réseaux.html#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(x))<span class="sc">^</span><span class="dv">2</span>))}</span>
+<span id="cb29-4"><a href="analyses-de-réseaux.html#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="analyses-de-réseaux.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Indice de diversité de Blau</span></span>
+<span id="cb29-6"><a href="analyses-de-réseaux.html#cb29-6" aria-hidden="true" tabindex="-1"></a>qualif_blau <span class="ot">&lt;-</span> <span class="fu">get.Blau.index</span>(<span class="fu">as.factor</span>(<span class="fu">V</span>(graph)<span class="sc">$</span>variable)) </span>
+<span id="cb29-7"><a href="analyses-de-réseaux.html#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># on applique la fonction de l&#39;IB à la variable x</span></span>
+<span id="cb29-8"><a href="analyses-de-réseaux.html#cb29-8" aria-hidden="true" tabindex="-1"></a>qualif_blau</span>
+<span id="cb29-9"><a href="analyses-de-réseaux.html#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="analyses-de-réseaux.html#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Indice de variation qualitative</span></span>
+<span id="cb29-11"><a href="analyses-de-réseaux.html#cb29-11" aria-hidden="true" tabindex="-1"></a>qualif_iqv <span class="ot">=</span> qualif_blau <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> (<span class="dv">1</span> <span class="sc">/</span> <span class="fu">length</span>(<span class="fu">levels</span>(<span class="fu">as.factor</span>(Proportions<span class="sc">$</span>Var1)))))</span>
+<span id="cb29-12"><a href="analyses-de-réseaux.html#cb29-12" aria-hidden="true" tabindex="-1"></a>qualif_iqv</span>
+<span id="cb29-13"><a href="analyses-de-réseaux.html#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># IQV de Qualification!!!</span></span>
+<span id="cb29-14"><a href="analyses-de-réseaux.html#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-15"><a href="analyses-de-réseaux.html#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co"># HHI qui est égal à 1 - qualif_blau</span></span>
+<span id="cb29-16"><a href="analyses-de-réseaux.html#cb29-16" aria-hidden="true" tabindex="-1"></a>qualif_hhi <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> qualif_blau</span>
+<span id="cb29-17"><a href="analyses-de-réseaux.html#cb29-17" aria-hidden="true" tabindex="-1"></a>qualif_hhi</span></code></pre></div>
+</div>
+<div id="mesures-de-centralité" class="section level2" number="5.8">
+<h2><span class="header-section-number">5.8</span> Mesures de centralité</h2>
+<p>Y a-t-il un noeud ou groupe de noeuds qui a une plus grande importance/qui est le plus relié dans le réseau?</p>
+<ul>
+<li><p>Centralité de <strong>degré</strong> (<em>degree</em>)</p>
+<ul>
+<li>noeuds les plus “actifs” (les plus connectées, qui sont liés à un plus grand nombre de noeuds) <span class="math inline">\(C_D(i) =\)</span> <span class="math inline">\(\sum_{j=1}^{n}x_{ij} = \sum_{j=1}^{n} x_{ji}\)</span>
+<ul>
+<li>mesure normalisée: <span class="math inline">\(C&#39;_D(i)=\frac{\sum_{j=1}^{n}x_{ij}}{n-1}\)</span></li>
+</ul></li>
+<li>centralité de <em>demi-degré</em> pour graphe orienté. Indicateur de position sociale.
+<ul>
+<li>Extérieur (<em>outdegree</em>) = nb liens sortants (e.g: demander beaucoup de conseils)</li>
+<li>Intérieur (<em>indegree</em>) = nb liens entrants (e.g: recevoir beaucoup de demandes de conseils)</li>
+</ul></li>
+</ul></li>
+<li><p>Centralité d’<strong>intermédiarité</strong> (<em>betweenness</em>)</p>
+<ul>
+<li>position stratégique, entre différentes parties du réseau (e.g être le lien entre deux parties non connectées)</li>
+<li>nb de plus courts chemins entre toute paire d’acteurs <em>k</em> et <em>j</em>, et on prend ceux qui passent par <em>i</em></li>
+<li><span class="math inline">\(C_B(i)=\)</span><span class="math inline">\(\sum_{jk}\)</span><span class="math inline">\(\frac{s_{kij}}{s_{kj}}\)</span></li>
+</ul></li>
+<li><p>Centralité de <strong>proximité</strong> (<em>closeness</em>). Un peu comme centralité de <strong>degré</strong>, mais noeuds sont pas aussi centraux.</p></li>
+<li><p>Centralité de <strong>vecteur propre</strong> (<em>eigenvector</em>). Être connecté aux autres noeuds les plus connectés.</p></li>
+<li><p>Centralité dans un réseau : se calcule pour chaque noeud dans un réseau (devient un attribut du noeud) [NB: soit centra de proxi, soit centra de degré, soit intermédiarité, etc…]. Dans quelle mesure le réseau est dominé par un noeud central (ou peu de noeuds centraux) ? On compare la centralité du noeud le plus central à la centralité des autres noeuds. Au niveau du réseau dans son ensemble, on peut regarder:</p>
+<ul>
+<li>La <strong>distribution des centralités</strong> des noeuds;</li>
+<li>Des indicateurs de “centralisation” agrégés.
+<ul>
+<li>mesure de centralisation de Freeman</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="analyses-de-réseaux.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité de degré</span></span>
+<span id="cb30-2"><a href="analyses-de-réseaux.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">degree</span>(graph,<span class="at">mode=</span><span class="st">&quot;all&quot;</span>)</span>
+<span id="cb30-3"><a href="analyses-de-réseaux.html#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">degree</span>(graph,<span class="at">mode=</span><span class="st">&quot;in&quot;</span>)</span>
+<span id="cb30-4"><a href="analyses-de-réseaux.html#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">degree</span>(graph,<span class="at">mode=</span><span class="st">&quot;out&quot;</span>)</span>
+<span id="cb30-5"><a href="analyses-de-réseaux.html#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="analyses-de-réseaux.html#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité d&#39;intermédiarité</span></span>
+<span id="cb30-7"><a href="analyses-de-réseaux.html#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="fu">betweenness</span>(graph,<span class="at">directed=</span><span class="cn">TRUE</span>)</span>
+<span id="cb30-8"><a href="analyses-de-réseaux.html#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-9"><a href="analyses-de-réseaux.html#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité de proximité</span></span>
+<span id="cb30-10"><a href="analyses-de-réseaux.html#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># il faut d&#39;abord enlever les noeuds isolés, sinon le calcul ne marche pas</span></span>
+<span id="cb30-11"><a href="analyses-de-réseaux.html#cb30-11" aria-hidden="true" tabindex="-1"></a>Isolated <span class="ot">=</span> <span class="fu">which</span>(<span class="fu">degree</span>(graph)<span class="sc">==</span><span class="dv">0</span>) </span>
+<span id="cb30-12"><a href="analyses-de-réseaux.html#cb30-12" aria-hidden="true" tabindex="-1"></a>graph2 <span class="ot">=</span> <span class="fu">delete.vertices</span>(graph, Isolated) <span class="co"># on construit un nouveau graphe en enlevant Isolated</span></span>
+<span id="cb30-13"><a href="analyses-de-réseaux.html#cb30-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb30-14"><a href="analyses-de-réseaux.html#cb30-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># on calcule la proximité sur ce graphe</span></span>
+<span id="cb30-15"><a href="analyses-de-réseaux.html#cb30-15" aria-hidden="true" tabindex="-1"></a>close_graph <span class="ot">&lt;-</span> <span class="fu">closeness</span>(graph2, <span class="at">mode=</span><span class="st">&#39;all&#39;</span>, <span class="at">normalized =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb30-16"><a href="analyses-de-réseaux.html#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="co"># pour obtenir la valeur normalisée, la commande est :</span></span>
+<span id="cb30-17"><a href="analyses-de-réseaux.html#cb30-17" aria-hidden="true" tabindex="-1"></a>close_graph2 <span class="ot">&lt;-</span> <span class="fu">closeness</span>(graph2, <span class="at">mode=</span><span class="st">&#39;all&#39;</span>, <span class="at">normalized =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb30-18"><a href="analyses-de-réseaux.html#cb30-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-19"><a href="analyses-de-réseaux.html#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité de vecteur propre</span></span>
+<span id="cb30-20"><a href="analyses-de-réseaux.html#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen_centrality</span>(graph, <span class="at">scale =</span> <span class="cn">TRUE</span>, <span class="at">weights =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="an-long.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/pyrrhamide/regressions/blob/main/08_analyses-reseaux.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

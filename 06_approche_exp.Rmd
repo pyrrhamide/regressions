@@ -1,0 +1,23 @@
+# Approches expérimentales (cours d'OG) {#ap-exp}
+
+```{r message=FALSE}
+library(lfe)
+library(AER)
+library(survival)
+library(plm)
+library(lmtest)
+```
+
+## Expériences aléatoires contrôlées 
+
+### Expérience à essais randomisés contrôlés (*randomised controlled trials (RCT) experiments*)
+
+### Expériences par questionnaire (*randomised survey experiment*)
+
+## Expériences naturelles
+
+## Différences-de-différences (*differences-in-differences*)
+
+## Régression par discontinuité (*Regression discontinuity design*)
+
+## Variables instrumentales

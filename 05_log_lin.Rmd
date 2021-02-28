@@ -1,0 +1,101 @@
+
+# Régression log-linéaire (cours de MP) {#log-lin}
+
+------------------------------------------------------------------------
+
+Soit un modèle log-linéaire avec trois variables A, B et C ayant chacune des modalités indexées respectivement par les indices $i$, $j$ et $k$. La table de contingence contient les effectifs notés $m_{ijk}$.\
+Un modèle log-linéaire est une régression sur le log des effectifs dans chacun des cases du tableau de contingence, soit : $$log(m_{ijk}) = constante + \\ margeA_i + margeB_j + margeC_k + \\ interactionAB_{ij} + interactionAC_{ik} + interactionBC_{jk} + \\ interactionABC_{ijk}$$ Un modèle log-linéaire contient toujours la constante et toutes les marges du tableau de contingence. Puis on peut ensuite ajouter des interactions. Il s'agit quasiment toujours de modèles hiérarchiques, càd que, dès lors que l'on met une interaction d'ordre n entre un sous-groupe de variables, toutes les interactions d'ordre inférieur à n entre les variables de ce sous-groupe sont également incluses dans le modèle.\
+La constante permet d'estimer l'effectif total de la table. Les coefficients $margeA_i$ permettent d'estimer les effectifs de la $i^{ème}$ ligne de la table, qui correspond à la $i^{ème}$ modalité de A.
+
+------------------------------------------------------------------------
+
+Résumons les différents modèles de régression qu'on a vu jusqu'à maintenant :\
+- **régression linéaire simple/multiple** : variable à expliquer quantitative, toutes les variables sont dans leurs unités de bases.\
+- **régression linéaire de probabilité** : variable à expliquer dichotomique, toutes les variables sont dans leurs unités de bases.\
+- **régression logistique dichotomique/polytomique** : variable à expliquer dichotomique, toutes les variables sont mises à l'échelle logarithmique ($log(x)$).
+
+On passe maintenant à la **régression log-linéaire**, que je résume (techniquement) ainsi : la variable à expliquer est mise à l'échelle logarithmique, les variables explicatives restent dans leurs unités de bases. Ce modèle est pratique pour expliquer une évolution exponentielle, par exemple l'évolution des cas de coronavirus qui est lente au début, augmente très rapidement dans un interval de temps court, puis plafonne.\
+Je t'avoue que j'ai pas vraiment compris/écouté son cours parfaitement, mais il y a quelque chose avec des tableaux croisés à trois dimensions (j'utiliserai l'exemple des admissions à Berkeley : $admissions*département*sexe$).
+
+```{r results="hide",message=F}
+# Les packages et fonctions
+library(vcd)
+library(vcdExtra)
+library(DescTools)
+# source("f.util.cours.R") fonction créée par MP que j'inclus direct ici
+stat_ajust <- function(...) {
+  list_glm <- enquos(...)
+  noms <- as.character(list_glm) %>% map_chr(~str_sub(.x, start = 2))
+  list_glm <- map(list_glm, rlang::eval_tidy)
+
+  return(map2_dfr(list_glm, noms, ~ tibble(
+    model = .y,
+    G2 = .x$deviance,
+    ddl = .x$df.residual,
+    p.value.G2 = 1 - pchisq(.x$deviance, .x$df.residual),
+    dissimilarity = sum(abs(.x$y - .x$fitted.values)) / sum(.x$y) / 2,
+    AIC = .x$aic,
+    BIC = AIC(.x, k = log(sum(.x$y)))
+    )))
+}
+
+# La base
+Berkeley <- UCBAdmissions %>% as.data.frame()
+```
+
+## Modèle de l'indépendance
+
+```{r message=F}
+# Modèle log-linéaire
+# Modèle de l'indépendance totale
+M0 <- glm(Freq ~ Gender + Admit + Dept, family = poisson, data = UCBAdmissions)
+# La différence avec la reg logit est la famille de la distribution. Pour la reg logit, on avait family=binomial, ici on a family=poisson.
+summary(M0)
+# Residual deviance = 2097.7 on 16 degrees of freedom.
+```
+
+Il reste beaucoup trop d'information à expliquer que le modèle de l'indépendance totale n'explique pas, trop pour établir l'indépendance entre les variables. On décide alors de mettre à jour le modèle en ajoutant des interactions.
+
+## Modèles avec interaction
+
+```{r message=F}
+# une interaction prise en compte
+M1_GD <- update(M0, . ~ . + Gender:Dept) # choix du département est genré
+M1_GA <- update(M0, . ~ . + Gender:Admit) # admission discriminante en fonction du sexe
+M1_AD <- update(M0, . ~ . + Admit:Dept) # départements plus ou moins selectifs
+
+# deux interactions
+M2_GD.GA <- update(M1_GD, . ~ . + Admit:Gender)
+M2_GD.AD <- update(M1_GD, . ~ . + Admit:Dept)
+M2_AD.GA <- update(M1_AD, . ~ . + Admit:Gender)
+
+# trois interactions d'ordre 2
+M3 <- update(M2_GD.AD, . ~ . + Gender:Admit)
+
+# une interaction d'ordre 3 = modèle saturé
+M4 <- update(M0, . ~ . + Gender*Admit*Dept) 
+# sélectivité du département varie selon le sexe
+```
+
+Tous les modèles sont stockés dans la mémoire de R, on veut maintenant voir le gain ou la perte d'information offert.e par chaque nouveau modèle.
+
+## Analyse de deviance {#analyse-de-deviance}
+
+```{r}
+anova(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)
+```
+
+En regardant la dernière colonne, "Deviance", on peut voir que les modèles 3 (les départements sont sélectifs) et 7 (les départements sont sélectifs et genrés) sont ceux grâce auxquels on a gagné le plus d'information. Toutefois entre le modèle 3 et le modèle 7, ce dernier a moins de residual deviance, c'est donc le modèle qui expliquerait le mieux la variance des données. Visiblement, la sélectivité des départements et leurs compositions sont des éléments importants à inclure dans la régression.
+
+Pourquoi ne pas prendre le modèle 9 ? Parce que le modèle 9 est saturé (toutes les combinaisons d'interactions sont dans le modèle, c'est logique que toutes les données soient expliquées.)
+
+Revenons en au modèle 7. Comment peut-on s'assurer que le gain d'info est réel et pas dû au hasard (n'est pas du bruit)?
+
+```{r message=F}
+stat_ajust(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)
+```
+
+(1) Regardons la colonne "p.value.G2": une $p.value$ de 0 est suspicieux, on ne prend pas en compte les modèles qui ont cette valeur ;\
+(2) "Dissimilarity" : proportion des observations 'mal classées'. Le plus bas, le mieux. De ce fait, le modèle 7 est toujours le meilleur, ce qui est confirmé par son BIC qui est le plus faible de tous les modèles (jsp ce que ça mesure par contre.)
+
+[coefficients d'un modèle log-linéaire avec interaction peut se retrouver avec une régression logistique dichotomique.]

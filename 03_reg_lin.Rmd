@@ -1,0 +1,51 @@
+
+# Régressions linéaires (cours de JD) {#reg-lin}
+
+$$Y_i = \beta_0 + \beta_1X_i + \epsilon_i$$ pour $i = 1,...,n$
+
+La **régression linéaire** prend comme variable dépendante/à expliquer ($var\_dep$) une variable quantitative continue, telle que la température, le PIB, mon envie de dormir progressive pendant les cours d'EQ...les variables explicatives/indépendantes peuvent être quanti ou quali.
+
+Tu lis les coefficients de la régression de la manière suivante : "toutes choses égales par ailleurs, pour une unité de $x$ ($var\_indep$) en plus, $y$ ($var\_dep$) augmente/diminue de {coefficient}" ou bien "toutes choses égales par ailleurs, pour un changement de catégorie de $x$, $y$ augmente/diminue de {coefficient}".
+
+```{r eval=F}
+# régression linéaire simple (une seule var indep)
+model_1 <- lm(var_dep ~ var_indep, data = d)
+summary(model_1) # pour observer le modèle (coefficients, p.value [Pr(>|z|)], deviance, etc.)
+
+# pour visualiser la régression
+plot(d$var_dep, d$var_indep)
+abline(model_1)
+```
+
+On interprète seulement les coefficients statistiquement significatifs (avec des petites étoiles) : un coefficient statistiquement significatif veut dire qu'on peut rejeter l'hypothèse que la variable explicative n'influence pas la variable à expliquer. Toutefois ça peut être intéressant de dire "je suis surprise que cette variable n'est pas d'effet, ce qui va à l'encontre de mon hypothèse/de la littérature, blabla."
+
+```{r eval=F}
+# régression linéraire multiple (plusieurs var indeps) sans interaction
+model_2 <- lm(var_dep ~ var_indep1 + var_indep2 + var_indep3, data = d)
+# si on souhaite obtenir un modèle pondéré
+model_3 <- lm(var_dep ~ var_indep1 + var_indep2 + var_indep3, data = d, weights = poids)
+# on peut aussi "mettre à jour" le modèle 2
+model_3 <- update(model_2, . ~ ., weights=poids)
+
+# régression linéaire multiple avec interaction
+model_4 <- lm(var_dep ~ var_indep1 + var_indep2 + var_indep3 + var_indep1*var_indep2, data = d, weights = poids)
+# ou
+model_4 <- update(model_3, . ~ . + var_indep1*var_indep2)
+```
+
+Le coefficient d'interaction s'additionne aux coefficients de base des catégories qui correspondent à ce nouveau coef.\
+Par exemple, on interagit le PIB avec le taux de natalité. Tu obtiens les résultats suivants :\
+- $\beta_1$ le coefficient du PIB;\
+- $\beta_2$ le coefficient du taux de natalité;\
+- $\beta_3$ le coefficient de l'interaction entre les deux variables.\
+Pour obtenir le vrai effet du PIB et du taux de natalité sur la $var\_dep$, tu additionnes ces trois coefficients.
+
+Cependant en sociologie, il est rare d'avoir une variable continue à expliquer. On a généralement des variables catégorielles (qui peuvent être une variable quanti transformée en variable quali). Le modèle de régression linéaire ne fonctionne plus dans ce cas, on se tourne vers le modèle de **régression linéaire de probabilité** qui prend comme variable dépendante/à expliquer une variable dichotomique (0/1).
+
+La ligne R reste la même, seule la nature de la $var\_dep$ change.\
+Tu lis le coefficient de cette manière : "toutes choses égales par ailleurs, pour une unité de plus/pour un changement de catégorie de $x$, la probabilité que l'évènement $y=1$ se passe augmente/diminue [je suis pas sûre de la lecture exacte du coefficient, mais en gros ça fonctionne comme ça.]"
+
+```{r eval=F}
+# régression linéaire de probabilité
+model_5 <- lm(var_dep_dicho ~ var_indep1 + var_indep2 + var_indep3, data = d, weights = poids)
+```
