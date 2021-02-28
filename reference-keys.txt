@@ -18,3 +18,11 @@ variables-instrumentales
 an-long
 pseudo-panels
 modèles-linéaires
+bases-de-la-théorie
+matrices
+liens
+structures-locales
+connectivité
+mesures-basiques-de-cohésion
+mesures-de-diversité
+mesures-de-centralité
