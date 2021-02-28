@@ -32,7 +32,7 @@
   
 <link rel="prev" href="log-lin.html"/>
 <link rel="next" href="an-long.html"/>
-<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -161,6 +161,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1" data-path="an-long.html"><a href="an-long.html#pseudo-panels"><i class="fa fa-check"></i><b>5.1</b> Pseudo-panels</a></li>
 <li class="chapter" data-level="5.2" data-path="an-long.html"><a href="an-long.html#modèles-linéaires"><i class="fa fa-check"></i><b>5.2</b> Modèles linéaires</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html"><i class="fa fa-check"></i>Analyses de réseaux</a>
+<ul>
+<li class="chapter" data-level="5.3" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#bases-de-la-théorie"><i class="fa fa-check"></i><b>5.3</b> Bases de la théorie</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#matrices"><i class="fa fa-check"></i><b>5.3.1</b> Matrices</a></li>
+<li class="chapter" data-level="5.3.2" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#liens"><i class="fa fa-check"></i><b>5.3.2</b> Liens</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#structures-locales"><i class="fa fa-check"></i><b>5.4</b> Structures locales</a></li>
+<li class="chapter" data-level="5.5" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#connectivité"><i class="fa fa-check"></i><b>5.5</b> Connectivité</a></li>
+<li class="chapter" data-level="5.6" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#mesures-basiques-de-cohésion"><i class="fa fa-check"></i><b>5.6</b> Mesures basiques de cohésion</a></li>
+<li class="chapter" data-level="5.7" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#mesures-de-diversité"><i class="fa fa-check"></i><b>5.7</b> Mesures de diversité</a></li>
+<li class="chapter" data-level="5.8" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#mesures-de-centralité"><i class="fa fa-check"></i><b>5.8</b> Mesures de centralité</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -180,11 +193,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="ap-exp" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Approches expérimentales (cours d’OG)</h1>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="ap-exp.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lfe)</span>
-<span id="cb5-2"><a href="ap-exp.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
-<span id="cb5-3"><a href="ap-exp.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb5-4"><a href="ap-exp.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
-<span id="cb5-5"><a href="ap-exp.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="ap-exp.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lfe)</span>
+<span id="cb22-2"><a href="ap-exp.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb22-3"><a href="ap-exp.html#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb22-4"><a href="ap-exp.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
+<span id="cb22-5"><a href="ap-exp.html#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code></pre></div>
 <div id="expériences-aléatoires-contrôlées" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Expériences aléatoires contrôlées</h2>
 <div id="expérience-à-essais-randomisés-contrôlés-randomised-controlled-trials-rct-experiments" class="section level3" number="4.1.1">

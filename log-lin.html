@@ -32,7 +32,7 @@
   
 <link rel="prev" href="reg-log.html"/>
 <link rel="next" href="ap-exp.html"/>
-<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -161,6 +161,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1" data-path="an-long.html"><a href="an-long.html#pseudo-panels"><i class="fa fa-check"></i><b>5.1</b> Pseudo-panels</a></li>
 <li class="chapter" data-level="5.2" data-path="an-long.html"><a href="an-long.html#modèles-linéaires"><i class="fa fa-check"></i><b>5.2</b> Modèles linéaires</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html"><i class="fa fa-check"></i>Analyses de réseaux</a>
+<ul>
+<li class="chapter" data-level="5.3" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#bases-de-la-théorie"><i class="fa fa-check"></i><b>5.3</b> Bases de la théorie</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#matrices"><i class="fa fa-check"></i><b>5.3.1</b> Matrices</a></li>
+<li class="chapter" data-level="5.3.2" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#liens"><i class="fa fa-check"></i><b>5.3.2</b> Liens</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#structures-locales"><i class="fa fa-check"></i><b>5.4</b> Structures locales</a></li>
+<li class="chapter" data-level="5.5" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#connectivité"><i class="fa fa-check"></i><b>5.5</b> Connectivité</a></li>
+<li class="chapter" data-level="5.6" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#mesures-basiques-de-cohésion"><i class="fa fa-check"></i><b>5.6</b> Mesures basiques de cohésion</a></li>
+<li class="chapter" data-level="5.7" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#mesures-de-diversité"><i class="fa fa-check"></i><b>5.7</b> Mesures de diversité</a></li>
+<li class="chapter" data-level="5.8" data-path="analyses-de-réseaux.html"><a href="analyses-de-réseaux.html#mesures-de-centralité"><i class="fa fa-check"></i><b>5.8</b> Mesures de centralité</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -191,36 +204,36 @@ La constante permet d’estimer l’effectif total de la table. Les coefficients
 - <strong>régression logistique dichotomique/polytomique</strong> : variable à expliquer dichotomique, toutes les variables sont mises à l’échelle logarithmique (<span class="math inline">\(log(x)\)</span>).</p>
 <p>On passe maintenant à la <strong>régression log-linéaire</strong>, que je résume (techniquement) ainsi : la variable à expliquer est mise à l’échelle logarithmique, les variables explicatives restent dans leurs unités de bases. Ce modèle est pratique pour expliquer une évolution exponentielle, par exemple l’évolution des cas de coronavirus qui est lente au début, augmente très rapidement dans un interval de temps court, puis plafonne.<br />
 Je t’avoue que j’ai pas vraiment compris/écouté son cours parfaitement, mais il y a quelque chose avec des tableaux croisés à trois dimensions (j’utiliserai l’exemple des admissions à Berkeley : <span class="math inline">\(admissions*département*sexe\)</span>).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="log-lin.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Les packages et fonctions</span></span>
-<span id="cb5-2"><a href="log-lin.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd)</span>
-<span id="cb5-3"><a href="log-lin.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcdExtra)</span>
-<span id="cb5-4"><a href="log-lin.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
-<span id="cb5-5"><a href="log-lin.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># source(&quot;f.util.cours.R&quot;) fonction créée par MP que j&#39;inclus direct ici</span></span>
-<span id="cb5-6"><a href="log-lin.html#cb5-6" aria-hidden="true" tabindex="-1"></a>stat_ajust <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
-<span id="cb5-7"><a href="log-lin.html#cb5-7" aria-hidden="true" tabindex="-1"></a>  list_glm <span class="ot">&lt;-</span> <span class="fu">enquos</span>(...)</span>
-<span id="cb5-8"><a href="log-lin.html#cb5-8" aria-hidden="true" tabindex="-1"></a>  noms <span class="ot">&lt;-</span> <span class="fu">as.character</span>(list_glm) <span class="sc">%&gt;%</span> <span class="fu">map_chr</span>(<span class="sc">~</span><span class="fu">str_sub</span>(.x, <span class="at">start =</span> <span class="dv">2</span>))</span>
-<span id="cb5-9"><a href="log-lin.html#cb5-9" aria-hidden="true" tabindex="-1"></a>  list_glm <span class="ot">&lt;-</span> <span class="fu">map</span>(list_glm, rlang<span class="sc">::</span>eval_tidy)</span>
-<span id="cb5-10"><a href="log-lin.html#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="log-lin.html#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">map2_dfr</span>(list_glm, noms, <span class="sc">~</span> <span class="fu">tibble</span>(</span>
-<span id="cb5-12"><a href="log-lin.html#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> .y,</span>
-<span id="cb5-13"><a href="log-lin.html#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">G2 =</span> .x<span class="sc">$</span>deviance,</span>
-<span id="cb5-14"><a href="log-lin.html#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">ddl =</span> .x<span class="sc">$</span>df.residual,</span>
-<span id="cb5-15"><a href="log-lin.html#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">p.value.G2 =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(.x<span class="sc">$</span>deviance, .x<span class="sc">$</span>df.residual),</span>
-<span id="cb5-16"><a href="log-lin.html#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">dissimilarity =</span> <span class="fu">sum</span>(<span class="fu">abs</span>(.x<span class="sc">$</span>y <span class="sc">-</span> .x<span class="sc">$</span>fitted.values)) <span class="sc">/</span> <span class="fu">sum</span>(.x<span class="sc">$</span>y) <span class="sc">/</span> <span class="dv">2</span>,</span>
-<span id="cb5-17"><a href="log-lin.html#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">AIC =</span> .x<span class="sc">$</span>aic,</span>
-<span id="cb5-18"><a href="log-lin.html#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">BIC =</span> <span class="fu">AIC</span>(.x, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">sum</span>(.x<span class="sc">$</span>y)))</span>
-<span id="cb5-19"><a href="log-lin.html#cb5-19" aria-hidden="true" tabindex="-1"></a>    )))</span>
-<span id="cb5-20"><a href="log-lin.html#cb5-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-21"><a href="log-lin.html#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-22"><a href="log-lin.html#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># La base</span></span>
-<span id="cb5-23"><a href="log-lin.html#cb5-23" aria-hidden="true" tabindex="-1"></a>Berkeley <span class="ot">&lt;-</span> UCBAdmissions <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="log-lin.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Les packages et fonctions</span></span>
+<span id="cb13-2"><a href="log-lin.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd)</span>
+<span id="cb13-3"><a href="log-lin.html#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcdExtra)</span>
+<span id="cb13-4"><a href="log-lin.html#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
+<span id="cb13-5"><a href="log-lin.html#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># source(&quot;f.util.cours.R&quot;) fonction créée par MP que j&#39;inclus direct ici</span></span>
+<span id="cb13-6"><a href="log-lin.html#cb13-6" aria-hidden="true" tabindex="-1"></a>stat_ajust <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
+<span id="cb13-7"><a href="log-lin.html#cb13-7" aria-hidden="true" tabindex="-1"></a>  list_glm <span class="ot">&lt;-</span> <span class="fu">enquos</span>(...)</span>
+<span id="cb13-8"><a href="log-lin.html#cb13-8" aria-hidden="true" tabindex="-1"></a>  noms <span class="ot">&lt;-</span> <span class="fu">as.character</span>(list_glm) <span class="sc">%&gt;%</span> <span class="fu">map_chr</span>(<span class="sc">~</span><span class="fu">str_sub</span>(.x, <span class="at">start =</span> <span class="dv">2</span>))</span>
+<span id="cb13-9"><a href="log-lin.html#cb13-9" aria-hidden="true" tabindex="-1"></a>  list_glm <span class="ot">&lt;-</span> <span class="fu">map</span>(list_glm, rlang<span class="sc">::</span>eval_tidy)</span>
+<span id="cb13-10"><a href="log-lin.html#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="log-lin.html#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">map2_dfr</span>(list_glm, noms, <span class="sc">~</span> <span class="fu">tibble</span>(</span>
+<span id="cb13-12"><a href="log-lin.html#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> .y,</span>
+<span id="cb13-13"><a href="log-lin.html#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">G2 =</span> .x<span class="sc">$</span>deviance,</span>
+<span id="cb13-14"><a href="log-lin.html#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">ddl =</span> .x<span class="sc">$</span>df.residual,</span>
+<span id="cb13-15"><a href="log-lin.html#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">p.value.G2 =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(.x<span class="sc">$</span>deviance, .x<span class="sc">$</span>df.residual),</span>
+<span id="cb13-16"><a href="log-lin.html#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">dissimilarity =</span> <span class="fu">sum</span>(<span class="fu">abs</span>(.x<span class="sc">$</span>y <span class="sc">-</span> .x<span class="sc">$</span>fitted.values)) <span class="sc">/</span> <span class="fu">sum</span>(.x<span class="sc">$</span>y) <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb13-17"><a href="log-lin.html#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">AIC =</span> .x<span class="sc">$</span>aic,</span>
+<span id="cb13-18"><a href="log-lin.html#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">BIC =</span> <span class="fu">AIC</span>(.x, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">sum</span>(.x<span class="sc">$</span>y)))</span>
+<span id="cb13-19"><a href="log-lin.html#cb13-19" aria-hidden="true" tabindex="-1"></a>    )))</span>
+<span id="cb13-20"><a href="log-lin.html#cb13-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-21"><a href="log-lin.html#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="log-lin.html#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="co"># La base</span></span>
+<span id="cb13-23"><a href="log-lin.html#cb13-23" aria-hidden="true" tabindex="-1"></a>Berkeley <span class="ot">&lt;-</span> UCBAdmissions <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span></code></pre></div>
 <div id="modèle-de-lindépendance" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Modèle de l’indépendance</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="log-lin.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modèle log-linéaire</span></span>
-<span id="cb6-2"><a href="log-lin.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Modèle de l&#39;indépendance totale</span></span>
-<span id="cb6-3"><a href="log-lin.html#cb6-3" aria-hidden="true" tabindex="-1"></a>M0 <span class="ot">&lt;-</span> <span class="fu">glm</span>(Freq <span class="sc">~</span> Gender <span class="sc">+</span> Admit <span class="sc">+</span> Dept, <span class="at">family =</span> poisson, <span class="at">data =</span> UCBAdmissions)</span>
-<span id="cb6-4"><a href="log-lin.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># La différence avec la reg logit est la famille de la distribution. Pour la reg logit, on avait family=binomial, ici on a family=poisson.</span></span>
-<span id="cb6-5"><a href="log-lin.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M0)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="log-lin.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modèle log-linéaire</span></span>
+<span id="cb14-2"><a href="log-lin.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Modèle de l&#39;indépendance totale</span></span>
+<span id="cb14-3"><a href="log-lin.html#cb14-3" aria-hidden="true" tabindex="-1"></a>M0 <span class="ot">&lt;-</span> <span class="fu">glm</span>(Freq <span class="sc">~</span> Gender <span class="sc">+</span> Admit <span class="sc">+</span> Dept, <span class="at">family =</span> poisson, <span class="at">data =</span> UCBAdmissions)</span>
+<span id="cb14-4"><a href="log-lin.html#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># La différence avec la reg logit est la famille de la distribution. Pour la reg logit, on avait family=binomial, ici on a family=poisson.</span></span>
+<span id="cb14-5"><a href="log-lin.html#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M0)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = Freq ~ Gender + Admit + Dept, family = poisson, 
@@ -250,32 +263,32 @@ Je t’avoue que j’ai pas vraiment compris/écouté son cours parfaitement, ma
 ## AIC: 2272.7
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="log-lin.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Residual deviance = 2097.7 on 16 degrees of freedom.</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="log-lin.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Residual deviance = 2097.7 on 16 degrees of freedom.</span></span></code></pre></div>
 <p>Il reste beaucoup trop d’information à expliquer que le modèle de l’indépendance totale n’explique pas, trop pour établir l’indépendance entre les variables. On décide alors de mettre à jour le modèle en ajoutant des interactions.</p>
 </div>
 <div id="modèles-avec-interaction" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Modèles avec interaction</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="log-lin.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># une interaction prise en compte</span></span>
-<span id="cb9-2"><a href="log-lin.html#cb9-2" aria-hidden="true" tabindex="-1"></a>M1_GD <span class="ot">&lt;-</span> <span class="fu">update</span>(M0, . <span class="sc">~</span> . <span class="sc">+</span> Gender<span class="sc">:</span>Dept) <span class="co"># choix du département est genré</span></span>
-<span id="cb9-3"><a href="log-lin.html#cb9-3" aria-hidden="true" tabindex="-1"></a>M1_GA <span class="ot">&lt;-</span> <span class="fu">update</span>(M0, . <span class="sc">~</span> . <span class="sc">+</span> Gender<span class="sc">:</span>Admit) <span class="co"># admission discriminante en fonction du sexe</span></span>
-<span id="cb9-4"><a href="log-lin.html#cb9-4" aria-hidden="true" tabindex="-1"></a>M1_AD <span class="ot">&lt;-</span> <span class="fu">update</span>(M0, . <span class="sc">~</span> . <span class="sc">+</span> Admit<span class="sc">:</span>Dept) <span class="co"># départements plus ou moins selectifs</span></span>
-<span id="cb9-5"><a href="log-lin.html#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="log-lin.html#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># deux interactions</span></span>
-<span id="cb9-7"><a href="log-lin.html#cb9-7" aria-hidden="true" tabindex="-1"></a>M2_GD.GA <span class="ot">&lt;-</span> <span class="fu">update</span>(M1_GD, . <span class="sc">~</span> . <span class="sc">+</span> Admit<span class="sc">:</span>Gender)</span>
-<span id="cb9-8"><a href="log-lin.html#cb9-8" aria-hidden="true" tabindex="-1"></a>M2_GD.AD <span class="ot">&lt;-</span> <span class="fu">update</span>(M1_GD, . <span class="sc">~</span> . <span class="sc">+</span> Admit<span class="sc">:</span>Dept)</span>
-<span id="cb9-9"><a href="log-lin.html#cb9-9" aria-hidden="true" tabindex="-1"></a>M2_AD.GA <span class="ot">&lt;-</span> <span class="fu">update</span>(M1_AD, . <span class="sc">~</span> . <span class="sc">+</span> Admit<span class="sc">:</span>Gender)</span>
-<span id="cb9-10"><a href="log-lin.html#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="log-lin.html#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># trois interactions d&#39;ordre 2</span></span>
-<span id="cb9-12"><a href="log-lin.html#cb9-12" aria-hidden="true" tabindex="-1"></a>M3 <span class="ot">&lt;-</span> <span class="fu">update</span>(M2_GD.AD, . <span class="sc">~</span> . <span class="sc">+</span> Gender<span class="sc">:</span>Admit)</span>
-<span id="cb9-13"><a href="log-lin.html#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-14"><a href="log-lin.html#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># une interaction d&#39;ordre 3 = modèle saturé</span></span>
-<span id="cb9-15"><a href="log-lin.html#cb9-15" aria-hidden="true" tabindex="-1"></a>M4 <span class="ot">&lt;-</span> <span class="fu">update</span>(M0, . <span class="sc">~</span> . <span class="sc">+</span> Gender<span class="sc">*</span>Admit<span class="sc">*</span>Dept) </span>
-<span id="cb9-16"><a href="log-lin.html#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># sélectivité du département varie selon le sexe</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="log-lin.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># une interaction prise en compte</span></span>
+<span id="cb17-2"><a href="log-lin.html#cb17-2" aria-hidden="true" tabindex="-1"></a>M1_GD <span class="ot">&lt;-</span> <span class="fu">update</span>(M0, . <span class="sc">~</span> . <span class="sc">+</span> Gender<span class="sc">:</span>Dept) <span class="co"># choix du département est genré</span></span>
+<span id="cb17-3"><a href="log-lin.html#cb17-3" aria-hidden="true" tabindex="-1"></a>M1_GA <span class="ot">&lt;-</span> <span class="fu">update</span>(M0, . <span class="sc">~</span> . <span class="sc">+</span> Gender<span class="sc">:</span>Admit) <span class="co"># admission discriminante en fonction du sexe</span></span>
+<span id="cb17-4"><a href="log-lin.html#cb17-4" aria-hidden="true" tabindex="-1"></a>M1_AD <span class="ot">&lt;-</span> <span class="fu">update</span>(M0, . <span class="sc">~</span> . <span class="sc">+</span> Admit<span class="sc">:</span>Dept) <span class="co"># départements plus ou moins selectifs</span></span>
+<span id="cb17-5"><a href="log-lin.html#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="log-lin.html#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># deux interactions</span></span>
+<span id="cb17-7"><a href="log-lin.html#cb17-7" aria-hidden="true" tabindex="-1"></a>M2_GD.GA <span class="ot">&lt;-</span> <span class="fu">update</span>(M1_GD, . <span class="sc">~</span> . <span class="sc">+</span> Admit<span class="sc">:</span>Gender)</span>
+<span id="cb17-8"><a href="log-lin.html#cb17-8" aria-hidden="true" tabindex="-1"></a>M2_GD.AD <span class="ot">&lt;-</span> <span class="fu">update</span>(M1_GD, . <span class="sc">~</span> . <span class="sc">+</span> Admit<span class="sc">:</span>Dept)</span>
+<span id="cb17-9"><a href="log-lin.html#cb17-9" aria-hidden="true" tabindex="-1"></a>M2_AD.GA <span class="ot">&lt;-</span> <span class="fu">update</span>(M1_AD, . <span class="sc">~</span> . <span class="sc">+</span> Admit<span class="sc">:</span>Gender)</span>
+<span id="cb17-10"><a href="log-lin.html#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="log-lin.html#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># trois interactions d&#39;ordre 2</span></span>
+<span id="cb17-12"><a href="log-lin.html#cb17-12" aria-hidden="true" tabindex="-1"></a>M3 <span class="ot">&lt;-</span> <span class="fu">update</span>(M2_GD.AD, . <span class="sc">~</span> . <span class="sc">+</span> Gender<span class="sc">:</span>Admit)</span>
+<span id="cb17-13"><a href="log-lin.html#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="log-lin.html#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co"># une interaction d&#39;ordre 3 = modèle saturé</span></span>
+<span id="cb17-15"><a href="log-lin.html#cb17-15" aria-hidden="true" tabindex="-1"></a>M4 <span class="ot">&lt;-</span> <span class="fu">update</span>(M0, . <span class="sc">~</span> . <span class="sc">+</span> Gender<span class="sc">*</span>Admit<span class="sc">*</span>Dept) </span>
+<span id="cb17-16"><a href="log-lin.html#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># sélectivité du département varie selon le sexe</span></span></code></pre></div>
 <p>Tous les modèles sont stockés dans la mémoire de R, on veut maintenant voir le gain ou la perte d’information offert.e par chaque nouveau modèle.</p>
 </div>
 <div id="analyse-de-deviance" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Analyse de deviance</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="log-lin.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="log-lin.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)</span></code></pre></div>
 <pre><code>## Analysis of Deviance Table
 ## 
 ## Model 1: Freq ~ Gender + Admit + Dept
@@ -301,7 +314,7 @@ Je t’avoue que j’ai pas vraiment compris/écouté son cours parfaitement, ma
 <p>En regardant la dernière colonne, “Deviance”, on peut voir que les modèles 3 (les départements sont sélectifs) et 7 (les départements sont sélectifs et genrés) sont ceux grâce auxquels on a gagné le plus d’information. Toutefois entre le modèle 3 et le modèle 7, ce dernier a moins de residual deviance, c’est donc le modèle qui expliquerait le mieux la variance des données. Visiblement, la sélectivité des départements et leurs compositions sont des éléments importants à inclure dans la régression.</p>
 <p>Pourquoi ne pas prendre le modèle 9 ? Parce que le modèle 9 est saturé (toutes les combinaisons d’interactions sont dans le modèle, c’est logique que toutes les données soient expliquées.)</p>
 <p>Revenons en au modèle 7. Comment peut-on s’assurer que le gain d’info est réel et pas dû au hasard (n’est pas du bruit)?</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="log-lin.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_ajust</span>(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="log-lin.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_ajust</span>(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)</span></code></pre></div>
 <pre><code>## # A tibble: 9 x 7
 ##   model           G2   ddl p.value.G2 dissimilarity   AIC   BIC
 ##   &lt;chr&gt;        &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
