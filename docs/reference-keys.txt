@@ -18,6 +18,10 @@ econométrie-des-panels
 an-long
 pseudo-panels
 modèles-linéaires
+modèles-dynamiques
+modèles-non-linéaires
+modèles-de-durée
+optimal-matching
 an-res
 bases-de-la-théorie
 matrices

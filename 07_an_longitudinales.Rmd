@@ -16,3 +16,11 @@ $$y_{i,t} = \alpha + \beta k_{i,t} + \gamma n_{i,t} + \epsilon_{i,t}$$
 
 Modèle à effet fixe:
 $$y_{i,t} = \alpha_i + \beta k_{i,t} + \gamma n_{i,t} + \epsilon_{i,t}$$
+
+## Modèles dynamiques
+
+## Modèles non-linéaires
+
+## Modèles de durée
+
+## Optimal matching
