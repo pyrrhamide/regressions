@@ -1,4 +1,4 @@
-# Analyses de réseaux {-}
+# Analyses de réseaux {#an-res}
 
 ```{r message=FALSE, eval=F}
 library(igraph)

@@ -99,3 +99,10 @@ stat_ajust(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)
 (2) "Dissimilarity" : proportion des observations 'mal classées'. Le plus bas, le mieux. De ce fait, le modèle 7 est toujours le meilleur, ce qui est confirmé par son BIC qui est le plus faible de tous les modèles (jsp ce que ça mesure par contre.)
 
 [coefficients d'un modèle log-linéaire avec interaction peut se retrouver avec une régression logistique dichotomique.]
+
+## Odds ratio
+
+Les coefficients étant logarithmiques, on ne peut pas les interpréter comme tel. On a besoin des odds ratios. Pour les obtenir, on peut:
+
+* appliquer la fonction exponentielle aux coefficients du modèle `exp(model$coefficients)`.
+* ou calculer à partir des effectifs attendus `model$fitted.values`, estimés par le modèle.

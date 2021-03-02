@@ -8,16 +8,139 @@ library(plm)
 library(lmtest)
 ```
 
+Groupe traité v groupe de contrôle.
+
+Pour connaître l'effet du traitement, groupe 'traité' diffère du groupe de contrôle seulement du traitement.
+
+4 méthodes autour de cette idée:
+
+1. Expériences aléatoires contrôlées
+2. Expériences naturelles
+3. Différences de différences
+4. Régression par discontinuité
+
 ## Expériences aléatoires contrôlées 
+2 exemples d'expériences aléatoires contrôlées:
 
-### Expérience à essais randomisés contrôlés (*randomised controlled trials (RCT) experiments*)
+* Expérience à essais randomisés contrôlés (*randomised controlled trials (RCT) experiments*)
+* Expériences par questionnaire (*randomised survey experiment*)
 
-### Expériences par questionnaire (*randomised survey experiment*)
+On prend un groupe qui rempli les mêmes caractéristiques (du type la promo du M2) à qui on applique un ou des traitements différents pour voir si les résultats sur une variable à expliquer diffèrent.
+
+Il y a deux directrices. On est allés voir l'une ou l'autre l'année dernière (dans le contexte de l'expérience aléatoire, disons qu'on les a choisi aléatoirement) et c'est celle qu'on a vu qui est devenue notre interlocutrice principale (c'est la ventilation aléatoire il me semble). Du coup, au sein de la promo (normalement uniforme mais tmtc que nan), on est soumis à un traitement différent selon la dir. Y a-t-il une différence de notes/de moral en fonction de la personne ?
+
+Dans cette situation que je viens de décrire, il devrait normalement y avoir un troisième groupe (groupe de contrôle - indépendance du traitement) sans interlocutrice.
+
+**Pourquoi l'expérience randomisée ?**
+
+* Ventilation aléatoire assure que toutes les caractéristiques des individus (à la fois observées et surtout inobservées) vont être ventilées de manière équiprobable dans les groupes traités ou de contrôle.
+* L'estimation n'est plus biaisée par une variable confondante (hétérogénéité inobservée)
+* Simplification considérable de la statistique
+  * intensité indiquée par la différence (ou le rapport) des moyennes
+  * significativité test de différence de moyennes ou de proportions [préciser le.s tests en question]
+* Expérience aléatoire versus échantillon aléatoire
+  * échantillon aléatoire: établir des statistiques représentatives d'une population $\rightarrow$ validité externe [définir ce que c'est].
+  * expérience aléatoire: ventilation aléatoire d'un échantillon $\rightarrow$ validité interne [définir].
+
+**L'expérience et ses aveugles**
+
+* Simple aveugle: le patient ne sait pas dans quel groupe il est (traité ou placebo)
+* Double aveugle: le patient et la personne qui administre le traitement ne savent pas dans quel groupe se trouve le patient
+* Triple aveugle: le patient, la personne qui administre le traitement et le statisticien ne savent pas dans quel groupe se trouve le patient.
+
+L'expérience aléatoire en sciences sociales est rarement une expérience avec placebo et en aveugle. Le placebo, qui doit avoir la forme, le goût, etc. du placebo, n'existe pas toujours [trouver exemple]. Il y a souvent 2 groupes: un qui fait l'objet d'une intervention et un qui ne reçoit rien. Il importe alors d'être vigilent à faire une analyse en intention de traiter (*intention to treat*) plutôt que traitement réalisé (*treatment on treated*).
+
+[parler des limites techniques et conceptuelles?]
 
 ## Expériences naturelles
 
+* Situation "naturelle" qui ressemble à une situation expérimentale (ventilation aléatoire ou quasi-aléatoire d'une population entre groupe traité et groupe de contrôle) sans avoir été construite à des fins expérimentales.
+* Tirages au sort comme procédure d'allocation (e.g. jurés en tribunal, distribution dans les chambres d'internat, répartition entre ceux qui ont dû présenter leur problématique de mémoire le jour 1 et le jour 2)
+* Autres exemples : jeux aléatoires et loteries, phénomène aléatoires ou quasi aléatoires (sexe de l'enfant/mois de naissance), recrutement académique...
+
+[EXEMPLE!!!]
+
 ## Différences-de-différences (*differences-in-differences*)
+
+On reprend l'opposition groupe traité versus groupe de contrôle des expériences contrôlées. Toutefois, on n'est pas sûr que les groupes de contrôles soient vraiment similaires en tout point excepté le traitement. On va faire une hypothèse plus faible: la différence entre traitement et contrôle est constante dans le temps.
+
+  * différence prétraitement est la différence liée aux "inobservables"
+  * différence post-traitement est la différence liée aux "inobservables" + effet causal
+  * différence de différence est l'effet causal (diff post - diff pré)
+  
+Différence "standard" :  
+$$Traité - Contrôle \\ T_1 - C_1$$  
+Différence de différence est l'estimation :  
+$$DiD = (Traité_{post}-Traité_{anté})-(Contrôle_{post}-Contrôle_{anté}) \\ DiD = (T_1-T_0)-(C_1-C_0)$$
+
+Notations classiques :\
+- $T_1=\mu_{11}$ ; $T_0=\mu_{10}$ ; $C_1=\mu_{01}$ ; $C_0=\mu_{00}$\
+- Diff-in-Diff = $(\mu_{11}-\mu_{01})-(\mu_{10}-\mu_{00})$
+
+**Estimations économétriques**\
+Quand on a un panel :\
+- on mesure sur les mêmes individus, l'avant et l'après,\
+- on estime l'évolution,\
+- $\Delta y_i = \beta_0 + \beta_1 GT + \epsilon_i$ ou GT est le groupe traité,\
+  - $\Delta y_i$ est l'évolution/la variation de $y_i$
+  - $\beta_0$ est l'intercept [nom spécial en DiD?]
+  - $\beta_1$ est l'estimateur DiD.
+  - $\epsilon_i$ est le terme d'erreur [distribution spéciale?]
+
+Quand on n'a pas de panel :\
+- les individus avant et après ne sont pas les mêmes,\
+- $y_{it} = \beta_0 + \beta_1 GT + \beta_2 t + \beta_3 t \times GT + \epsilon_{it}$,\
+- $\beta_3$ est l'estimateur DiD.
+
+**Portées et limites**
+
+* Hypothèses fortes:
+  * la différence entre le traitement et le contrôle serait restée constante en l'absence de traitement.
+  * ou redit autrement, la différence de différence est unniquement due au "traitement" et non à un autre changement intervenu dans le groupe traité entre la période 1 et 2.
+* Si on dispose de plus de deux périodes, on peut faire une vérification graphique.
 
 ## Régression par discontinuité (*Regression discontinuity design*)
 
+Les groupes sont ventilés pour recevoir ou non un traitement en fonction d'un seuil sur une variable mesurable (continue). Par exemple, les personnes qui sont arrêtées au-delà d'un seuil d'alcool dans le sang ont l'obligation de suivre un traitement, et les groupes au-dessous de ce seuil servent de groupe de comparaison (groupe de contrôle). L'effet est mesuré au niveau de la discontinuité entre le groupe traité et le groupe de contrôle (on ne fait pas la différence de moyenne entre deux groupes).
+
+**Conditions d'applications**
+
+Le seuil est exogène, non manipulable, et déclenche les actions:
+
+* majorité absolue $\rightarrow$ effet de l'élection
+* rang du dernier poste offert au concours $\rightarrow$ effet de l'école
+* seuil de déclenchement d'une mesure sociale ou fiscale $\rightarrow$ effet de la politique, etc...
+
+**Avantages et désavantages**
+
+Avantages: quand c'est bien effectué, la régression par discontinuité permet une estimation non biaisée du traitement.
+
+Désavantages:
+
+* la puissance statistique est bien moindre que dans des essais randomisés contrôlés portant sur le même effectif. L'attention à la puissance statistique est cruciale.
+* les effets sont sans biais uniquement si la forme fonctionnelle entre la variable d'assignation et la variable de résultat est bien modélisée, y compris:
+  * des relations non-linéaires (augmentation - plateau - augmentation)
+  * des interactions (pente coef 1 - seuil - pente coef 2)
+  
+**Estimations économétriques**\
+Le modèle linéaire simple (premières estimations)\
+- $y_i = \beta_0 + \beta_1 x + \beta_2 (x>seuil) + \epsilon_i$,\
+- L'effet causal est mesuré par $\beta_2$,\
+- Limite suppose que la forme fonctionnelle est la même de part et d'autre du seuil (en gros, que le coefficient de la pente soit pas trop différent à gauche et à droite de la discontinuité).
+
+Le modèle linéaire avec changement de pente\
+- $y_i = \beta_0 + \beta_1 x + \beta_2 (x>seuil) + \beta_3x \times (x>seuil) + \epsilon_i$\
+- l'effet causal est mesuré par $\beta_2$.
+- différence avec modèle linéaire simple: on interagit $x$ pré-seuil et post-seuil.
+
+Le modèle linéaire avec changement de forme\
+- attention de bien centrer la variable $x$ autour du seuil ! $x' = x-seuil$,\
+- $y_i = \beta_0 + \beta_1 x' + \beta_2 x^{'2} + \beta_3(x'>0) + \beta_4x' \times (x'>0) + \beta_5 x^{'2} \times (x'>0) + \epsilon_i$,\
+- l'effet causal est mesuré par $\beta_3$.
+
 ## Variables instrumentales
+
+## Econométrie des panels
+L'économétrie des panels rend visible et permet de traiter deux problèmes classiques :  
+1. L'autocorrélation des résidus,  
+2. L'hétérogénéité inobservée.  
