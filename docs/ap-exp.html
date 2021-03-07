@@ -199,11 +199,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="ap-exp" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Approches expérimentales (cours d’OG)</h1>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="ap-exp.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lfe)</span>
-<span id="cb22-2"><a href="ap-exp.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
-<span id="cb22-3"><a href="ap-exp.html#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb22-4"><a href="ap-exp.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
-<span id="cb22-5"><a href="ap-exp.html#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="ap-exp.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lfe)</span>
+<span id="cb5-2"><a href="ap-exp.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb5-3"><a href="ap-exp.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb5-4"><a href="ap-exp.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
+<span id="cb5-5"><a href="ap-exp.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code></pre></div>
 <p>Groupe traité v groupe de contrôle.</p>
 <p>Pour connaître l’effet du traitement, groupe ‘traité’ diffère du groupe de contrôle seulement du traitement.</p>
 <p>4 méthodes autour de cette idée:</p>
@@ -331,6 +331,14 @@ Le modèle linéaire simple (premières estimations)<br />
 </div>
 <div id="variables-instrumentales" class="section level2" number="4.5">
 <h2><span class="header-section-number">4.5</span> Variables instrumentales</h2>
+<p>Violation de la 6ème hypothèse des MCO (<span class="math inline">\(Cov(x_i,\epsilon_i \neq 0)\)</span> absence de corrélation entre les variables explicatives et le résidu) <span class="math inline">\(\Rightarrow\)</span> <em>endogénéité</em>. Pb endogénéité peut conduire à se tromper dans l’interprétation des paramètres. Variables instrumentales comme technique de correction.</p>
+<p>3 problèmes et leurs effets sur les paramètres:</p>
+<ul>
+<li>Erreur de mesure d’une variable explicative: sous-estimation de la valeur absolue du paramètre <span class="math inline">\(\beta_i\)</span>.</li>
+<li>Variable omise ou hétérogénéité inobservée (corrélée à la variable dépendante et à une autre variable explicative): sur/sous-estimation de la valeur absolue du paramètre.</li>
+<li>Simultanéité (variable explicative dépend de la variable expliquée): effet plus complexe. Pas d’intuition évidente.</li>
+</ul>
+<p>Solution <span class="math inline">\(\Rightarrow\)</span> variable instrumentale: trouver une variable instrumentale exogène qui impacte ma variable expliquée <span class="math inline">\(y_i\)</span> uniquement par l’intermédiaire de son effet sur la variable explicative <span class="math inline">\(x_i\)</span> suspecte d’endogénéité.</p>
 </div>
 <div id="econométrie-des-panels" class="section level2" number="4.6">
 <h2><span class="header-section-number">4.6</span> Econométrie des panels</h2>

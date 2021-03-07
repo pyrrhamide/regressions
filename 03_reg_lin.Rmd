@@ -1,7 +1,28 @@
 
 # Régressions linéaires (cours de JD) {#reg-lin}
 
-$$Y_i = \beta_0 + \beta_1X_i + \epsilon_i$$ pour $i = 1,...,n$
+***
+$$Y_i = \beta_0 + \beta_iX_i + \epsilon_i$$ pour $i = 1,...,n$
+
+* $Y_i$ est la variable dépendante, selon l'observation $i$.
+* $\beta_0$ est le point à l'origine/l'intercept.
+* $\beta_i$ est le coefficient de la variable explicative $X_i$.
+* $\epsilon_i$ est l'erreur-type, propre à l'individu $i$.
+
+Le modèle de régression linéaire est estimé à partir de la méthode des Moindres Carrés Ordinaires (MCO). Cette méthode consiste à minimiser la somme des carrés des écarts, écarts pondérés dans le cas multidimensionnel, entre chaque point du nuage de régression et son projeté, parallèlement à l'axe des ordonnées, sur la droite de régression. On estime les paramètres $\beta_i$ de telle sorte que $\epsilon_i$ soit minimale (donc on cherche à réduire la place du hasard dans notre modèle).
+
+**Important pour les cours suivants** -- les MCO suivent 6 hypothèses:
+
+1. Linéarité des paramètres.
+2. Absence d'autocorrélation des variables explicatives (il ne faut pas qu'une variable soit le multiple d'une autre).
+3. Homoscédasticité (la variance des erreur-types est la même pour toutes les observations).
+4. Absence d'autocorrélation des résidus (les résidus/erreur-types sont indépendants les uns des autres. Sinon voudrait dire que les observations/individus sont corrélées).
+5. Normalité des résidus (moyenne des résidus égale à 0).
+6. Absence de corrélation entre les variables explicatives et le résidu *dans le modèle théorique*.
+
+La violation d'une ou plusieurs de ces hypothèses implique l'utilisation d'un différent modèle de régression.
+
+***
 
 La **régression linéaire** prend comme variable dépendante/à expliquer ($var\_dep$) une variable quantitative continue, telle que la température, le PIB, mon envie de dormir progressive pendant les cours d'EQ...les variables explicatives/indépendantes peuvent être quanti ou quali.
 

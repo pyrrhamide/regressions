@@ -139,6 +139,15 @@ Le modèle linéaire avec changement de forme\
 - l'effet causal est mesuré par $\beta_3$.
 
 ## Variables instrumentales
+Violation de la 6ème hypothèse des MCO ($Cov(x_i,\epsilon_i \neq 0)$ absence de corrélation entre les variables explicatives et le résidu) $\Rightarrow$ *endogénéité*. Pb endogénéité peut conduire à se tromper dans l'interprétation des paramètres. Variables instrumentales comme technique de correction.
+
+3 problèmes et leurs effets sur les paramètres:
+
+* Erreur de mesure d'une variable explicative: sous-estimation de la valeur absolue du paramètre $\beta_i$.
+* Variable omise ou hétérogénéité inobservée (corrélée à la variable dépendante et à une autre variable explicative): sur/sous-estimation de la valeur absolue du paramètre.
+* Simultanéité (variable explicative dépend de la variable expliquée): effet plus complexe. Pas d'intuition évidente.
+
+Solution $\Rightarrow$ variable instrumentale: trouver une variable instrumentale exogène qui impacte ma variable expliquée $y_i$ uniquement par l'intermédiaire de son effet sur la variable explicative $x_i$ suspecte d'endogénéité.
 
 ## Econométrie des panels
 L'économétrie des panels rend visible et permet de traiter deux problèmes classiques :  
