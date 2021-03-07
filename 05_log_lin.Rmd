@@ -14,15 +14,15 @@ Résumons les différents modèles de régression qu'on a vu jusqu'à maintenant
 - **régression linéaire de probabilité** : variable à expliquer dichotomique, toutes les variables sont dans leurs unités de bases.\
 - **régression logistique dichotomique/polytomique** : variable à expliquer dichotomique, toutes les variables sont mises à l'échelle logarithmique ($log(x)$).
 
-On passe maintenant à la **régression log-linéaire**, que je résume (techniquement) ainsi : la variable à expliquer est mise à l'échelle logarithmique, les variables explicatives restent dans leurs unités de bases. Ce modèle est pratique pour expliquer une évolution exponentielle, par exemple l'évolution des cas de coronavirus qui est lente au début, augmente très rapidement dans un interval de temps court, puis plafonne.\
-Je t'avoue que j'ai pas vraiment compris/écouté son cours parfaitement, mais il y a quelque chose avec des tableaux croisés à trois dimensions (j'utiliserai l'exemple des admissions à Berkeley : $admissions*département*sexe$).
+On passe maintenant à la **régression log-linéaire**, que je résume (techniquement) ainsi : la variable à expliquer est mise à l'échelle logarithmique, les variables explicatives restent dans leurs unités de bases. On fait un tri croisé avec ces variables. Ce modèle mesure l'indépendance (ou non) statistique. J'utilise maintenant l'exemple des admissions à Berkeley : $admissions*département*sexe$.
 
 ```{r results="hide",message=F}
 # Les packages et fonctions
 library(vcd)
 library(vcdExtra)
 library(DescTools)
-# source("f.util.cours.R") fonction créée par MP que j'inclus direct ici
+
+# source("f.util.cours.R") fonction créée par le prof
 stat_ajust <- function(...) {
   list_glm <- enquos(...)
   noms <- as.character(list_glm) %>% map_chr(~str_sub(.x, start = 2))
@@ -38,6 +38,7 @@ stat_ajust <- function(...) {
     BIC = AIC(.x, k = log(sum(.x$y)))
     )))
 }
+  # il me semble que cette fonction ne fonctionne pas avec les données pondérées. utilise stat_ajust2 dans ce cas, dispo dans son fichier.
 
 # La base
 Berkeley <- UCBAdmissions %>% as.data.frame()
@@ -50,6 +51,7 @@ Berkeley <- UCBAdmissions %>% as.data.frame()
 # Modèle de l'indépendance totale
 M0 <- glm(Freq ~ Gender + Admit + Dept, family = poisson, data = UCBAdmissions)
 # La différence avec la reg logit est la famille de la distribution. Pour la reg logit, on avait family=binomial, ici on a family=poisson.
+
 summary(M0)
 # Residual deviance = 2097.7 on 16 degrees of freedom.
 ```
@@ -85,7 +87,7 @@ Tous les modèles sont stockés dans la mémoire de R, on veut maintenant voir l
 anova(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)
 ```
 
-En regardant la dernière colonne, "Deviance", on peut voir que les modèles 3 (les départements sont sélectifs) et 7 (les départements sont sélectifs et genrés) sont ceux grâce auxquels on a gagné le plus d'information. Toutefois entre le modèle 3 et le modèle 7, ce dernier a moins de residual deviance, c'est donc le modèle qui expliquerait le mieux la variance des données. Visiblement, la sélectivité des départements et leurs compositions sont des éléments importants à inclure dans la régression.
+En regardant la dernière colonne, "Deviance", on peut voir que les modèles 3 (les départements sont sélectifs) et 7 (les départements sont sélectifs et genrés) sont ceux grâce auxquels on a gagné le plus d'information. Le modèle 3 indique l'interaction qui explique le mieux la variance du tableau. Le modèle 7 est le best overall, ayant le moins de residual deviance, c'est donc le modèle qui expliquerait le mieux la variance des données. Visiblement, la sélectivité des départements et leurs compositions sont des éléments importants à inclure dans la régression.
 
 Pourquoi ne pas prendre le modèle 9 ? Parce que le modèle 9 est saturé (toutes les combinaisons d'interactions sont dans le modèle, c'est logique que toutes les données soient expliquées.)
 
@@ -98,11 +100,8 @@ stat_ajust(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)
 (1) Regardons la colonne "p.value.G2": une $p.value$ de 0 est suspicieux, on ne prend pas en compte les modèles qui ont cette valeur ;\
 (2) "Dissimilarity" : proportion des observations 'mal classées'. Le plus bas, le mieux. De ce fait, le modèle 7 est toujours le meilleur, ce qui est confirmé par son BIC qui est le plus faible de tous les modèles (jsp ce que ça mesure par contre.)
 
-[coefficients d'un modèle log-linéaire avec interaction peut se retrouver avec une régression logistique dichotomique.]
+Les coefficients d'un modèle log-linéaire avec interaction peuvent être obtenus avec une régression logistique dichotomique. 
 
 ## Odds ratio
 
-Les coefficients étant logarithmiques, on ne peut pas les interpréter comme tel. On a besoin des odds ratios. Pour les obtenir, on peut:
-
-* appliquer la fonction exponentielle aux coefficients du modèle `exp(model$coefficients)`.
-* ou calculer à partir des effectifs attendus `model$fitted.values`, estimés par le modèle.
+Les coefficients ne sont pas interprétables directement, on utilise les [odds ratio](#odds-ratio-complet).

@@ -140,14 +140,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.1" data-path="reg-log.html"><a href="reg-log.html#régression-logistique-dichotomique"><i class="fa fa-check"></i><b>2.1</b> Régression logistique dichotomique</a></li>
 <li class="chapter" data-level="2.2" data-path="reg-log.html"><a href="reg-log.html#régression-logistique-polytomique"><i class="fa fa-check"></i><b>2.2</b> Régression logistique polytomique</a></li>
-<li class="chapter" data-level="2.3" data-path="reg-log.html"><a href="reg-log.html#odds-ratio"><i class="fa fa-check"></i><b>2.3</b> Odds ratio</a></li>
+<li class="chapter" data-level="2.3" data-path="reg-log.html"><a href="reg-log.html#odds-ratio-complet"><i class="fa fa-check"></i><b>2.3</b> Odds ratio</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="log-lin.html"><a href="log-lin.html"><i class="fa fa-check"></i><b>3</b> Régression log-linéaire</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="log-lin.html"><a href="log-lin.html#modèle-de-lindépendance"><i class="fa fa-check"></i><b>3.1</b> Modèle de l’indépendance</a></li>
 <li class="chapter" data-level="3.2" data-path="log-lin.html"><a href="log-lin.html#modèles-avec-interaction"><i class="fa fa-check"></i><b>3.2</b> Modèles avec interaction</a></li>
 <li class="chapter" data-level="3.3" data-path="log-lin.html"><a href="log-lin.html#analyse-de-deviance"><i class="fa fa-check"></i><b>3.3</b> Analyse de deviance</a></li>
-<li class="chapter" data-level="3.4" data-path="log-lin.html"><a href="log-lin.html#odds-ratio-1"><i class="fa fa-check"></i><b>3.4</b> Odds ratio</a></li>
+<li class="chapter" data-level="3.4" data-path="log-lin.html"><a href="log-lin.html#odds-ratio"><i class="fa fa-check"></i><b>3.4</b> Odds ratio</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="ap-exp.html"><a href="ap-exp.html"><i class="fa fa-check"></i><b>4</b> Approches expérimentales</a>
 <ul>
@@ -328,6 +328,30 @@ Le modèle linéaire simple (premières estimations)<br />
 - attention de bien centrer la variable <span class="math inline">\(x\)</span> autour du seuil ! <span class="math inline">\(x&#39; = x-seuil\)</span>,<br />
 - <span class="math inline">\(y_i = \beta_0 + \beta_1 x&#39; + \beta_2 x^{&#39;2} + \beta_3(x&#39;&gt;0) + \beta_4x&#39; \times (x&#39;&gt;0) + \beta_5 x^{&#39;2} \times (x&#39;&gt;0) + \epsilon_i\)</span>,<br />
 - l’effet causal est mesuré par <span class="math inline">\(\beta_3\)</span>.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="ap-exp.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regression discontinuity design - je recommende de regarder directement le code du prof et de lancer les commandes.</span></span>
+<span id="cb23-2"><a href="ap-exp.html#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="ap-exp.html#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># recentrage de la variable autour du seuil</span></span>
+<span id="cb23-4"><a href="ap-exp.html#cb23-4" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>var_cont_cent <span class="ot">&lt;-</span> d<span class="sc">$</span>var_continue <span class="sc">-</span> valeur_seuil_au_choix <span class="co"># commande parmi plein d&#39;autres, là c&#39;est toi qui prend l&#39;initiative</span></span>
+<span id="cb23-5"><a href="ap-exp.html#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="ap-exp.html#cb23-6" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix),<span class="at">data=</span>d)</span>
+<span id="cb23-7"><a href="ap-exp.html#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># suppose que pente est la même à gauche et à droite du seuil</span></span>
+<span id="cb23-8"><a href="ap-exp.html#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="ap-exp.html#cb23-9" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_cont_cent<span class="sc">+</span><span class="fu">I</span>(var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>),<span class="at">data=</span>d)</span>
+<span id="cb23-10"><a href="ap-exp.html#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="ap-exp.html#cb23-11" aria-hidden="true" tabindex="-1"></a>pr2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">+</span></span>
+<span id="cb23-12"><a href="ap-exp.html#cb23-12" aria-hidden="true" tabindex="-1"></a>          <span class="fu">I</span>((var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">*</span>var_continue),<span class="at">data=</span>d)</span>
+<span id="cb23-13"><a href="ap-exp.html#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="ap-exp.html#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co"># pour cacher les points extrêmes de la base (pour garder la linéarité)</span></span>
+<span id="cb23-15"><a href="ap-exp.html#cb23-15" aria-hidden="true" tabindex="-1"></a>pr2b <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">+</span></span>
+<span id="cb23-16"><a href="ap-exp.html#cb23-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">*</span>var_continue),</span>
+<span id="cb23-17"><a href="ap-exp.html#cb23-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">data=</span>d[d<span class="sc">$</span>var_continue<span class="sc">&gt;=</span>valeur1 <span class="sc">&amp;</span> d<span class="sc">$</span>var_continue<span class="sc">&lt;=</span>valeur2,])</span>
+<span id="cb23-18"><a href="ap-exp.html#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co"># pr2 et pr2b supposent que l&#39;effet est linéaire des deux cotés du seuil</span></span>
+<span id="cb23-19"><a href="ap-exp.html#cb23-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-20"><a href="ap-exp.html#cb23-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-21"><a href="ap-exp.html#cb23-21" aria-hidden="true" tabindex="-1"></a>pr3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_cont_cent<span class="sc">+</span></span>
+<span id="cb23-22"><a href="ap-exp.html#cb23-22" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>(var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">+</span></span>
+<span id="cb23-23"><a href="ap-exp.html#cb23-23" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">*</span>var_cont_cent)<span class="sc">+</span></span>
+<span id="cb23-24"><a href="ap-exp.html#cb23-24" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">*</span>var_cont_cent2),<span class="at">data=</span>d)</span></code></pre></div>
 </div>
 <div id="variables-instrumentales" class="section level2" number="4.5">
 <h2><span class="header-section-number">4.5</span> Variables instrumentales</h2>

@@ -140,14 +140,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.1" data-path="reg-log.html"><a href="reg-log.html#régression-logistique-dichotomique"><i class="fa fa-check"></i><b>2.1</b> Régression logistique dichotomique</a></li>
 <li class="chapter" data-level="2.2" data-path="reg-log.html"><a href="reg-log.html#régression-logistique-polytomique"><i class="fa fa-check"></i><b>2.2</b> Régression logistique polytomique</a></li>
-<li class="chapter" data-level="2.3" data-path="reg-log.html"><a href="reg-log.html#odds-ratio"><i class="fa fa-check"></i><b>2.3</b> Odds ratio</a></li>
+<li class="chapter" data-level="2.3" data-path="reg-log.html"><a href="reg-log.html#odds-ratio-complet"><i class="fa fa-check"></i><b>2.3</b> Odds ratio</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="log-lin.html"><a href="log-lin.html"><i class="fa fa-check"></i><b>3</b> Régression log-linéaire</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="log-lin.html"><a href="log-lin.html#modèle-de-lindépendance"><i class="fa fa-check"></i><b>3.1</b> Modèle de l’indépendance</a></li>
 <li class="chapter" data-level="3.2" data-path="log-lin.html"><a href="log-lin.html#modèles-avec-interaction"><i class="fa fa-check"></i><b>3.2</b> Modèles avec interaction</a></li>
 <li class="chapter" data-level="3.3" data-path="log-lin.html"><a href="log-lin.html#analyse-de-deviance"><i class="fa fa-check"></i><b>3.3</b> Analyse de deviance</a></li>
-<li class="chapter" data-level="3.4" data-path="log-lin.html"><a href="log-lin.html#odds-ratio-1"><i class="fa fa-check"></i><b>3.4</b> Odds ratio</a></li>
+<li class="chapter" data-level="3.4" data-path="log-lin.html"><a href="log-lin.html#odds-ratio"><i class="fa fa-check"></i><b>3.4</b> Odds ratio</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="ap-exp.html"><a href="ap-exp.html"><i class="fa fa-check"></i><b>4</b> Approches expérimentales</a>
 <ul>
@@ -202,28 +202,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display">\[logit(p) = log(\frac{p}{1-p}) = \beta_0 + \sum_{j=1}^n \beta_j X_{ij}\]</span></p>
 <div id="régression-logistique-dichotomique" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Régression logistique dichotomique</h2>
-<p>Pour une raison qui m’échappe parce que je suis pas très fraîche et parce que je sais pas, on n’utilise pas le modèle de <strong>régression linéaire de probabilité</strong> mais plutôt le modèle de <strong>régression logistique dichotomique</strong>. Pour les coefficients, on parlera de l’effet du logit de probabilité que l’évènement <span class="math inline">\(y=1\)</span> se passe.</p>
-<p>On commence par lancer le modèle de régression logistique à effets principaux, ou modèle de l’indépendance :</p>
+<p>Pour une raison qui m’échappe parce que je suis pas très fraîche, et tout simplement parce que je ne sais pas, on n’utilise pas le modèle de <strong>régression linéaire de probabilité</strong> mais plutôt le modèle de <strong>régression logistique dichotomique</strong>. Pour les coefficients, on parlera de l’effet du logit de probabilité que l’évènement <span class="math inline">\(y=1\)</span> se passe.</p>
+<p>On lance d’abord le modèle de régression logistique à effets principaux, ou modèle de l’indépendance :</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="reg-log.html#cb8-1" aria-hidden="true" tabindex="-1"></a>model_6 <span class="ot">&lt;-</span> <span class="fu">glm</span>(var_dep_dicho <span class="sc">~</span> var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3, <span class="at">data =</span> d, <span class="at">weights =</span> poids, <span class="at">family=</span>binomial)</span></code></pre></div>
 <p><em>Petite note sur le modèle de l’indépendance totale</em> : c’est le modèle dans lequel tu balances tes variables explicatives sans interaction ou association, pour vérifier si les variables sont indépendantes entre elles, càd si ✨ <em>toutes choses égales par ailleurs</em> ✨ elles expliquent le phénomène à elles seules. Cependant, en socio, c’est inimaginable que la classe sociale et le sexe agissent indépendamment l’un de l’autre, c’est pour cette raison qu’on choisirait d’intéragir ces variables entre elles.</p>
 <p>Pour vérifier si les variables sont indépendantes, tu regardes la <em>residual deviance</em> : si c’est un nb énorme, direction interaction-ville.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="reg-log.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On met le modèle précédent à jour, en inclant des interactions.</span></span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="reg-log.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On met le modèle précédent à jour, en incluant des interactions.</span></span>
 <span id="cb9-2"><a href="reg-log.html#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="reg-log.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># pour une unique interaction  </span></span>
 <span id="cb9-4"><a href="reg-log.html#cb9-4" aria-hidden="true" tabindex="-1"></a>model_7 <span class="ot">&lt;-</span> <span class="fu">update</span>(model_6, . <span class="sc">~</span> . <span class="sc">+</span> var_indep1<span class="sc">*</span>var_indep2)</span>
-<span id="cb9-5"><a href="reg-log.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># pour intéragir toutes les modalités de toutes les variables entre elles (interaction d&#39;ordre 2)  </span></span>
-<span id="cb9-6"><a href="reg-log.html#cb9-6" aria-hidden="true" tabindex="-1"></a>model_8 <span class="ot">&lt;-</span> <span class="fu">glm</span>(var_dep_dicho <span class="sc">~</span> (var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3)<span class="sc">^</span><span class="dv">2</span>, <span class="at">data =</span> d, <span class="at">weights =</span> poids, <span class="at">family=</span>binomial)  </span>
-<span id="cb9-7"><a href="reg-log.html#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># pour intéragir var_indep3 avec var_indep1 et var_indep2 [plus rapide que d&#39;écrire individuellement chaque interaction]</span></span>
-<span id="cb9-8"><a href="reg-log.html#cb9-8" aria-hidden="true" tabindex="-1"></a>model_9 <span class="ot">&lt;-</span> <span class="fu">glm</span>(var_dep_dicho <span class="sc">~</span> (var_indep1 <span class="sc">+</span> var_indep2)<span class="sc">*</span>var_indep3, <span class="at">data =</span> d, <span class="at">weights =</span> poids, <span class="at">family=</span>binomial) </span></code></pre></div>
+<span id="cb9-5"><a href="reg-log.html#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="reg-log.html#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># pour interagir toutes les modalités de toutes les variables entre elles (interaction d&#39;ordre 2)  </span></span>
+<span id="cb9-7"><a href="reg-log.html#cb9-7" aria-hidden="true" tabindex="-1"></a>model_8 <span class="ot">&lt;-</span> <span class="fu">glm</span>(var_dep_dicho <span class="sc">~</span> (var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3)<span class="sc">^</span><span class="dv">2</span>, <span class="at">data =</span> d, <span class="at">weights =</span> poids, <span class="at">family=</span>binomial)  </span>
+<span id="cb9-8"><a href="reg-log.html#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="reg-log.html#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># pour interagir var_indep3 avec var_indep1 et var_indep2 [plus rapide que d&#39;écrire individuellement chaque interaction]</span></span>
+<span id="cb9-10"><a href="reg-log.html#cb9-10" aria-hidden="true" tabindex="-1"></a>model_9 <span class="ot">&lt;-</span> <span class="fu">glm</span>(var_dep_dicho <span class="sc">~</span> (var_indep1 <span class="sc">+</span> var_indep2)<span class="sc">*</span>var_indep3, <span class="at">data =</span> d, <span class="at">weights =</span> poids, <span class="at">family=</span>binomial) </span>
+<span id="cb9-11"><a href="reg-log.html#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="reg-log.html#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># le modèle saturé (interaction d&#39;ordre 3 - toutes les interactions inférieures seront directement inclues)</span></span>
+<span id="cb9-13"><a href="reg-log.html#cb9-13" aria-hidden="true" tabindex="-1"></a>model_10 <span class="ot">&lt;-</span> <span class="fu">glm</span>(var_dep_dicho <span class="sc">~</span> var_indep1<span class="sc">*</span>var_indep2<span class="sc">*</span>var_indep3,d,binomial)</span></code></pre></div>
 <p>Le coefficient d’interaction s’additionne aux coefficients de base des catégories qui correspondent à ce nouveau coef.<br />
 Par exemple, on interagit le sexe et le niveau de diplôme. Tu obtiens les résultats suivants :<br />
 - <span class="math inline">\(\beta_1\)</span> le coefficient pour sexe=1 (par exemple les filles);<br />
 - <span class="math inline">\(\beta_2\)</span> le coefficient du niveau de diplôme=1 (par exemple ceux qui ont obtenu une licence);<br />
 - <span class="math inline">\(\beta_3\)</span> le coefficient de l’interaction entre les deux <strong>modalités</strong>.<br />
 Pour obtenir le vrai effet de l’obtention de la licence chez les filles sur la <span class="math inline">\(var\_dep\)</span>, tu additionnes ces trois coefficients. Tu ne peux pas additionner le coefficient d’interaction pour les garçons avec licence, ou les filles sans licence.</p>
-<p>On veut voir si l’ajout de ces interactions est statistiquement significative (c’est la méthode de JD, MP a la sienne <a href="log-lin.html#analyse-de-deviance">que je détaille plus bas</a>). On effectue un test statistique sur l’interaction, qui est distribué comme une loi du khi-deux, sur la différence de vraisemblance entre les modèles d’indépendance et d’interaction.</p>
+<p>On veut voir si l’ajout de ces interactions est statistiquement significative (il y a la méthode qui suit, et <a href="log-lin.html#analyse-de-deviance">une autre qu’on a vu plus tard</a>). On effectue un test statistique sur l’interaction, qui est distribué comme une loi du khi-deux, sur la différence de vraisemblance entre les modèles d’indépendance et d’interaction.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="reg-log.html#cb10-1" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>(<span class="fu">logLik</span>(model_7)<span class="sc">-</span><span class="fu">logLik</span>(model_6)) [<span class="dv">1</span>]</span>
-<span id="cb10-2"><a href="reg-log.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Entre ces deux modèles, il n&#39;y a qu&#39;une variable/modalité en plus, donc le degrée de liberté est de 1 (je sais plus pourquoi).</span></span>
+<span id="cb10-2"><a href="reg-log.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Entre ces deux modèles, il n&#39;y a qu&#39;une variable/modalité en plus, donc le degré de liberté est de 1 (je sais plus pourquoi).</span></span>
 <span id="cb10-3"><a href="reg-log.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">pchisq</span>(test,<span class="dv">1</span>) <span class="co"># (test,1), 1 étant le ddl.</span></span></code></pre></div>
 <p>On obtient la probabilité que l’interaction soit due au hasard. Si la valeur est inférieure ou égale à 0.10, on peut rejeter l’hypothèse que l’interaction soit due au hasard.</p>
 </div>
@@ -234,13 +239,40 @@ Pour obtenir le vrai effet de l’obtention de la licence chez les filles sur la
 <p>C’est une phrase assez dégueulasse. Toutefois c’est un modèle de régression sur lequel on ne s’est pas attardés l’année dernière donc je n’en dis pas plus. Voici la commande pour lancer le modèle.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="reg-log.html#cb11-1" aria-hidden="true" tabindex="-1"></a>model_10 <span class="ot">&lt;-</span> <span class="fu">multinom</span>(var_dep_poly <span class="sc">~</span> var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3, <span class="at">data=</span>d, <span class="at">weights=</span>poids)</span></code></pre></div>
 </div>
-<div id="odds-ratio" class="section level2" number="2.3">
+<div id="odds-ratio-complet" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> Odds ratio</h2>
-<p>Passons à un truc dont on parle beaucoup en classe : les <strong>odds ratio</strong>. Les coefficients d’une régression logistique ne sont pas très évidents à interpréter (dans le sens où c’est long de dire “le logit de probabilité”). On passe donc les coefficients logit par la fonction exponentielle, ce qui nous donne les odds ratio (OR).</p>
+<p>Passons à un truc dont on parle beaucoup en classe : les <strong>odds ratio</strong>. Les coefficients d’une régression logistique ne sont pas évidents à interpréter (dans le sens où c’est long de dire “le logit de probabilité” et que humainement, c’est moche). On passe donc les coefficients logit par la fonction exponentielle, ce qui nous donne les odds ratio (OR).</p>
 <p>Un OR est la chance qu’un évènement <span class="math inline">\(y=1\)</span> se passe pour une condition B, par rapport à ce que cet évènement <span class="math inline">\(y=1\)</span> se passe pour une condition A (condition de ref).</p>
-<p>L’OR est compris entre <span class="math inline">\([0;+\infty[\)</span>. Pour un OR compris entre 0 et 1, la chance que le truc se passe pour un groupe B est en fait moindre que la chance qu’il se passe pour le groupe A, mais on dira quand même “l’évènement a 0.14 fois plus de chance de se passer pour le groupe B que pour le groupe A”.<br />
-Pour obtenir les coefficients de la régression en OR, on utilise la commande suivante :</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="reg-log.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(model_7<span class="sc">$</span>coefficients)</span></code></pre></div>
+<p>L’OR est compris entre <span class="math inline">\([0;+\infty[\)</span>. Pour un OR compris entre 0 et 1, la chance que le truc se passe pour un groupe B est en fait moindre que la chance qu’il se passe pour le groupe A, mais on dira quand même “l’évènement a 0.14 fois plus de chance de se passer pour le groupe B que pour le groupe A”.</p>
+<p>Pour obtenir les coefficients de la régression en OR, on utilise la commande suivante :</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="reg-log.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(model_7<span class="sc">$</span>coefficients)</span>
+<span id="cb12-2"><a href="reg-log.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ou</span></span>
+<span id="cb12-3"><a href="reg-log.html#cb12-3" aria-hidden="true" tabindex="-1"></a>model_7<span class="sc">$</span>coefficients <span class="sc">%&gt;%</span> exp <span class="co"># au choix</span></span></code></pre></div>
+<p>Les odds ratios se calculent également à partir des effectifs attendus, estimés par le modèle (<code>model$fitted.values</code>). Imaginons qu’on ait le tableau de contingence suivant, avec les effectifs estimés:</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Je suis à l’heure</th>
+<th>Je suis en retard</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Il y a une feuille sur les rails</td>
+<td><span class="math inline">\(m_{1,1}\)</span></td>
+<td><span class="math inline">\(m_{1,2}\)</span></td>
+</tr>
+<tr class="even">
+<td>RAS sur les rails</td>
+<td><span class="math inline">\(m_{2,1}\)</span></td>
+<td><span class="math inline">\(m_{2,2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>La formule pour calculer l’OR est la suivante:
+<span class="math display">\[ OR = \frac{m_{1,1} \times m_{2,2}}{m_{2,1} \times m_{1,2}} \]</span></p>
+<p>Là j’ai calculé l’odds ratio/la chance que je sois à l’heure sachant qu’il y a une feuille sur les rails.</p>
 
 </div>
 </div>

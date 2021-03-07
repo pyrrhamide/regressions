@@ -1,24 +1,27 @@
 
 # Nettoyage des données {- #nettoyage}
 
-On nettoie les données en prévision des régressions futures (notamment : on dichotomise les modalités des variables explicatives pour les régressions logistiques [*codage disjonctif complet* - JD recommandait ça, mais on a établi que R arrivait à dichotomiser les modalités des variables comme un grand.])
+On nettoie les données en prévision des régressions futures. On dichotomise notamment les modalités des variables explicatives pour les régressions logistiques (*codage disjonctif complet* - on nous recommandait ça, mais on a établi que R arrivait à dichotomiser les modalités des variables comme un grand, tant qu'on les mets en facteur).
 
-Par exemple :\
-On a une variable couleur qui prend comme $n$ modalités 1 = bleu ; 2 = blanc ; 3 = rouge. On va la transformer en $n-1$ variables (dans ce cas, 2) binaires, une indiquant si c'est bleu (0 = non ; 1 = oui), une indiquant si c'est blanc (*idem*). Il n'y a pas besoin de créer une troisième variable dichotomique car, par défaut, une observation qui est à bleu = 0 et blanc = 0 serait à rouge = 1 [nb. j'utilise tidyverse mais je te mets d'abord la méthode de JD]:
+Par exemple :
+
+On a une variable couleur qui prend comme $n$ modalités 1 = bleu ; 2 = blanc ; 3 = rouge. On va la transformer en $n-1$ variables (dans ce cas, 2) binaires, une indiquant si c'est bleu (0 = non ; 1 = oui), une indiquant si c'est blanc (*idem*). Il n'y a pas besoin de créer une troisième variable dichotomique car, par défaut, une observation qui est à bleu = 0 et blanc = 0 serait à rouge = 1:
 
 ```{r eval=F}
+# méthode du prof
 d$bleu[d$couleur==1] <- 1
 d$bleu[d$couleur!=1] <- 0
 
 d$blanc[d$couleur==2] <- 1
 d$blanc[d$couleur!=2] <- 0
 
-# moi je ferais
+# plus propre avec tidyverse
 d <- d %>% mutate(bleu = ifelse(couleur==1,1,0),
                   blanc = ifelse(couleur==2,1,0))
 ```
 
-En gros, pour une variable à $n$ modalités/catégories que tu veux utiliser dans une régression, tu génères $n-1$ variables dichotomiques. Toutefois, ce n'est pas du tout nécessaire parce que les fonctions de régressions de R dichotomisent automatiquement les modalités des variables catégorielles :)\
+En gros, pour une variable à $n$ modalités/catégories que tu veux utiliser dans une régression, tu génères $n-1$ variables dichotomiques. Toutefois, ce n'est pas du tout nécessaire parce que les fonctions de régressions de R dichotomisent automatiquement les modalités des variables catégorielles.
+
 Si tu as une variable à $n$ modalités, tu peux aussi choisir de regrouper deux modas ensemble et de les coder en 0 et le reste des modas en 1.
 
 **Important** : une fois que tu as déterminé toutes tes variables explicatives, transforme les en facteur et change leur niveau. Les régressions fonctionnent avec des variables facteurs.\

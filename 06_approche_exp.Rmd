@@ -138,6 +138,33 @@ Le modèle linéaire avec changement de forme\
 - $y_i = \beta_0 + \beta_1 x' + \beta_2 x^{'2} + \beta_3(x'>0) + \beta_4x' \times (x'>0) + \beta_5 x^{'2} \times (x'>0) + \epsilon_i$,\
 - l'effet causal est mesuré par $\beta_3$.
 
+```{r eval=F}
+# Regression discontinuity design - je recommende de regarder directement le code du prof et de lancer les commandes.
+
+# recentrage de la variable autour du seuil
+d$var_cont_cent <- d$var_continue - valeur_seuil_au_choix # commande parmi plein d'autres, là c'est toi qui prend l'initiative
+
+pr1 <- lm(var_dep ~ var_continue+I(var_continue>=valeur_seuil_au_choix),data=d)
+# suppose que pente est la même à gauche et à droite du seuil
+
+pr1 <- lm(var_dep ~ var_cont_cent+I(var_cont_cent>=0),data=d)
+
+pr2 <- lm(var_dep ~ var_continue+I(var_continue>=valeur_seuil_au_choix)+
+          I((var_continue>=valeur_seuil_au_choix)*var_continue),data=d)
+
+# pour cacher les points extrêmes de la base (pour garder la linéarité)
+pr2b <- lm(var_dep ~ var_continue+I(var_continue>=valeur_seuil_au_choix)+
+            I((var_continue>=valeur_seuil_au_choix)*var_continue),
+           data=d[d$var_continue>=valeur1 & d$var_continue<=valeur2,])
+# pr2 et pr2b supposent que l'effet est linéaire des deux cotés du seuil
+
+
+pr3 <- lm(var_dep ~ var_cont_cent+
+            I(var_cont_cent>=0)+
+            I((var_cont_cent>=0)*var_cont_cent)+
+            I((var_cont_cent>=0)*var_cont_cent2),data=d)
+```
+
 ## Variables instrumentales
 Violation de la 6ème hypothèse des MCO ($Cov(x_i,\epsilon_i \neq 0)$ absence de corrélation entre les variables explicatives et le résidu) $\Rightarrow$ *endogénéité*. Pb endogénéité peut conduire à se tromper dans l'interprétation des paramètres. Variables instrumentales comme technique de correction.
 

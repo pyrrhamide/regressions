@@ -2,12 +2,12 @@ reg-lin
 reg-log
 régression-logistique-dichotomique
 régression-logistique-polytomique
-odds-ratio
+odds-ratio-complet
 log-lin
 modèle-de-lindépendance
 modèles-avec-interaction
 analyse-de-deviance
-odds-ratio-1
+odds-ratio
 ap-exp
 expériences-aléatoires-contrôlées
 expériences-naturelles
