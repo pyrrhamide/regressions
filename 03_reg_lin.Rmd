@@ -1,5 +1,5 @@
 
-# Régressions linéaires (cours de JD) {#reg-lin}
+# Régressions linéaires {#reg-lin}
 
 ***
 $$Y_i = \beta_0 + \beta_iX_i + \epsilon_i$$ pour $i = 1,...,n$

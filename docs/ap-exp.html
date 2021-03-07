@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 Approches expérimentales (cours d’OG) | Toutes les méthodes du master</title>
-  <meta name="description" content="4 Approches expérimentales (cours d’OG) | Toutes les méthodes du master" />
+  <title>4 Approches expérimentales | Toutes les méthodes du master</title>
+  <meta name="description" content="4 Approches expérimentales | Toutes les méthodes du master" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4 Approches expérimentales (cours d’OG) | Toutes les méthodes du master" />
+  <meta property="og:title" content="4 Approches expérimentales | Toutes les méthodes du master" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="pyrrhamide/regressions" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 Approches expérimentales (cours d’OG) | Toutes les méthodes du master" />
+  <meta name="twitter:title" content="4 Approches expérimentales | Toutes les méthodes du master" />
   
   
   
@@ -135,21 +135,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
 <li class="chapter" data-level="" data-path="stat-desc.html"><a href="stat-desc.html"><i class="fa fa-check"></i>Statistiques descriptives</a></li>
 <li class="chapter" data-level="" data-path="nettoyage.html"><a href="nettoyage.html"><i class="fa fa-check"></i>Nettoyage des données</a></li>
-<li class="chapter" data-level="1" data-path="reg-lin.html"><a href="reg-lin.html"><i class="fa fa-check"></i><b>1</b> Régressions linéaires (cours de JD)</a></li>
+<li class="chapter" data-level="1" data-path="reg-lin.html"><a href="reg-lin.html"><i class="fa fa-check"></i><b>1</b> Régressions linéaires</a></li>
 <li class="chapter" data-level="2" data-path="reg-log.html"><a href="reg-log.html"><i class="fa fa-check"></i><b>2</b> Régressions logistiques</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="reg-log.html"><a href="reg-log.html#régression-logistique-dichotomique"><i class="fa fa-check"></i><b>2.1</b> Régression logistique dichotomique</a></li>
 <li class="chapter" data-level="2.2" data-path="reg-log.html"><a href="reg-log.html#régression-logistique-polytomique"><i class="fa fa-check"></i><b>2.2</b> Régression logistique polytomique</a></li>
 <li class="chapter" data-level="2.3" data-path="reg-log.html"><a href="reg-log.html#odds-ratio"><i class="fa fa-check"></i><b>2.3</b> Odds ratio</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="log-lin.html"><a href="log-lin.html"><i class="fa fa-check"></i><b>3</b> Régression log-linéaire (cours de MP)</a>
+<li class="chapter" data-level="3" data-path="log-lin.html"><a href="log-lin.html"><i class="fa fa-check"></i><b>3</b> Régression log-linéaire</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="log-lin.html"><a href="log-lin.html#modèle-de-lindépendance"><i class="fa fa-check"></i><b>3.1</b> Modèle de l’indépendance</a></li>
 <li class="chapter" data-level="3.2" data-path="log-lin.html"><a href="log-lin.html#modèles-avec-interaction"><i class="fa fa-check"></i><b>3.2</b> Modèles avec interaction</a></li>
 <li class="chapter" data-level="3.3" data-path="log-lin.html"><a href="log-lin.html#analyse-de-deviance"><i class="fa fa-check"></i><b>3.3</b> Analyse de deviance</a></li>
 <li class="chapter" data-level="3.4" data-path="log-lin.html"><a href="log-lin.html#odds-ratio-1"><i class="fa fa-check"></i><b>3.4</b> Odds ratio</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="ap-exp.html"><a href="ap-exp.html"><i class="fa fa-check"></i><b>4</b> Approches expérimentales (cours d’OG)</a>
+<li class="chapter" data-level="4" data-path="ap-exp.html"><a href="ap-exp.html"><i class="fa fa-check"></i><b>4</b> Approches expérimentales</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="ap-exp.html"><a href="ap-exp.html#expériences-aléatoires-contrôlées"><i class="fa fa-check"></i><b>4.1</b> Expériences aléatoires contrôlées</a></li>
 <li class="chapter" data-level="4.2" data-path="ap-exp.html"><a href="ap-exp.html#expériences-naturelles"><i class="fa fa-check"></i><b>4.2</b> Expériences naturelles</a></li>
@@ -198,12 +198,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="ap-exp" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Approches expérimentales (cours d’OG)</h1>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="ap-exp.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lfe)</span>
-<span id="cb5-2"><a href="ap-exp.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
-<span id="cb5-3"><a href="ap-exp.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb5-4"><a href="ap-exp.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
-<span id="cb5-5"><a href="ap-exp.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code></pre></div>
+<h1><span class="header-section-number">4</span> Approches expérimentales</h1>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="ap-exp.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lfe)</span>
+<span id="cb22-2"><a href="ap-exp.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb22-3"><a href="ap-exp.html#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb22-4"><a href="ap-exp.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
+<span id="cb22-5"><a href="ap-exp.html#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code></pre></div>
 <p>Groupe traité v groupe de contrôle.</p>
 <p>Pour connaître l’effet du traitement, groupe ‘traité’ diffère du groupe de contrôle seulement du traitement.</p>
 <p>4 méthodes autour de cette idée:</p>

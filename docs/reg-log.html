@@ -135,21 +135,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
 <li class="chapter" data-level="" data-path="stat-desc.html"><a href="stat-desc.html"><i class="fa fa-check"></i>Statistiques descriptives</a></li>
 <li class="chapter" data-level="" data-path="nettoyage.html"><a href="nettoyage.html"><i class="fa fa-check"></i>Nettoyage des données</a></li>
-<li class="chapter" data-level="1" data-path="reg-lin.html"><a href="reg-lin.html"><i class="fa fa-check"></i><b>1</b> Régressions linéaires (cours de JD)</a></li>
+<li class="chapter" data-level="1" data-path="reg-lin.html"><a href="reg-lin.html"><i class="fa fa-check"></i><b>1</b> Régressions linéaires</a></li>
 <li class="chapter" data-level="2" data-path="reg-log.html"><a href="reg-log.html"><i class="fa fa-check"></i><b>2</b> Régressions logistiques</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="reg-log.html"><a href="reg-log.html#régression-logistique-dichotomique"><i class="fa fa-check"></i><b>2.1</b> Régression logistique dichotomique</a></li>
 <li class="chapter" data-level="2.2" data-path="reg-log.html"><a href="reg-log.html#régression-logistique-polytomique"><i class="fa fa-check"></i><b>2.2</b> Régression logistique polytomique</a></li>
 <li class="chapter" data-level="2.3" data-path="reg-log.html"><a href="reg-log.html#odds-ratio"><i class="fa fa-check"></i><b>2.3</b> Odds ratio</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="log-lin.html"><a href="log-lin.html"><i class="fa fa-check"></i><b>3</b> Régression log-linéaire (cours de MP)</a>
+<li class="chapter" data-level="3" data-path="log-lin.html"><a href="log-lin.html"><i class="fa fa-check"></i><b>3</b> Régression log-linéaire</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="log-lin.html"><a href="log-lin.html#modèle-de-lindépendance"><i class="fa fa-check"></i><b>3.1</b> Modèle de l’indépendance</a></li>
 <li class="chapter" data-level="3.2" data-path="log-lin.html"><a href="log-lin.html#modèles-avec-interaction"><i class="fa fa-check"></i><b>3.2</b> Modèles avec interaction</a></li>
 <li class="chapter" data-level="3.3" data-path="log-lin.html"><a href="log-lin.html#analyse-de-deviance"><i class="fa fa-check"></i><b>3.3</b> Analyse de deviance</a></li>
 <li class="chapter" data-level="3.4" data-path="log-lin.html"><a href="log-lin.html#odds-ratio-1"><i class="fa fa-check"></i><b>3.4</b> Odds ratio</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="ap-exp.html"><a href="ap-exp.html"><i class="fa fa-check"></i><b>4</b> Approches expérimentales (cours d’OG)</a>
+<li class="chapter" data-level="4" data-path="ap-exp.html"><a href="ap-exp.html"><i class="fa fa-check"></i><b>4</b> Approches expérimentales</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="ap-exp.html"><a href="ap-exp.html#expériences-aléatoires-contrôlées"><i class="fa fa-check"></i><b>4.1</b> Expériences aléatoires contrôlées</a></li>
 <li class="chapter" data-level="4.2" data-path="ap-exp.html"><a href="ap-exp.html#expériences-naturelles"><i class="fa fa-check"></i><b>4.2</b> Expériences naturelles</a></li>
@@ -205,7 +205,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Pour une raison qui m’échappe parce que je suis pas très fraîche et parce que je sais pas, on n’utilise pas le modèle de <strong>régression linéaire de probabilité</strong> mais plutôt le modèle de <strong>régression logistique dichotomique</strong>. Pour les coefficients, on parlera de l’effet du logit de probabilité que l’évènement <span class="math inline">\(y=1\)</span> se passe.</p>
 <p>On commence par lancer le modèle de régression logistique à effets principaux, ou modèle de l’indépendance :</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="reg-log.html#cb8-1" aria-hidden="true" tabindex="-1"></a>model_6 <span class="ot">&lt;-</span> <span class="fu">glm</span>(var_dep_dicho <span class="sc">~</span> var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3, <span class="at">data =</span> d, <span class="at">weights =</span> poids, <span class="at">family=</span>binomial)</span></code></pre></div>
-<p><em>Petite note sur le modèle de l’indépendance totale</em> : c’est le modèle dans lequel tu balances tes variables explicatives sans interaction ou association, pour vérifier si les variables sont indépendantes entre elles, càd si [toutes choses égales par ailleurs ^^] elles expliquent le phénomène à elles seules. Cependant, en socio, c’est inimaginable que la classe sociale et le sexe agissent indépendamment l’un de l’autre, c’est pour cette raison qu’on choisirait d’intéragir ces variables entre elles.</p>
+<p><em>Petite note sur le modèle de l’indépendance totale</em> : c’est le modèle dans lequel tu balances tes variables explicatives sans interaction ou association, pour vérifier si les variables sont indépendantes entre elles, càd si ✨ <em>toutes choses égales par ailleurs</em> ✨ elles expliquent le phénomène à elles seules. Cependant, en socio, c’est inimaginable que la classe sociale et le sexe agissent indépendamment l’un de l’autre, c’est pour cette raison qu’on choisirait d’intéragir ces variables entre elles.</p>
 <p>Pour vérifier si les variables sont indépendantes, tu regardes la <em>residual deviance</em> : si c’est un nb énorme, direction interaction-ville.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="reg-log.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On met le modèle précédent à jour, en inclant des interactions.</span></span>
 <span id="cb9-2"><a href="reg-log.html#cb9-2" aria-hidden="true" tabindex="-1"></a></span>

@@ -1,5 +1,5 @@
 
-# Régression log-linéaire (cours de MP) {#log-lin}
+# Régression log-linéaire {#log-lin}
 
 ------------------------------------------------------------------------
 

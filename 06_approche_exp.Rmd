@@ -1,4 +1,4 @@
-# Approches expérimentales (cours d'OG) {#ap-exp}
+# Approches expérimentales {#ap-exp}
 
 ```{r message=FALSE}
 library(lfe)
