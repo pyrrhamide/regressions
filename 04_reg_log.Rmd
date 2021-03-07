@@ -15,10 +15,10 @@ model_6 <- glm(var_dep_dicho ~ var_indep1 + var_indep2 + var_indep3, data = d, w
 
 *Petite note sur le modèle de l'indépendance totale* : c'est le modèle dans lequel tu balances tes variables explicatives sans interaction ou association, pour vérifier si les variables sont indépendantes entre elles, càd si `r emo::ji("sparkles")` *toutes choses égales par ailleurs* `r emo::ji("sparkles")` elles expliquent le phénomène à elles seules. Cependant, en socio, c'est inimaginable que la classe sociale et le sexe agissent indépendamment l'un de l'autre, c'est pour cette raison qu'on choisirait d'intéragir ces variables entre elles.
 
-Pour vérifier si les variables sont indépendantes, tu regardes la *residual deviance* : si c'est un nb énorme, direction interaction-ville.
+Pour vérifier si les variables sont indépendantes, tu regardes la *residual deviance* : si c'est un nb énorme[^4], direction interaction-ville.
 
 ```{r eval=F}
-# On met le modèle précédent à jour, en incluant des interactions.
+# On met le modèle précédent à jour, en ajoutant des interactions.
 
 # pour une unique interaction  
 model_7 <- update(model_6, . ~ . + var_indep1*var_indep2)
@@ -29,7 +29,7 @@ model_8 <- glm(var_dep_dicho ~ (var_indep1 + var_indep2 + var_indep3)^2, data = 
 # pour interagir var_indep3 avec var_indep1 et var_indep2 [plus rapide que d'écrire individuellement chaque interaction]
 model_9 <- glm(var_dep_dicho ~ (var_indep1 + var_indep2)*var_indep3, data = d, weights = poids, family=binomial) 
 
-# le modèle saturé (interaction d'ordre 3 - toutes les interactions inférieures seront directement inclues)
+# le modèle saturé (interaction d'ordre 3 - toutes les interactions inférieures seront automatiquement là)
 model_10 <- glm(var_dep_dicho ~ var_indep1*var_indep2*var_indep3,d,binomial)
 ```
 
@@ -89,3 +89,5 @@ La formule pour calculer l'OR est la suivante:
 $$ OR = \frac{m_{1,1} \times m_{2,2}}{m_{2,1} \times m_{1,2}} $$
 
 Là j'ai calculé l'odds ratio/la chance que je sois à l'heure sachant qu'il y a une feuille sur les rails.
+
+[^4]:plus sérieusement, si la valeur dépasse largement le seuil critique de la distribution du khi-deux (selon les degrés de libertés of course), on rejette l'hypothèse de l'indépendance statistique entre les variables. Vu qu'il reste quand même un pâté de déviance à expliquer, on introduit des interactions dans le modèle de l'indépendance totale.

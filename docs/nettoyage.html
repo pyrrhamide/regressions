@@ -199,7 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="nettoyage" class="section level1 unnumbered">
 <h1>Nettoyage des données</h1>
-<p>On nettoie les données en prévision des régressions futures. On dichotomise notamment les modalités des variables explicatives pour les régressions logistiques (<em>codage disjonctif complet</em> - on nous recommandait ça, mais on a établi que R arrivait à dichotomiser les modalités des variables comme un grand, tant qu’on les mets en facteur).</p>
+<p>On nettoie les données en prévision des régressions futures. On dichotomise notamment les modalités des variables explicatives pour les régressions logistiques (<em>codage disjonctif complet</em> - on nous recommandait ça, mais on a établi que R arrivait à dichotomiser les modalités des variables comme un grand, tant que les variables sont du type facteur).</p>
 <p>Par exemple :</p>
 <p>On a une variable couleur qui prend comme <span class="math inline">\(n\)</span> modalités 1 = bleu ; 2 = blanc ; 3 = rouge. On va la transformer en <span class="math inline">\(n-1\)</span> variables (dans ce cas, 2) binaires, une indiquant si c’est bleu (0 = non ; 1 = oui), une indiquant si c’est blanc (<em>idem</em>). Il n’y a pas besoin de créer une troisième variable dichotomique car, par défaut, une observation qui est à bleu = 0 et blanc = 0 serait à rouge = 1:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="nettoyage.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># méthode du prof</span></span>

@@ -1,7 +1,7 @@
 
 # Nettoyage des données {- #nettoyage}
 
-On nettoie les données en prévision des régressions futures. On dichotomise notamment les modalités des variables explicatives pour les régressions logistiques (*codage disjonctif complet* - on nous recommandait ça, mais on a établi que R arrivait à dichotomiser les modalités des variables comme un grand, tant qu'on les mets en facteur).
+On nettoie les données en prévision des régressions futures. On dichotomise notamment les modalités des variables explicatives pour les régressions logistiques (*codage disjonctif complet* - on nous recommandait ça, mais on a établi que R arrivait à dichotomiser les modalités des variables comme un grand, tant que les variables sont du type facteur).
 
 Par exemple :
 
