@@ -19,9 +19,9 @@ Pour connaître l'effet du traitement, groupe 'traité' diffère du groupe de co
 3. Différences de différences
 4. Régression par discontinuité
 
-Je mets immédiatement les lignes de codes complètes ici. Il est fortement recommandé d'utiliser la fonction `felm()` du package `lfe` pour toutes les techniques de ce cours, mais il est aussi possible d'utiliser `lm()`, `plm()` ou `ivreg()` pour des petites vérifications.
+Je mets immédiatement les lignes de codes complètes ici. Il est fortement recommandé d'utiliser la fonction `felm()` du package `lfe` pour toutes les techniques de ce cours, mais il est aussi possible d'utiliser `lm()`, `plm()` ou `ivreg()` pour de petites vérifications.
 
-La fonction `felm()` fait tout: les effets fixes, les effets aléatoires, les variables instrumentales, la clusterisation des erreurs-types...it's the GOAT.
+La fonction `felm()` fait tout: les effets fixes, les effets aléatoires, les variables instrumentales, la clusterisation des erreurs-types...it's the GOAT `r emo::ji("goat")`.
 ```{r eval=F}
 ## La syntaxe des commandes principales ##
 felm(y ~ x1 + x2 | f1 + f2 | x3 + x4 | clu1 + clu2, data, weights, ...)

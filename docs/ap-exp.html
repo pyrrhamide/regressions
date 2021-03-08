@@ -203,11 +203,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="ap-exp" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Approches expérimentales</h1>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="ap-exp.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lfe)</span>
-<span id="cb22-2"><a href="ap-exp.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
-<span id="cb22-3"><a href="ap-exp.html#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb22-4"><a href="ap-exp.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
-<span id="cb22-5"><a href="ap-exp.html#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="ap-exp.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lfe)</span>
+<span id="cb3-2"><a href="ap-exp.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb3-3"><a href="ap-exp.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb3-4"><a href="ap-exp.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
+<span id="cb3-5"><a href="ap-exp.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code></pre></div>
 <p>Groupe traité v groupe de contrôle.</p>
 <p>Pour connaître l’effet du traitement, groupe ‘traité’ diffère du groupe de contrôle seulement du traitement.</p>
 <p>4 méthodes autour de cette idée:</p>
@@ -217,24 +217,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Différences de différences</li>
 <li>Régression par discontinuité</li>
 </ol>
-<p>Je mets immédiatement les lignes de codes complètes ici. Il est fortement recommandé d’utiliser la fonction <code>felm()</code> du package <code>lfe</code> pour toutes les techniques de ce cours, mais il est aussi possible d’utiliser <code>lm()</code>, <code>plm()</code> ou <code>ivreg()</code> pour des petites vérifications.</p>
-<p>La fonction <code>felm()</code> fait tout: les effets fixes, les effets aléatoires, les variables instrumentales, la clusterisation des erreurs-types…it’s the GOAT.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="ap-exp.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## La syntaxe des commandes principales ##</span></span>
-<span id="cb23-2"><a href="ap-exp.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> f1 <span class="sc">+</span> f2 <span class="sc">|</span> x3 <span class="sc">+</span> x4 <span class="sc">|</span> clu1 <span class="sc">+</span> clu2, data, weights, ...)</span>
-<span id="cb23-3"><a href="ap-exp.html#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># soit</span></span>
-<span id="cb23-4"><a href="ap-exp.html#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(var_dep <span class="sc">~</span> vars_indep <span class="sc">|</span> vars_effet_fixe <span class="sc">|</span> vars_instrumentales <span class="sc">|</span> vars_cluster_se, data, weights, ...)</span>
-<span id="cb23-5"><a href="ap-exp.html#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># si on veut seulement clusteriser les erreurs-types, on remplace</span></span>
-<span id="cb23-6"><a href="ap-exp.html#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># vars_effet_fixe et/ou vars_instrumentales par 0 </span></span>
-<span id="cb23-7"><a href="ap-exp.html#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1<span class="sc">+</span>x2 <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span><span class="dv">0</span><span class="sc">|</span>clu1<span class="sc">+</span>clu2, data, weights, ...)</span>
-<span id="cb23-8"><a href="ap-exp.html#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-9"><a href="ap-exp.html#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour les variables instrumentales - plus détaillé plus tard</span></span>
-<span id="cb23-10"><a href="ap-exp.html#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ivreg</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
-<span id="cb23-11"><a href="ap-exp.html#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># soit</span></span>
-<span id="cb23-12"><a href="ap-exp.html#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ivreg</span>(var_dep <span class="sc">~</span> var_endo <span class="sc">+</span> vars_indep <span class="sc">|</span> vars_exo_inst, data, weights, ...)</span>
-<span id="cb23-13"><a href="ap-exp.html#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-14"><a href="ap-exp.html#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour les données de panel/effets fixes et tout ça</span></span>
-<span id="cb23-15"><a href="ap-exp.html#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;var_indiv&quot;</span>,<span class="st">&quot;var_temps&quot;</span>), data, <span class="at">model =</span> <span class="st">&quot;pooling&quot;</span>)</span>
-<span id="cb23-16"><a href="ap-exp.html#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># voir la documentation pour les autres &quot;model&quot; et également les &quot;effect&quot;.</span></span></code></pre></div>
+<p>Je mets immédiatement les lignes de codes complètes ici. Il est fortement recommandé d’utiliser la fonction <code>felm()</code> du package <code>lfe</code> pour toutes les techniques de ce cours, mais il est aussi possible d’utiliser <code>lm()</code>, <code>plm()</code> ou <code>ivreg()</code> pour de petites vérifications.</p>
+<p>La fonction <code>felm()</code> fait tout: les effets fixes, les effets aléatoires, les variables instrumentales, la clusterisation des erreurs-types…it’s the GOAT 🐐.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="ap-exp.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## La syntaxe des commandes principales ##</span></span>
+<span id="cb4-2"><a href="ap-exp.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> f1 <span class="sc">+</span> f2 <span class="sc">|</span> x3 <span class="sc">+</span> x4 <span class="sc">|</span> clu1 <span class="sc">+</span> clu2, data, weights, ...)</span>
+<span id="cb4-3"><a href="ap-exp.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># soit</span></span>
+<span id="cb4-4"><a href="ap-exp.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(var_dep <span class="sc">~</span> vars_indep <span class="sc">|</span> vars_effet_fixe <span class="sc">|</span> vars_instrumentales <span class="sc">|</span> vars_cluster_se, data, weights, ...)</span>
+<span id="cb4-5"><a href="ap-exp.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># si on veut seulement clusteriser les erreurs-types, on remplace</span></span>
+<span id="cb4-6"><a href="ap-exp.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># vars_effet_fixe et/ou vars_instrumentales par 0 </span></span>
+<span id="cb4-7"><a href="ap-exp.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1<span class="sc">+</span>x2 <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span><span class="dv">0</span><span class="sc">|</span>clu1<span class="sc">+</span>clu2, data, weights, ...)</span>
+<span id="cb4-8"><a href="ap-exp.html#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="ap-exp.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour les variables instrumentales - plus détaillé plus tard</span></span>
+<span id="cb4-10"><a href="ap-exp.html#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ivreg</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
+<span id="cb4-11"><a href="ap-exp.html#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># soit</span></span>
+<span id="cb4-12"><a href="ap-exp.html#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ivreg</span>(var_dep <span class="sc">~</span> var_endo <span class="sc">+</span> vars_indep <span class="sc">|</span> vars_exo_inst, data, weights, ...)</span>
+<span id="cb4-13"><a href="ap-exp.html#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="ap-exp.html#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour les données de panel/effets fixes et tout ça</span></span>
+<span id="cb4-15"><a href="ap-exp.html#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;var_indiv&quot;</span>,<span class="st">&quot;var_temps&quot;</span>), data, <span class="at">model =</span> <span class="st">&quot;pooling&quot;</span>)</span>
+<span id="cb4-16"><a href="ap-exp.html#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># voir la documentation pour les autres &quot;model&quot; et également les &quot;effect&quot;.</span></span></code></pre></div>
 <div id="expériences-aléatoires-contrôlées" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Expériences aléatoires contrôlées</h2>
 <p>2 exemples d’expériences aléatoires contrôlées:</p>
@@ -350,30 +350,30 @@ Le modèle linéaire simple (premières estimations)<br />
 - attention de bien centrer la variable <span class="math inline">\(x\)</span> autour du seuil ! <span class="math inline">\(x&#39; = x-seuil\)</span>,<br />
 - <span class="math inline">\(y_i = \beta_0 + \beta_1 x&#39; + \beta_2 x^{&#39;2} + \beta_3(x&#39;&gt;0) + \beta_4x&#39; \times (x&#39;&gt;0) + \beta_5 x^{&#39;2} \times (x&#39;&gt;0) + \epsilon_i\)</span>,<br />
 - l’effet causal est mesuré par <span class="math inline">\(\beta_3\)</span>.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="ap-exp.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regression discontinuity design - je recommende de regarder directement le code du prof et de lancer les commandes.</span></span>
-<span id="cb24-2"><a href="ap-exp.html#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="ap-exp.html#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># recentrage de la variable autour du seuil</span></span>
-<span id="cb24-4"><a href="ap-exp.html#cb24-4" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>var_cont_cent <span class="ot">&lt;-</span> d<span class="sc">$</span>var_continue <span class="sc">-</span> valeur_seuil_au_choix <span class="co"># commande parmi plein d&#39;autres, là c&#39;est toi qui prend l&#39;initiative</span></span>
-<span id="cb24-5"><a href="ap-exp.html#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="ap-exp.html#cb24-6" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix),<span class="at">data=</span>d)</span>
-<span id="cb24-7"><a href="ap-exp.html#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># suppose que pente est la même à gauche et à droite du seuil</span></span>
-<span id="cb24-8"><a href="ap-exp.html#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-9"><a href="ap-exp.html#cb24-9" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_cont_cent<span class="sc">+</span><span class="fu">I</span>(var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>),<span class="at">data=</span>d)</span>
-<span id="cb24-10"><a href="ap-exp.html#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="ap-exp.html#cb24-11" aria-hidden="true" tabindex="-1"></a>pr2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">+</span></span>
-<span id="cb24-12"><a href="ap-exp.html#cb24-12" aria-hidden="true" tabindex="-1"></a>          <span class="fu">I</span>((var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">*</span>var_continue),<span class="at">data=</span>d)</span>
-<span id="cb24-13"><a href="ap-exp.html#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-14"><a href="ap-exp.html#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co"># pour cacher les points extrêmes de la base (pour garder la linéarité)</span></span>
-<span id="cb24-15"><a href="ap-exp.html#cb24-15" aria-hidden="true" tabindex="-1"></a>pr2b <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">+</span></span>
-<span id="cb24-16"><a href="ap-exp.html#cb24-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">*</span>var_continue),</span>
-<span id="cb24-17"><a href="ap-exp.html#cb24-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">data=</span>d[d<span class="sc">$</span>var_continue<span class="sc">&gt;=</span>valeur1 <span class="sc">&amp;</span> d<span class="sc">$</span>var_continue<span class="sc">&lt;=</span>valeur2,])</span>
-<span id="cb24-18"><a href="ap-exp.html#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co"># pr2 et pr2b supposent que l&#39;effet est linéaire des deux cotés du seuil</span></span>
-<span id="cb24-19"><a href="ap-exp.html#cb24-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-20"><a href="ap-exp.html#cb24-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-21"><a href="ap-exp.html#cb24-21" aria-hidden="true" tabindex="-1"></a>pr3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_cont_cent<span class="sc">+</span></span>
-<span id="cb24-22"><a href="ap-exp.html#cb24-22" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>(var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">+</span></span>
-<span id="cb24-23"><a href="ap-exp.html#cb24-23" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">*</span>var_cont_cent)<span class="sc">+</span></span>
-<span id="cb24-24"><a href="ap-exp.html#cb24-24" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">*</span>var_cont_cent2),<span class="at">data=</span>d)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="ap-exp.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regression discontinuity design - je recommende de regarder directement le code du prof et de lancer les commandes.</span></span>
+<span id="cb5-2"><a href="ap-exp.html#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="ap-exp.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># recentrage de la variable autour du seuil</span></span>
+<span id="cb5-4"><a href="ap-exp.html#cb5-4" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>var_cont_cent <span class="ot">&lt;-</span> d<span class="sc">$</span>var_continue <span class="sc">-</span> valeur_seuil_au_choix <span class="co"># commande parmi plein d&#39;autres, là c&#39;est toi qui prend l&#39;initiative</span></span>
+<span id="cb5-5"><a href="ap-exp.html#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="ap-exp.html#cb5-6" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix),<span class="at">data=</span>d)</span>
+<span id="cb5-7"><a href="ap-exp.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># suppose que pente est la même à gauche et à droite du seuil</span></span>
+<span id="cb5-8"><a href="ap-exp.html#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="ap-exp.html#cb5-9" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_cont_cent<span class="sc">+</span><span class="fu">I</span>(var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>),<span class="at">data=</span>d)</span>
+<span id="cb5-10"><a href="ap-exp.html#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="ap-exp.html#cb5-11" aria-hidden="true" tabindex="-1"></a>pr2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">+</span></span>
+<span id="cb5-12"><a href="ap-exp.html#cb5-12" aria-hidden="true" tabindex="-1"></a>          <span class="fu">I</span>((var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">*</span>var_continue),<span class="at">data=</span>d)</span>
+<span id="cb5-13"><a href="ap-exp.html#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="ap-exp.html#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># pour cacher les points extrêmes de la base (pour garder la linéarité)</span></span>
+<span id="cb5-15"><a href="ap-exp.html#cb5-15" aria-hidden="true" tabindex="-1"></a>pr2b <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">+</span></span>
+<span id="cb5-16"><a href="ap-exp.html#cb5-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">*</span>var_continue),</span>
+<span id="cb5-17"><a href="ap-exp.html#cb5-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">data=</span>d[d<span class="sc">$</span>var_continue<span class="sc">&gt;=</span>valeur1 <span class="sc">&amp;</span> d<span class="sc">$</span>var_continue<span class="sc">&lt;=</span>valeur2,])</span>
+<span id="cb5-18"><a href="ap-exp.html#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># pr2 et pr2b supposent que l&#39;effet est linéaire des deux cotés du seuil</span></span>
+<span id="cb5-19"><a href="ap-exp.html#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="ap-exp.html#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="ap-exp.html#cb5-21" aria-hidden="true" tabindex="-1"></a>pr3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_cont_cent<span class="sc">+</span></span>
+<span id="cb5-22"><a href="ap-exp.html#cb5-22" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>(var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">+</span></span>
+<span id="cb5-23"><a href="ap-exp.html#cb5-23" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">*</span>var_cont_cent)<span class="sc">+</span></span>
+<span id="cb5-24"><a href="ap-exp.html#cb5-24" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">*</span>var_cont_cent2),<span class="at">data=</span>d)</span></code></pre></div>
 </div>
 <div id="variables-instrumentales" class="section level2" number="4.5">
 <h2><span class="header-section-number">4.5</span> Variables instrumentales</h2>
@@ -391,7 +391,7 @@ Le modèle linéaire simple (premières estimations)<br />
 <li><span class="math inline">\(cov(z_{inst},x_{endo}) \neq 0\)</span>, et</li>
 <li><span class="math inline">\(cov(z_{inst},\epsilon) = 0\)</span></li>
 </ul>
-<p>Vrai modèle<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>: <span class="math inline">\(y = a_{vrai} + b_{vrai} x_{endo} + c_{vrai} x_2 + \epsilon\)</span> avec <span class="math inline">\(cov(x_{endo},\epsilon) \neq 0\)</span>.</p>
+<p>Vrai modèle<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>: <span class="math inline">\(y = a_{vrai} + b_{vrai} x_{endo} + c_{vrai} x_2 + \epsilon\)</span> avec <span class="math inline">\(cov(x_{endo},\epsilon) \neq 0\)</span>.</p>
 <p><strong>Première étape</strong>: on régresse la variable endogène à la fois sur l’instrument et sur les autres variables explicatives. NB: on met toutes les variables explicatives même non pertinentes en première étape.
 <span class="math display">\[x_{endo} = a_0 + a_1 z_{inst} + a_2 x_2 + \epsilon_{prem}\]</span></p>
 <p>On récupère de cette première régression <span class="math inline">\(x&#39;_{endo}\)</span>, la prédiction de la variable endogène <span class="math inline">\(x_{endo}\)</span>:
@@ -399,26 +399,26 @@ Le modèle linéaire simple (premières estimations)<br />
 <p><strong>Deuxième étape</strong>: on introduit cette prédiction dans la régression à la place <span class="math inline">\(x_{endo}\)</span>.
 <span class="math display">\[y = a_{est} + b_{est} x&#39;_{endo} + c_{est} x_2 + \epsilon_{deux}\]</span></p>
 <p>Comme <span class="math inline">\(z_{inst}\)</span> et <span class="math inline">\(x_2\)</span> ne sont pas corrélés avec le résidu <span class="math inline">\(\epsilon\)</span>, alors <span class="math inline">\(x&#39;_{endo}\)</span> n’est plus corrélé avec <span class="math inline">\(\epsilon\)</span>, l’estimateur des variables instrumentales permet d’estimer sans biais <span class="math inline">\(b_{vrai}\)</span> (et le reste).</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="ap-exp.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 1ère façon de procéder ##</span></span>
-<span id="cb25-2"><a href="ap-exp.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># MCO &quot;naïve&quot;</span></span>
-<span id="cb25-3"><a href="ap-exp.html#cb25-3" aria-hidden="true" tabindex="-1"></a>mco <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2, data, weights, ...)</span>
-<span id="cb25-4"><a href="ap-exp.html#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="ap-exp.html#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Forme réduite - impact des instruments sur variable dépendante (facultatif)</span></span>
-<span id="cb25-6"><a href="ap-exp.html#cb25-6" aria-hidden="true" tabindex="-1"></a>fr <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
-<span id="cb25-7"><a href="ap-exp.html#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-8"><a href="ap-exp.html#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Première étape: regression endogene sur autres variables indépendantes et instruments</span></span>
-<span id="cb25-9"><a href="ap-exp.html#cb25-9" aria-hidden="true" tabindex="-1"></a>pe <span class="ot">&lt;-</span> <span class="fu">lm</span>(x_endo <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
-<span id="cb25-10"><a href="ap-exp.html#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-11"><a href="ap-exp.html#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Deuxième étape: on introduit la prediction dans la régression &quot;naïve&quot;</span></span>
-<span id="cb25-12"><a href="ap-exp.html#cb25-12" aria-hidden="true" tabindex="-1"></a>mco2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> pe<span class="sc">$</span>fitted.values <span class="sc">+</span> x1 <span class="sc">+</span> x2, data, weights, ...)</span>
-<span id="cb25-13"><a href="ap-exp.html#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-14"><a href="ap-exp.html#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Deuxième façon de procéder ##</span></span>
-<span id="cb25-15"><a href="ap-exp.html#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Régression variable instrumentale directe, sans première étape</span></span>
-<span id="cb25-16"><a href="ap-exp.html#cb25-16" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ivreg</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
-<span id="cb25-17"><a href="ap-exp.html#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-18"><a href="ap-exp.html#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Troisième façon de procéder ##</span></span>
-<span id="cb25-19"><a href="ap-exp.html#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Régression avec instruments, sans effet fixe et sans clusterisation</span></span>
-<span id="cb25-20"><a href="ap-exp.html#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span> z1<span class="sc">+</span> z2 <span class="sc">|</span><span class="dv">0</span>, data, weights, ...)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="ap-exp.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 1ère façon de procéder ##</span></span>
+<span id="cb6-2"><a href="ap-exp.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># MCO &quot;naïve&quot;</span></span>
+<span id="cb6-3"><a href="ap-exp.html#cb6-3" aria-hidden="true" tabindex="-1"></a>mco <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2, data, weights, ...)</span>
+<span id="cb6-4"><a href="ap-exp.html#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="ap-exp.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Forme réduite - impact des instruments sur variable dépendante (facultatif)</span></span>
+<span id="cb6-6"><a href="ap-exp.html#cb6-6" aria-hidden="true" tabindex="-1"></a>fr <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
+<span id="cb6-7"><a href="ap-exp.html#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="ap-exp.html#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Première étape: regression endogene sur autres variables indépendantes et instruments</span></span>
+<span id="cb6-9"><a href="ap-exp.html#cb6-9" aria-hidden="true" tabindex="-1"></a>pe <span class="ot">&lt;-</span> <span class="fu">lm</span>(x_endo <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
+<span id="cb6-10"><a href="ap-exp.html#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="ap-exp.html#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Deuxième étape: on introduit la prediction dans la régression &quot;naïve&quot;</span></span>
+<span id="cb6-12"><a href="ap-exp.html#cb6-12" aria-hidden="true" tabindex="-1"></a>mco2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> pe<span class="sc">$</span>fitted.values <span class="sc">+</span> x1 <span class="sc">+</span> x2, data, weights, ...)</span>
+<span id="cb6-13"><a href="ap-exp.html#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="ap-exp.html#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Deuxième façon de procéder ##</span></span>
+<span id="cb6-15"><a href="ap-exp.html#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Régression variable instrumentale directe, sans première étape</span></span>
+<span id="cb6-16"><a href="ap-exp.html#cb6-16" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ivreg</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
+<span id="cb6-17"><a href="ap-exp.html#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="ap-exp.html#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Troisième façon de procéder ##</span></span>
+<span id="cb6-19"><a href="ap-exp.html#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Régression avec instruments, sans effet fixe et sans clusterisation</span></span>
+<span id="cb6-20"><a href="ap-exp.html#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span> z1<span class="sc">+</span> z2 <span class="sc">|</span><span class="dv">0</span>, data, weights, ...)</span></code></pre></div>
 </div>
 <div id="econométrie-des-panels" class="section level2" number="4.6">
 <h2><span class="header-section-number">4.6</span> Econométrie des panels</h2>
@@ -430,8 +430,8 @@ Le modèle linéaire simple (premières estimations)<br />
 </div>
 <div class="footnotes">
 <hr />
-<ol start="5">
-<li id="fn5"><p>différent du modèle <em>théorique</em>.<a href="ap-exp.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<ol start="1">
+<li id="fn1"><p>différent du modèle <em>théorique</em>.<a href="ap-exp.html#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
