@@ -90,4 +90,4 @@ $$ OR = \frac{m_{1,1} \times m_{2,2}}{m_{2,1} \times m_{1,2}} $$
 
 Là j'ai calculé l'odds ratio/la chance que je sois à l'heure sachant qu'il y a une feuille sur les rails.
 
-[^4]:plus sérieusement, si la valeur dépasse largement le seuil critique de la distribution du khi-deux (selon les degrés de libertés of course), on rejette l'hypothèse de l'indépendance statistique entre les variables. Vu qu'il reste quand même un pâté de déviance à expliquer, on introduit des interactions dans le modèle de l'indépendance totale.
+[^4]:Plus sérieusement, si la valeur dépasse largement le seuil critique de la distribution du khi-deux (selon les degrés de libertés of course), on rejette l'hypothèse de l'indépendance statistique entre les variables. Vu qu'il reste quand même un pâté de déviance à expliquer, on introduit des interactions dans le modèle de l'indépendance totale.

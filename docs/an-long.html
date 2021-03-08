@@ -135,7 +135,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
 <li class="chapter" data-level="" data-path="stat-desc.html"><a href="stat-desc.html"><i class="fa fa-check"></i>Statistiques descriptives</a></li>
 <li class="chapter" data-level="" data-path="nettoyage.html"><a href="nettoyage.html"><i class="fa fa-check"></i>Nettoyage des données</a></li>
-<li class="chapter" data-level="1" data-path="reg-lin.html"><a href="reg-lin.html"><i class="fa fa-check"></i><b>1</b> Régressions linéaires</a></li>
+<li class="chapter" data-level="1" data-path="reg-lin.html"><a href="reg-lin.html"><i class="fa fa-check"></i><b>1</b> Régressions linéaires</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="reg-lin.html"><a href="reg-lin.html#moindres-carrés-ordinaires---hypothèses"><i class="fa fa-check"></i><b>1.1</b> Moindres Carrés Ordinaires - hypothèses</a></li>
+<li class="chapter" data-level="1.2" data-path="reg-lin.html"><a href="reg-lin.html#régressions-linéaires-simple-et-multiple"><i class="fa fa-check"></i><b>1.2</b> Régressions linéaires simple et multiple</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="reg-log.html"><a href="reg-log.html"><i class="fa fa-check"></i><b>2</b> Régressions logistiques</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="reg-log.html"><a href="reg-log.html#régression-logistique-dichotomique"><i class="fa fa-check"></i><b>2.1</b> Régression logistique dichotomique</a></li>
@@ -199,7 +203,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="an-long" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Analyses longitudinales</h1>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="an-long.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="an-long.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span></code></pre></div>
 <div id="pseudo-panels" class="section level2" number="5.1">
 <h2><span class="header-section-number">5.1</span> Pseudo-panels</h2>
 </div>
@@ -207,19 +211,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">5.2</span> Modèles linéaires</h2>
 <p>Modèle de base:
 <span class="math display">\[y_{i,t} = \alpha_i + \beta_i k_{i,t} + \gamma_i n_{i,t} + \epsilon_{i,t}\]</span></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="an-long.html#cb25-1" aria-hidden="true" tabindex="-1"></a>lineaire <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_indep, <span class="at">data=</span>d)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="an-long.html#cb27-1" aria-hidden="true" tabindex="-1"></a>lineaire <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_indep, <span class="at">data=</span>d)</span></code></pre></div>
 <p>Modèle pooled:
 <span class="math display">\[y_{i,t} = \alpha + \beta k_{i,t} + \gamma n_{i,t} + \epsilon_{i,t}\]</span></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="an-long.html#cb26-1" aria-hidden="true" tabindex="-1"></a>pooled <span class="ot">&lt;-</span> <span class="fu">plm</span>(var_dep <span class="sc">~</span> var_indep, </span>
-<span id="cb26-2"><a href="an-long.html#cb26-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">data=</span>d, </span>
-<span id="cb26-3"><a href="an-long.html#cb26-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;var_individu&quot;</span>,<span class="st">&quot;var_temporelle&quot;</span>),</span>
-<span id="cb26-4"><a href="an-long.html#cb26-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">model=</span><span class="st">&quot;pooling&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="an-long.html#cb28-1" aria-hidden="true" tabindex="-1"></a>pooled <span class="ot">&lt;-</span> <span class="fu">plm</span>(var_dep <span class="sc">~</span> var_indep, </span>
+<span id="cb28-2"><a href="an-long.html#cb28-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">data=</span>d, </span>
+<span id="cb28-3"><a href="an-long.html#cb28-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;var_individu&quot;</span>,<span class="st">&quot;var_temporelle&quot;</span>),</span>
+<span id="cb28-4"><a href="an-long.html#cb28-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">model=</span><span class="st">&quot;pooling&quot;</span>)</span></code></pre></div>
 <p>Modèle à effet fixe:
 <span class="math display">\[y_{i,t} = \alpha_i + \beta k_{i,t} + \gamma n_{i,t} + \epsilon_{i,t}\]</span></p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="an-long.html#cb27-1" aria-hidden="true" tabindex="-1"></a>effet_fixe <span class="ot">&lt;-</span> <span class="fu">plm</span>(var_dep <span class="sc">~</span> var_indep,</span>
-<span id="cb27-2"><a href="an-long.html#cb27-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>d,</span>
-<span id="cb27-3"><a href="an-long.html#cb27-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;var_individu&quot;</span>,<span class="st">&quot;var_temporelle&quot;</span>),</span>
-<span id="cb27-4"><a href="an-long.html#cb27-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">model=</span><span class="st">&quot;within&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="an-long.html#cb29-1" aria-hidden="true" tabindex="-1"></a>effet_fixe <span class="ot">&lt;-</span> <span class="fu">plm</span>(var_dep <span class="sc">~</span> var_indep,</span>
+<span id="cb29-2"><a href="an-long.html#cb29-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>d,</span>
+<span id="cb29-3"><a href="an-long.html#cb29-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;var_individu&quot;</span>,<span class="st">&quot;var_temporelle&quot;</span>),</span>
+<span id="cb29-4"><a href="an-long.html#cb29-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">model=</span><span class="st">&quot;within&quot;</span>)</span></code></pre></div>
 </div>
 <div id="modèles-dynamiques" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> Modèles dynamiques</h2>

@@ -19,6 +19,29 @@ Pour connaître l'effet du traitement, groupe 'traité' diffère du groupe de co
 3. Différences de différences
 4. Régression par discontinuité
 
+Je mets immédiatement les lignes de codes complètes ici. Il est fortement recommandé d'utiliser la fonction `felm()` du package `lfe` pour toutes les techniques de ce cours, mais il est aussi possible d'utiliser `lm()`, `plm()` ou `ivreg()` pour des petites vérifications.
+
+La fonction `felm()` fait tout: les effets fixes, les effets aléatoires, les variables instrumentales, la clusterisation des erreurs-types...it's the GOAT.
+```{r eval=F}
+## La syntaxe des commandes principales ##
+felm(y ~ x1 + x2 | f1 + f2 | x3 + x4 | clu1 + clu2, data, weights, ...)
+# soit
+felm(var_dep ~ vars_indep | vars_effet_fixe | vars_instrumentales | vars_cluster_se, data, weights, ...)
+# si on veut seulement clusteriser les erreurs-types, on remplace
+# vars_effet_fixe et/ou vars_instrumentales par 0 
+felm(y ~ x1+x2 |0|0|clu1+clu2, data, weights, ...)
+
+# Pour les variables instrumentales - plus détaillé plus tard
+ivreg(y ~ x1 + x2 | z1 + z2, data, weights, ...)
+# soit
+ivreg(var_dep ~ var_endo + vars_indep | vars_exo_inst, data, weights, ...)
+
+# Pour les données de panel/effets fixes et tout ça
+plm(y ~ x1 + x2, index=c("var_indiv","var_temps"), data, model = "pooling")
+  # voir la documentation pour les autres "model" et également les "effect".
+```
+
+
 ## Expériences aléatoires contrôlées 
 2 exemples d'expériences aléatoires contrôlées:
 
@@ -174,9 +197,53 @@ Violation de la 6ème hypothèse des MCO ($Cov(x_i,\epsilon_i \neq 0)$ absence d
 * Variable omise ou hétérogénéité inobservée (corrélée à la variable dépendante et à une autre variable explicative): sur/sous-estimation de la valeur absolue du paramètre.
 * Simultanéité (variable explicative dépend de la variable expliquée): effet plus complexe. Pas d'intuition évidente.
 
-Solution $\Rightarrow$ variable instrumentale: trouver une variable instrumentale exogène qui impacte ma variable expliquée $y_i$ uniquement par l'intermédiaire de son effet sur la variable explicative $x_i$ suspecte d'endogénéité.
+Solution $\Rightarrow$ variable instrumentale: trouver une variable instrumentale exogène qui impacte ma variable expliquée $y_i$ uniquement par l'intermédiaire de son effet sur la variable explicative $x_i$ suspecte d'endogénéité.  
+$$ instrument \rightarrow var\_endo \rightarrow var\_dep$$
+
+Sachant que $cov(x_{endo},\epsilon) \neq 0$, on introduit une variable instrumentale ($z_{inst}$) telle que:
+
+* $cov(z_{inst},x_{endo}) \neq 0$, et
+* $cov(z_{inst},\epsilon) = 0$
+
+Vrai modèle[^5]: $y = a_{vrai} + b_{vrai} x_{endo} + c_{vrai} x_2 + \epsilon$ avec $cov(x_{endo},\epsilon) \neq 0$.
+
+**Première étape**: on régresse la variable endogène à la fois sur l'instrument et sur les autres variables explicatives. NB: on met toutes les variables explicatives même non pertinentes en première étape. 
+$$x_{endo} = a_0 + a_1 z_{inst} + a_2 x_2 + \epsilon_{prem}$$
+
+On récupère de cette première régression $x'_{endo}$, la prédiction de la variable endogène $x_{endo}$:
+$$x'_{endo} = a_0 + a_1 z_{inst} + a_2 x_2 = x_{endo} - \epsilon_{prem}$$
+
+**Deuxième étape**: on introduit cette prédiction dans la régression à la place $x_{endo}$.
+$$y = a_{est} + b_{est} x'_{endo} + c_{est} x_2 + \epsilon_{deux}$$
+
+Comme $z_{inst}$ et $x_2$ ne sont pas corrélés avec le résidu $\epsilon$, alors $x'_{endo}$ n'est plus corrélé avec $\epsilon$, l'estimateur des variables instrumentales permet d'estimer sans biais $b_{vrai}$ (et le reste).
+
+```{r eval=F}
+## 1ère façon de procéder ##
+# MCO "naïve"
+mco <- lm(y ~ x_endo + x1 + x2, data, weights, ...)
+
+# Forme réduite - impact des instruments sur variable dépendante (facultatif)
+fr <- lm(y ~ z1 + z2, data, weights, ...)
+
+# Première étape: regression endogene sur autres variables indépendantes et instruments
+pe <- lm(x_endo ~ x1 + x2 + z1 + z2, data, weights, ...)
+
+# Deuxième étape: on introduit la prediction dans la régression "naïve"
+mco2 <- lm(y ~ pe$fitted.values + x1 + x2, data, weights, ...)
+
+## Deuxième façon de procéder ##
+# Régression variable instrumentale directe, sans première étape
+z <- ivreg(y ~ x_endo + x1 + x2 | z1 + z2, data, weights, ...)
+
+## Troisième façon de procéder ##
+# Régression avec instruments, sans effet fixe et sans clusterisation
+felm(y ~ x_endo + x1 + x2 |0| z1+ z2 |0, data, weights, ...)
+```
 
 ## Econométrie des panels
 L'économétrie des panels rend visible et permet de traiter deux problèmes classiques :  
 1. L'autocorrélation des résidus,  
 2. L'hétérogénéité inobservée.  
+
+[^5]: différent du modèle *théorique*.

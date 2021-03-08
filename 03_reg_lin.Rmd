@@ -1,6 +1,7 @@
 
 # Régressions linéaires {#reg-lin}
 
+## Moindres Carrés Ordinaires - hypothèses
 ***
 $$Y_i = \beta_0 + \beta_iX_i + \epsilon_i$$ pour $i = 1,...,n$
 
@@ -9,7 +10,7 @@ $$Y_i = \beta_0 + \beta_iX_i + \epsilon_i$$ pour $i = 1,...,n$
 * $\beta_i$ est le coefficient de la variable explicative $X_i$.
 * $\epsilon_i$ est l'erreur-type, propre à l'individu $i$.
 
-Le modèle de régression linéaire est estimé à partir de la méthode des Moindres Carrés Ordinaires (MCO). Cette méthode consiste à minimiser la somme des carrés des écarts[^1], écarts pondérés dans le cas multidimensionnel, entre chaque point du nuage de régression et son projeté, parallèlement à l'axe des ordonnées, sur la droite de régression. On estime les paramètres $\beta_i$ de telle sorte que $\epsilon_i$ soit minimale (donc on cherche à réduire la place du hasard dans notre modèle).
+Le modèle de régression linéaire est estimé à partir de la méthode des Moindres Carrés Ordinaires (MCO). Cette méthode consiste à minimiser la somme des carrés des écarts[^1], écarts pondérés dans le cas multidimensionnel, entre chaque point du nuage de régression et son projeté, parallèlement à l'axe des ordonnées, sur la droite de régression. On estime les paramètres $\beta_i$ de telle sorte que $\Sigma_i\epsilon_i$ soit minimale (donc on cherche à réduire la place du hasard dans notre modèle).
 
 **Important pour les cours suivants** -- les MCO suivent 6 hypothèses:
 
@@ -24,6 +25,7 @@ La violation d'une ou plusieurs de ces hypothèses implique un changement de var
 
 ***
 
+## Régressions linéaires simple et multiple
 La **régression linéaire** prend comme variable dépendante/à expliquer ($var\_dep$) une variable quantitative continue, telle que la température, le PIB, mon envie de dormir progressive pendant les cours d'EQ...les variables explicatives/indépendantes peuvent être quanti ou quali.
 
 Tu lis les coefficients de la régression de la manière suivante : "toutes choses égales par ailleurs, pour une unité de $x_i$ ($var\_indep$) en plus, $y_i$ ($var\_dep$) augmente/diminue de $\beta_i$ (le coefficient)" ou bien "toutes choses égales par ailleurs, pour un changement de catégorie de $x$, $y$ augmente/diminue de {coefficient}".
@@ -71,6 +73,6 @@ Tu lis le coefficient de cette manière : "toutes choses égales par ailleurs, p
 model_5 <- lm(var_dep_dicho ~ var_indep1 + var_indep2 + var_indep3, data = d, weights = poids)
 ```
 
-[^1]:écart par rapport à la ligne de régression. On a un nuage de point, une droite qui traverse ces points. La plupart des points ne seront pas sur la droite: la distance entre la droite et le point est le résidu.
+[^1]:Ecart par rapport à la ligne de régression. On a un nuage de point, une droite qui traverse ces points. La plupart des points ne seront pas sur la droite: la distance entre la droite et le point est le résidu.
 [^2]:Du coup on viole la première hypothèse des MCO sur la linéarité des paramètres.
-[^3]:je suis pas sûre de la lecture exacte du coefficient, mais en gros ça fonctionne comme ça.
+[^3]:Je suis pas sûre de la lecture exacte du coefficient, mais en gros ça fonctionne comme ça.

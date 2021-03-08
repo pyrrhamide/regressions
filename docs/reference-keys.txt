@@ -1,4 +1,6 @@
 reg-lin
+moindres-carrés-ordinaires---hypothèses
+régressions-linéaires-simple-et-multiple
 reg-log
 régression-logistique-dichotomique
 régression-logistique-polytomique
