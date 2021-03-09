@@ -15,12 +15,14 @@ github-repo: pyrrhamide/regressions
 
 # Présentation {-}
 
-Ce site, publié avec [bookdown](https://bookdown.org/yihui/bookdown/), a pour vocation de répertorier (presque) toutes les méthodes enseignées lors de notre master, et de t'aider (*vous* aider mais ne soyons pas si formel) à comprendre les bases. Nos cours ne sont pas très généreux en sujet-verbe-COD, j'essaie d'y remédier ici. J'ai simplifié autant que je pouvais les 4 premiers chapitres, tandis que le reste est principalement copié-collé des diapos des profs. J'allégerai ça plus tard.
+Ce site, publié avec [bookdown](https://bookdown.org/yihui/bookdown/), a pour vocation de répertorier (presque) toutes les méthodes enseignées lors de notre master, et de t'aider à comprendre les bases. Nos cours ne sont pas généreux en sujet-verbe-COD, j'essaie d'y remédier ici. J'ai simplifié autant que je pouvais les 4 premiers chapitres, tandis que le reste est principalement copié-collé des diapos des profs. J'allégerais peut-être ça plus tard.
 
-Tu trouveras en tête des chapitres 3 à 6 les packages propres à chaque cours, au lieu d'au milieu du code. J'ai également présenter les fonctions avec du vocabulaire plus descriptif que celui de la documentation officielle, puis ai diminué petit-à-petit parce que ça devenait trop répétitif.
+Tu trouveras en tête des chapitres 3 à 6 les packages propres à chaque cours, au lieu d'au milieu du code. J'ai également présenter les fonctions avec du vocabulaire plus descriptif que celui de la documentation officielle, puis ai arrêté petit-à-petit parce que ça devenait trop répétitif.
 
-J'espère ajouter éventuellement des chapitres sur l'analyse géométrique des données, sur le datamining, et peut-être faire un petit topo sur RMarkdown. En attendant, tu as tous les trucs de régressions ici.
+J'espère ajouter des chapitres sur l'analyse géométrique des données, sur le datamining, et peut-être sur RMarkdown. En attendant, tu as tous les trucs de régressions ici.
 
-J'ai fait du mieux que je pouvais pour que ce soit pas trop compliqué, je continue à améliorer tout ça ponctuellement, et je m'excuse si des trucs ne sont pas assez clairs. Il y a des choses qui sont limpides pour moi et que, par conséquent, je n'explicite pas plus que ça ici, c'est pour ça que je t'encourage fortement à contribuer à ce site en envoyant des suggestions (clique sur le bouton bloc-note en haut, ça t'emmènera sur le fichier Rmd de la page), ou même en étant un.e auteur.e officiel.le. J'ai adoré bosser dessus, mais c'est beaucoup de travail de résumer 2 ans de cours (avec des notes incomplètes) seule.
+J'ai fait le maximum pour que ça ne soit pas trop compliqué, je continue à améliorer tout ça ponctuellement, et je m'excuse si des trucs ne sont pas assez clairs. Il y a des choses qui sont limpides pour moi et que, par conséquent, je n'explicite pas plus que ça. À la base, ce site était pour moi et était donc personnalisé pour mes connaissances. 
 
-Un dernier petit mot: si tu es coincé.e, google google google.
+C'est pour ça que je t'encourage fortement à contribuer à ce site en envoyant des suggestions (clique sur le bouton bloc-note en haut, ça t'emmènera sur le fichier Rmd de la page), ou même en étant un.e auteur.e officiel.le, pour que ce soit agréable pour toi et pour toute la promo. J'ai adoré bosser dessus, mais résumer 2 ans de cours (avec des notes incomplètes) seule demande beaucoup d'efforts.
+
+Un dernier petit mot: si tu es coincé.e, google google google. Ou regarde les scripts des profs. Ou lis la documentation officielle. 

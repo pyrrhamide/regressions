@@ -3,13 +3,13 @@
 # Régressions linéaires {#reg-lin}
 
 ## Moindres Carrés Ordinaires - hypothèses
-***
+
 $$Y_i = \beta_0 + \beta_iX_i + \epsilon_i$$ pour $i = 1,...,n$
 
 * $Y_i$ est la variable dépendante, selon l'observation $i$.
 * $\beta_0$ est le point à l'origine/l'intercept.
 * $\beta_i$ est le coefficient de la variable explicative $X_i$.
-* $\epsilon_i$ est l'erreur-type, propre à l'individu $i$.
+* $\epsilon_i$ est l'erreur-type/le résidu, propre à l'individu $i$.
 
 Le modèle de régression linéaire est estimé à partir de la méthode des Moindres Carrés Ordinaires (MCO). Cette méthode consiste à minimiser la somme des carrés des écarts[^1], écarts pondérés dans le cas multidimensionnel, entre chaque point du nuage de régression et son projeté, parallèlement à l'axe des ordonnées, sur la droite de régression. On estime les paramètres $\beta_i$ de telle sorte que $\Sigma_i\epsilon_i$ soit minimale (donc on cherche à réduire la place du hasard dans notre modèle).
 
@@ -18,16 +18,15 @@ Le modèle de régression linéaire est estimé à partir de la méthode des Moi
 1. Linéarité des paramètres (relation linéaire entre $Y$ et $X$, $Y$ continue).
 2. Absence d'autocorrélation des variables explicatives (il ne faut pas qu'une variable soit le multiple d'une autre).
 3. Homoscédasticité (la variance des erreur-types est la même pour toutes les observations).
-4. Absence d'autocorrélation des résidus (les résidus/erreur-types sont indépendants les uns des autres. Sinon voudrait dire que les observations/individus sont corrélées).
+4. Absence d'autocorrélation des résidus (les résidus sont indépendants les uns des autres. Sinon voudrait dire que les observations sont corrélées entre elles).
 5. Normalité des résidus (moyenne des résidus égale à 0).
 6. Absence de corrélation entre les variables explicatives et le résidu *dans le modèle théorique*.
 
 La violation d'une ou plusieurs de ces hypothèses implique un changement de variables, ou l'utilisation d'un différent modèle de régression.
 
-***
 
 ## Régressions linéaires simple et multiple
-La **régression linéaire** prend comme variable dépendante/à expliquer ($var\_dep$) une variable quantitative continue, telle que la température, le PIB, mon envie de dormir progressive pendant les cours d'EQ...les variables explicatives/indépendantes peuvent être quanti ou quali.
+La **régression linéaire** prend comme variable dépendante/à expliquer ($var\_dep$) une variable quantitative continue, telle que la température, le PIB, mon envie de dormir progressive pendant les cours d'EQ...les variables explicatives/indépendantes peuvent être quantitatives ou qualitatives.
 
 Tu lis les coefficients de la régression de la manière suivante : "toutes choses égales par ailleurs, pour une unité de $x_i$ ($var\_indep$) en plus, $y_i$ ($var\_dep$) augmente/diminue de $\beta_i$ (le coefficient)" ou bien "toutes choses égales par ailleurs, pour un changement de catégorie de $x$, $y$ augmente/diminue de {coefficient}".
 
@@ -65,10 +64,10 @@ Par exemple, on interagit le PIB avec le taux de natalité. Tu obtiens les résu
 Pour obtenir le vrai effet du PIB et du taux de natalité sur la $var\_dep$, tu additionnes ces trois coefficients.
 
 ## Régression linéaire de probabilité  
-Cependant en sociologie, il est rare d'avoir une variable continue à expliquer. On a généralement des variables catégorielles (qui peuvent être une variable quanti transformée en variable quali). Le modèle de régression linéaire ne fonctionne plus dans ce cas, on se tourne vers le modèle de **régression linéaire de probabilité** qui prend comme variable dépendante/à expliquer une variable dichotomique (0/1)[^2].
+Cependant en sociologie, il est rare d'avoir une variable continue à expliquer. On a généralement des variables catégorielles (qui peuvent être une variable quanti transformée en variable quali). Le modèle de régression linéaire ne fonctionne plus dans ce cas, on se tourne vers le modèle de **régression linéaire de probabilité** qui prend comme variable dépendante une variable dichotomique[^2]. 
 
 La ligne R reste la même, seule la nature de la $var\_dep$ change.\
-Tu lis le coefficient de cette manière : "toutes choses égales par ailleurs, pour une unité de plus/pour un changement de catégorie de $x$, la probabilité que l'évènement $y=1$ se passe augmente/diminue[^3]."
+Tu lis le coefficient de cette manière : "toutes choses égales par ailleurs, pour une unité de plus/pour un changement de catégorie de $x$, la probabilité que l'évènement $y=1$ se passe augmente (resp. diminue)[^3]."
 
 ```{r eval=F}
 # régression linéaire de probabilité
