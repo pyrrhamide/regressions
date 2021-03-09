@@ -376,5 +376,5 @@ plm(y ~ x1 + x2, index, model = "fd", data)
 
 
 
-[^5]: différent du modèle *théorique*.
-[^6]: à éviter car prend beaucoup de place et de mémoire sur la console R.
+[^5]: Différent du modèle *théorique*.
+[^6]: A éviter car prend beaucoup de place et de mémoire sur la console R.
