@@ -1,3 +1,5 @@
+# (PART) Autres méthodes {-}
+
 # Analyses de réseaux {#an-res}
 
 ```{r message=FALSE, eval=F}

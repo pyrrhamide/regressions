@@ -1,4 +1,4 @@
-# Approches expérimentales {#ap-exp}
+# Modélisation et identification causale, vol. 2 {#mod-id2}
 
 ```{r message=FALSE}
 library(lfe)
@@ -7,17 +7,6 @@ library(survival)
 library(plm)
 library(lmtest)
 ```
-
-Groupe traité v groupe de contrôle.
-
-Pour connaître l'effet du traitement, groupe 'traité' diffère du groupe de contrôle seulement du traitement.
-
-4 méthodes autour de cette idée:
-
-1. Expériences aléatoires contrôlées
-2. Expériences naturelles
-3. Différences de différences
-4. Régression par discontinuité
 
 Je mets immédiatement les lignes de codes complètes ici. Il est fortement recommandé d'utiliser la fonction `felm()` du package `lfe` pour toutes les techniques de ce cours, mais il est aussi possible d'utiliser `lm()`, `plm()` ou `ivreg()` pour de petites vérifications.
 
@@ -41,8 +30,20 @@ plm(y ~ x1 + x2, index=c("var_indiv","var_temps"), data, model = "pooling")
   # voir la documentation pour les autres "model" et également les "effect".
 ```
 
+## Approches expérimentales
 
-## Expériences aléatoires contrôlées 
+Groupe traité v groupe de contrôle.
+
+Pour connaître l'effet du traitement, groupe 'traité' diffère du groupe de contrôle seulement du traitement.
+
+4 méthodes autour de cette idée:
+
+1. Expériences aléatoires contrôlées
+2. Expériences naturelles
+3. Différences de différences
+4. Régression par discontinuité
+
+### Expériences aléatoires contrôlées 
 2 exemples d'expériences aléatoires contrôlées:
 
 * Expérience à essais randomisés contrôlés (*randomised controlled trials (RCT) experiments*)
@@ -75,7 +76,7 @@ L'expérience aléatoire en sciences sociales est rarement une expérience avec 
 
 [parler des limites techniques et conceptuelles?]
 
-## Expériences naturelles
+### Expériences naturelles
 
 * Situation "naturelle" qui ressemble à une situation expérimentale (ventilation aléatoire ou quasi-aléatoire d'une population entre groupe traité et groupe de contrôle) sans avoir été construite à des fins expérimentales.
 * Tirages au sort comme procédure d'allocation (e.g. jurés en tribunal, distribution dans les chambres d'internat, répartition entre ceux qui ont dû présenter leur problématique de mémoire le jour 1 et le jour 2)
@@ -83,7 +84,7 @@ L'expérience aléatoire en sciences sociales est rarement une expérience avec 
 
 [EXEMPLE!!!]
 
-## Différences-de-différences (*differences-in-differences*)
+### Différences-de-différences (*differences-in-differences*)
 
 On reprend l'opposition groupe traité versus groupe de contrôle des expériences contrôlées. Toutefois, on n'est pas sûr que les groupes de contrôles soient vraiment similaires en tout point excepté le traitement. On va faire une hypothèse plus faible: la différence entre traitement et contrôle est constante dans le temps.
 
@@ -122,7 +123,7 @@ Quand on n'a pas de panel :\
   * ou redit autrement, la différence de différence est unniquement due au "traitement" et non à un autre changement intervenu dans le groupe traité entre la période 1 et 2.
 * Si on dispose de plus de deux périodes, on peut faire une vérification graphique.
 
-## Régression par discontinuité (*Regression discontinuity design*)
+### Régression par discontinuité (*Regression discontinuity design*)
 
 Les groupes sont ventilés pour recevoir ou non un traitement en fonction d'un seuil sur une variable mesurable (continue). Par exemple, les personnes qui sont arrêtées au-delà d'un seuil d'alcool dans le sang ont l'obligation de suivre un traitement, et les groupes au-dessous de ce seuil servent de groupe de comparaison (groupe de contrôle). L'effet est mesuré au niveau de la discontinuité entre le groupe traité et le groupe de contrôle (on ne fait pas la différence de moyenne entre deux groupes).
 
@@ -236,6 +237,13 @@ mco2 <- lm(y ~ pe$fitted.values + x1 + x2, data, weights, ...)
 # Régression variable instrumentale directe, sans première étape
 z <- ivreg(y ~ x_endo + x1 + x2 | z1 + z2, data, weights, ...)
 
+# Pour voir les coefficients de la première étape
+z$coefficients1
+
+# Documentation officielle [vérifier si dans cours]:
+# Note that exogenous regressors have to be included as instruments for themselves. For example, if there is one exogenous regressor ex and one endogenous regressor en with instrument in, the appropriate formula would be
+ivreg(y ~ ex + en | ex + in)
+
 ## Troisième façon de procéder ##
 # Régression avec instruments, sans effet fixe et sans clusterisation
 felm(y ~ x_endo + x1 + x2 |0| z1+ z2 |0, data, weights, ...)
@@ -246,4 +254,127 @@ L'économétrie des panels rend visible et permet de traiter deux problèmes cla
 1. L'autocorrélation des résidus,  
 2. L'hétérogénéité inobservée.  
 
+**Autocorrélation des résidus**
+
+* $Cov(\epsilon_{it},\epsilon_{it+1}) = 0$ ?
+* Si je suis sous-payée à la date $t$, je le serai sans doute à la date $t+1$.
+
+**Hétérogénéité inobservée**
+
+* Si $\epsilon_{it} = v.inobs + e$ et $cov(x_{ik},inobs) \neq 0 \Rightarrow$ biais.
+* Le résidu $\epsilon_{it}$ peut être réécrit de la manière suivante: $\epsilon_{it} = \alpha_i + e_{it}$, comme la somme d'une erreur individuelle constante $\alpha_i$, et $e_{it}$ une erreur temporaire.
+* $\alpha_i$ peut être vu comme déterminé par les variables inobservées *constantes dans le temps*.
+* Question: peut-on dire que dans notre vrai modèle cette erreur constante $\alpha_i$ par individu est indépendante des variables explicatives, soit $cov(\alpha_i,x_k) = 0$ ?
+  * Oui $\rightarrow$ estimation *pooling* ou aléatoire est la bonne.
+  * Non $\rightarrow$ hypothèse des MCO $cov(\epsilon_i,x_k) = 0$ n'est pas respectée. Le modèle des MCO n'est pas consistant pour estimer les $\beta \rightarrow$ modèles à effets fixes ou en différences premières.
+  
+### Le modèle homogène, ou *pooled*
+
+ou comment résoudre le problème d'autocorrélation des résidus.
+
+Modèle estimé par les MCO: $y_{it}=\beta_0+\beta_1 x_{it}+...+\beta_k x_{kit} + \epsilon_{it}$
+
+Le modèle *pooled/pooling* ou modèle homogène suppose que tous les résidus ont la même variance et qu'il n'y a pas d'autocorrélation des résidus.  
+```{r eval=F}
+lm(y ~ x1 + x2, data)
+# ou
+plm(y ~ x1 + x2, data, index=c("individu","temps"), model = "pooling")
+```
+
+**La résolution du problème d'autocorrélation des résidus**
+
+Deux possibilités:
+
+1. Corriger la matrice de variance covariance:
+    * estimateur sandwich de Huber-White/ *robust standard errors* : on corrige les écart-types pour tenir compte de l'hétéroscédasticité des résidus (mais pas de l'autocorrélation) $\rightarrow$ hétérogénéité des variances des résidus.
+    * correction par cluster / *robust clustered standard errors* : on corrige les écart-types pour tenir compte à la fois de l'hétéroscédasticité des résidus et de leur autocorrélation par cluster (individus, nations, famille...) $\rightarrow$ hétérogénéité des variances des résidus + résidus clusterisés donc homogénéité des variances des résidus au sein des groupes.
+2. Modéliser l'erreur comme la combinaison d'une erreur individuelle fixe et d'une erreur temporelle $\Rightarrow$ modèle à effet aléatoire (*random effect*).
+```{r eval=FALSE}
+# Là il y a une flopée de méthodes possibles pour corriger les écart-types, mais la manière la plus simple est d'utiliser directement la fonction felm()
+# Utilise felm(), jdcjdr.
+felm(y ~ x1 + x2 |0|0| var_cluster_se, data)
+```
+
+### Les modèles à effet aléatoire
+On estime le modèle suivant:
+$$y_{it} = \beta_0 + \beta_i x_{it} + \alpha_i + \epsilon_{it}$$
+
+* Deux termes aléatoires $\alpha_i$ et $\epsilon_{it}$ qui ont chacun une loi de distribution propre.
+* La technique d'estimation est celle des moindres carrés généralisés.
+* L'avantage de ce modèle est de permettre une décomposition de la variance des résidus en un facteur individuel (i.e. *between*, et le cas échéant un facteur temporel) et un facteur idiosyncrasique [big words].
+```{r eval=FALSE}
+plm(y ~ x1 + x2, data, index, model = "random")
+```
+
+### Le problème d'hétérogénéité inobservée
+
+Modèle à effet aléatoire :
+$$y_{it} = \beta_0 + \beta_i x_{it} + \alpha_i + \epsilon_{it}$$
+
+* Si $cov(x_{kit},\alpha_i) = 0$, RAS.
+* Mais l'erreur individuelle $\alpha_i$ peut être vue comme le produit de l'ensemble des variables inobservables invariantes dans le temps. Il n'est pas impossible que ces variables inobservables soient corrélées avec les observables.
+* Plutôt que de modéliser les $\alpha_i$ par un effet aléatoire, on peut les modéliser par un effet fixe.
+
+#### Modèle à effets fixes (*fixed effects*)
+
+* Moindre carré à variables dichotomiques : *Least square dummy variables* ou LSDV. Introduire une variable dichotomique $\alpha_i$ par individu, possible uniquement si le nombre d'individus est petit (<1000).
+* Modèle "*within*"* : modèle (sans constante) où l'on centre chaque variable (explicative ou expliquée), càd où l'on calcule l'écart à la moyenne de la variable pour l'individu.
+
+$$(y_{it} - \bar y_i) = \beta_i (x_{it} - \bar x_i) + (\epsilon_{it} - \bar \epsilon_i)$$
+```{r eval=FALSE}
+## Avec les effets fixes ##
+lm(y ~ factor(var_indiv)+x1+x2, data)
+
+## Avec l'estimateur within et le pkg plm ##
+plm(y ~ x1 + x2, index, model = "within", data)
+
+## Avec l'estimateur within et le pkg lfe ##
+felm(y ~ x1 + x2 | var_indiv, data)
+# en clusterisant les erreurs types par individu
+felm(y ~ x1 + x2 | var_indiv |0| var_indiv, data)
+```
+
+**Deux effets fixes: groupes et temps**
+
+On peut introduire un effet fixe par unité de groupe (e.g. individu, pays, etc.) et un effet fixe par unité de temps.
+
+La conjoncture commune capturée par l'effet fixe temps:
+
+* Tout avec des variables dichotomiques[^6]: 
+
+$$y_{it}=\beta_i X_{it} + \alpha_i + \delta_t + \epsilon_{it}$$
+
+* *Within* + variables dichotomiques de temps.
+```{r eval=FALSE}
+plm(y ~ x1 + x2 + factor(var_temps), index, model="within", data)
+```
+* *Two ways within* (formule pour panel cylindrés)
+```{r eval=FALSE}
+plm(y ~ x1 + x2, index, model="within", effect="twoways", data) # très lent
+```
+
+#### Modèles en différences premières (*first difference*)
+
+Expliquer les évolutions par les évolutions (e.g différence revenu entre 1 année, puis 2, puis 5, etc...)
+$$ (y_{it} - y_{it-1})=\beta_i (x_{it} - x_{it-1}) + (\epsilon_{it} - \epsilon_{it-1})$$
+Le choix du retard:
+
+* $[t,t-1] \rightarrow$ on se focalise sur des variations de court terme,
+* $[t,t-k] \rightarrow$ variations de plus long terme, mais perte d'effectifs et de puissance.
+
+Différence entre effets fixes & différences premières:
+
+* panel à deux périodes: modèles équivalents (uniquement lorsque le modèle *within* comporte aussi un effet fixe temps).
+* panel à plusieurs périodes: le modèle à effets fixes est une moyenne de variations de courtes et de longues périodes.
+```{r eval=FALSE}
+plm(y ~ x1 + x2, index, model = "fd", data)
+```
+
+### Se concentrer sur la variance interindividuelle et éliminer la variance intra-individuelle
+
+
+
+
+
 [^5]: différent du modèle *théorique*.
+[^6]: à éviter car prend beaucoup de place et de mémoire sur la console R.
