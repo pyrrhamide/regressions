@@ -1,6 +1,6 @@
 # Analyses longitudinales {#an-long}
 
-```{r message=FALSE}
+```{r}
 library(plm)
 ```
 
@@ -10,13 +10,13 @@ library(plm)
 
 Modèle de base:
 $$y_{i,t} = \alpha_i + \beta_i k_{i,t} + \gamma_i n_{i,t} + \epsilon_{i,t}$$
-```{r eval=F}
+```{r}
 lineaire <- lm(var_dep ~ var_indep, data=d)
 ```
 
 Modèle pooled:
 $$y_{i,t} = \alpha + \beta k_{i,t} + \gamma n_{i,t} + \epsilon_{i,t}$$
-```{r eval=F}
+```{r}
 pooled <- plm(var_dep ~ var_indep, 
               data=d, 
               index=c("var_individu","var_temporelle"),
@@ -25,7 +25,7 @@ pooled <- plm(var_dep ~ var_indep,
 
 Modèle à effet fixe:
 $$y_{i,t} = \alpha_i + \beta k_{i,t} + \gamma n_{i,t} + \epsilon_{i,t}$$
-```{r eval=F}
+```{r}
 effet_fixe <- plm(var_dep ~ var_indep,
                   data=d,
                   index=c("var_individu","var_temporelle"),

@@ -7,7 +7,7 @@ Par exemple :
 
 On a une variable couleur qui prend comme $n$ modalités 1 = bleu ; 2 = blanc ; 3 = rouge. On va la transformer en $n-1$ variables (dans ce cas, 2) binaires, une indiquant si c'est bleu (0 = non ; 1 = oui), une indiquant si c'est blanc (*idem*). Il n'y a pas besoin de créer une troisième variable dichotomique car, par défaut, une observation qui est à bleu = 0 et blanc = 0 serait à rouge = 1:
 
-```{r eval=F}
+```{r}
 # méthode du prof
 d$bleu[d$couleur==1] <- 1
 d$bleu[d$couleur!=1] <- 0
@@ -27,6 +27,6 @@ Si tu as une variable à $n$ modalités, tu peux aussi choisir de regrouper deux
 **Important** : une fois que tu as déterminé toutes tes variables explicatives, transforme les en facteur et change leur niveau. Les régressions fonctionnent avec des variables facteurs.\
 Exemple : une variable des mentions du bac qui est à l'origine sous la forme caractère. Les mentions seront rangées par ordre alphabétique et non par ordre hiérachique.
 
-```{r eval=F}
+```{r}
 d$mentions <- factor(d$mentions, levels=c('Sans mention','Passable','Assez bien','Bien','Très bien'))
 ```

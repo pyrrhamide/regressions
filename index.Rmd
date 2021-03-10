@@ -13,6 +13,10 @@ link-citations: yes
 github-repo: pyrrhamide/regressions
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
+```
+
 # Présentation {-}
 
 Ce site, publié avec [bookdown](https://bookdown.org/yihui/bookdown/), a pour vocation de répertorier (presque) toutes les méthodes enseignées lors de notre master, et de t'aider à comprendre les bases. Nos cours ne sont pas généreux en sujet-verbe-COD, j'essaie d'y remédier ici. J'ai simplifié autant que je pouvais les 4 premiers chapitres, tandis que le reste est principalement copié-collé des diapos des profs. J'allégerais peut-être ça plus tard.

@@ -1,6 +1,6 @@
 # Modélisation et identification causale, vol. 2 {#mod-id2}
 
-```{r message=FALSE}
+```{r}
 library(lfe)
 library(AER)
 library(survival)
@@ -11,7 +11,7 @@ library(lmtest)
 Je mets immédiatement les lignes de codes complètes ici. Il est fortement recommandé d'utiliser la fonction `felm()` du package `lfe` pour toutes les techniques de ce cours, mais il est aussi possible d'utiliser `lm()`, `plm()` ou `ivreg()` pour de petites vérifications.
 
 La fonction `felm()` fait tout: les effets fixes, les effets aléatoires, les variables instrumentales, la clusterisation des erreurs-types...it's the GOAT `r emo::ji("goat")`.
-```{r eval=F}
+```{r}
 ## La syntaxe des commandes principales ##
 felm(y ~ x1 + x2 | f1 + f2 | x3 + x4 | clu1 + clu2, data, weights, ...)
 # soit
@@ -162,7 +162,7 @@ Le modèle linéaire avec changement de forme\
 - $y_i = \beta_0 + \beta_1 x' + \beta_2 x^{'2} + \beta_3(x'>0) + \beta_4x' \times (x'>0) + \beta_5 x^{'2} \times (x'>0) + \epsilon_i$,\
 - l'effet causal est mesuré par $\beta_3$.
 
-```{r eval=F}
+```{r}
 # Regression discontinuity design - je recommende de regarder directement le code du prof et de lancer les commandes.
 
 # recentrage de la variable autour du seuil
@@ -206,7 +206,7 @@ Sachant que $cov(x_{endo},\epsilon) \neq 0$, on introduit une variable instrumen
 * $cov(z_{inst},x_{endo}) \neq 0$, et
 * $cov(z_{inst},\epsilon) = 0$
 
-Vrai modèle[^5]: $y = a_{vrai} + b_{vrai} x_{endo} + c_{vrai} x_2 + \epsilon$ avec $cov(x_{endo},\epsilon) \neq 0$.
+Vrai modèle^[Différent du modèle *théorique*.]: $y = a_{vrai} + b_{vrai} x_{endo} + c_{vrai} x_2 + \epsilon$ avec $cov(x_{endo},\epsilon) \neq 0$.
 
 **Première étape**: on régresse la variable endogène à la fois sur l'instrument et sur les autres variables explicatives. NB: on met toutes les variables explicatives même non pertinentes en première étape. 
 $$x_{endo} = a_0 + a_1 z_{inst} + a_2 x_2 + \epsilon_{prem}$$
@@ -219,7 +219,7 @@ $$y = a_{est} + b_{est} x'_{endo} + c_{est} x_2 + \epsilon_{deux}$$
 
 Comme $z_{inst}$ et $x_2$ ne sont pas corrélés avec le résidu $\epsilon$, alors $x'_{endo}$ n'est plus corrélé avec $\epsilon$, l'estimateur des variables instrumentales permet d'estimer sans biais $b_{vrai}$ (et le reste).
 
-```{r eval=F}
+```{r}
 ## 1ère façon de procéder ##
 # MCO "naïve"
 mco <- lm(y ~ x_endo + x1 + x2, data, weights, ...)
@@ -275,7 +275,7 @@ ou comment résoudre le problème d'autocorrélation des résidus.
 Modèle estimé par les MCO: $y_{it}=\beta_0+\beta_1 x_{it}+...+\beta_k x_{kit} + \epsilon_{it}$
 
 Le modèle *pooled/pooling* ou modèle homogène suppose que tous les résidus ont la même variance et qu'il n'y a pas d'autocorrélation des résidus.  
-```{r eval=F}
+```{r}
 lm(y ~ x1 + x2, data)
 # ou
 plm(y ~ x1 + x2, data, index=c("individu","temps"), model = "pooling")
@@ -289,7 +289,7 @@ Deux possibilités:
     * estimateur sandwich de Huber-White/ *robust standard errors* : on corrige les écart-types pour tenir compte de l'hétéroscédasticité des résidus (mais pas de l'autocorrélation) $\rightarrow$ hétérogénéité des variances des résidus.
     * correction par cluster / *robust clustered standard errors* : on corrige les écart-types pour tenir compte à la fois de l'hétéroscédasticité des résidus et de leur autocorrélation par cluster (individus, nations, famille...) $\rightarrow$ hétérogénéité des variances des résidus + résidus clusterisés donc homogénéité des variances des résidus au sein des groupes.
 2. Modéliser l'erreur comme la combinaison d'une erreur individuelle fixe et d'une erreur temporelle $\Rightarrow$ modèle à effet aléatoire (*random effect*).
-```{r eval=FALSE}
+```{r}
 # Là il y a une flopée de méthodes possibles pour corriger les écart-types, mais la manière la plus simple est d'utiliser directement la fonction felm()
 # Utilise felm(), jdcjdr.
 felm(y ~ x1 + x2 |0|0| var_cluster_se, data)
@@ -302,7 +302,7 @@ $$y_{it} = \beta_0 + \beta_i x_{it} + \alpha_i + \epsilon_{it}$$
 * Deux termes aléatoires $\alpha_i$ et $\epsilon_{it}$ qui ont chacun une loi de distribution propre.
 * La technique d'estimation est celle des moindres carrés généralisés.
 * L'avantage de ce modèle est de permettre une décomposition de la variance des résidus en un facteur individuel (i.e. *between*, et le cas échéant un facteur temporel) et un facteur idiosyncrasique [big words].
-```{r eval=FALSE}
+```{r}
 plm(y ~ x1 + x2, data, index, model = "random")
 ```
 
@@ -321,7 +321,7 @@ $$y_{it} = \beta_0 + \beta_i x_{it} + \alpha_i + \epsilon_{it}$$
 * Modèle "*within*"* : modèle (sans constante) où l'on centre chaque variable (explicative ou expliquée), càd où l'on calcule l'écart à la moyenne de la variable pour l'individu.
 
 $$(y_{it} - \bar y_i) = \beta_i (x_{it} - \bar x_i) + (\epsilon_{it} - \bar \epsilon_i)$$
-```{r eval=FALSE}
+```{r}
 ## Avec les effets fixes ##
 lm(y ~ factor(var_indiv)+x1+x2, data)
 
@@ -340,16 +340,16 @@ On peut introduire un effet fixe par unité de groupe (e.g. individu, pays, etc.
 
 La conjoncture commune capturée par l'effet fixe temps:
 
-* Tout avec des variables dichotomiques[^6]: 
+* Tout avec des variables dichotomiques^[A éviter car prend beaucoup de place et de mémoire sur la console R.]: 
 
 $$y_{it}=\beta_i X_{it} + \alpha_i + \delta_t + \epsilon_{it}$$
 
 * *Within* + variables dichotomiques de temps.
-```{r eval=FALSE}
+```{r}
 plm(y ~ x1 + x2 + factor(var_temps), index, model="within", data)
 ```
 * *Two ways within* (formule pour panel cylindrés)
-```{r eval=FALSE}
+```{r}
 plm(y ~ x1 + x2, index, model="within", effect="twoways", data) # très lent
 ```
 
@@ -366,15 +366,8 @@ Différence entre effets fixes & différences premières:
 
 * panel à deux périodes: modèles équivalents (uniquement lorsque le modèle *within* comporte aussi un effet fixe temps).
 * panel à plusieurs périodes: le modèle à effets fixes est une moyenne de variations de courtes et de longues périodes.
-```{r eval=FALSE}
+```{r}
 plm(y ~ x1 + x2, index, model = "fd", data)
 ```
 
 ### Se concentrer sur la variance interindividuelle et éliminer la variance intra-individuelle
-
-
-
-
-
-[^5]: Différent du modèle *théorique*.
-[^6]: A éviter car prend beaucoup de place et de mémoire sur la console R.

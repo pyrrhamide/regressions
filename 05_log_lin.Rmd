@@ -16,11 +16,13 @@ Résumons les différents modèles de régression qu'on a vu jusqu'à maintenant
 
 On passe maintenant à la **régression log-linéaire**, que je résume (rapidement et sans doute pas correctement) ainsi : la variable à expliquer est mise à l'échelle logarithmique, les variables explicatives restent dans leurs unités de bases. On fait un tri croisé avec ces variables. Ce modèle mesure l'indépendance (ou non) statistique. J'utilise maintenant l'exemple des admissions à Berkeley : $admissions*département*sexe$.
 
-```{r results="hide",message=F}
+```{r results="hide", eval=TRUE}
 # Les packages et fonctions
 library(vcd)
 library(vcdExtra)
 library(DescTools)
+
+library(tidyverse)
 
 # source("f.util.cours.R") fonction créée par le prof
 stat_ajust <- function(...) {
@@ -46,7 +48,7 @@ Berkeley <- UCBAdmissions %>% as.data.frame()
 
 ## Modèle de l'indépendance
 
-```{r message=F,comment=""}
+```{r eval=TRUE}
 # Modèle log-linéaire
 # Modèle de l'indépendance totale
 M0 <- glm(Freq ~ Gender + Admit + Dept, family = poisson, data = UCBAdmissions)
@@ -60,7 +62,7 @@ Il reste beaucoup trop d'information à expliquer que le modèle de l'indépenda
 
 ## Modèles avec interaction
 
-```{r message=F}
+```{r eval=TRUE}
 # une interaction prise en compte
 M1_GD <- update(M0, . ~ . + Gender:Dept) # choix du département est genré
 M1_GA <- update(M0, . ~ . + Gender:Admit) # admission discriminante en fonction du sexe
@@ -83,7 +85,7 @@ Tous les modèles sont stockés dans la mémoire de R, on veut maintenant voir l
 
 ## Analyse de deviance {#analyse-de-deviance}
 
-```{r comment=""}
+```{r eval=TRUE}
 anova(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)
 ```
 
@@ -93,7 +95,7 @@ Pourquoi ne pas prendre le modèle 9 ? Parce que le modèle 9 est saturé (toute
 
 Revenons en au modèle 7. Comment peut-on s'assurer que le gain d'info est réel et pas dû au hasard (n'est pas du bruit)?
 
-```{r message=F,comment=""}
+```{r eval=TRUE}
 stat_ajust(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)
 ```
 

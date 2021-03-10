@@ -1,0 +1,24 @@
+# Datamining {#datamining}
+
+## Analyses textuelles
+
+```{r eval=FALSE}
+library(R.temis)
+```
+
+## Webscrapping
+
+```{r eval=FALSE}
+library(rvest)
+```
+
+## Cartographie
+
+```{r eval=FALSE}
+library(sf)
+library(mapview)
+
+library(cartography)
+library(tmap)
+```
+
