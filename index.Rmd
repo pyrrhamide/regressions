@@ -19,7 +19,7 @@ knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
 
 # Présentation {-}
 
-Ce site, publié avec [bookdown](https://bookdown.org/yihui/bookdown/), a pour vocation de répertorier (presque) toutes les méthodes enseignées lors de notre master, et de t'aider à comprendre les bases. Nos cours ne sont pas généreux en sujet-verbe-COD, j'essaie d'y remédier ici. J'ai simplifié autant que je pouvais les 4 premiers chapitres, tandis que le reste est principalement copié-collé des diapos des profs. J'allégerais peut-être ça plus tard.
+Ce site, crée avec [bookdown](https://bookdown.org/yihui/bookdown/), a pour vocation de répertorier (presque) toutes les méthodes enseignées lors de notre master, et de t'aider à comprendre les bases. Nos cours ne sont pas généreux en sujet-verbe-COD, j'essaie d'y remédier ici. J'ai simplifié autant que je pouvais les 4 premiers chapitres, tandis que le reste est principalement copié-collé des diapos des profs. J'allégerais peut-être ça plus tard.
 
 Tu trouveras en tête des chapitres 3 à 6 les packages propres à chaque cours, au lieu d'au milieu du code. J'ai également présenter les fonctions avec du vocabulaire plus descriptif que celui de la documentation officielle, puis ai arrêté petit-à-petit parce que ça devenait trop répétitif.
 
