@@ -228,7 +228,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb23-3"><a href="mod-id2.html#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># soit</span></span>
 <span id="cb23-4"><a href="mod-id2.html#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(var_dep <span class="sc">~</span> vars_indep <span class="sc">|</span> vars_effet_fixe <span class="sc">|</span> vars_instrumentales <span class="sc">|</span> vars_cluster_se, data, weights, ...)</span>
 <span id="cb23-5"><a href="mod-id2.html#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># si on veut seulement clusteriser les erreurs-types, on remplace</span></span>
-<span id="cb23-6"><a href="mod-id2.html#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># vars_effet_fixe et/ou vars_instrumentales par 0 </span></span>
+<span id="cb23-6"><a href="mod-id2.html#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># vars_effet_fixe et/ou vars_instrumentales par 0</span></span>
 <span id="cb23-7"><a href="mod-id2.html#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1<span class="sc">+</span>x2 <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span><span class="dv">0</span><span class="sc">|</span>clu1<span class="sc">+</span>clu2, data, weights, ...)</span>
 <span id="cb23-8"><a href="mod-id2.html#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-9"><a href="mod-id2.html#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour les variables instrumentales - plus détaillé plus tard</span></span>
@@ -301,9 +301,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>différence post-traitement est la différence liée aux “inobservables” + effet causal</li>
 <li>différence de différence est l’effet causal (diff post - diff pré)</li>
 </ul>
-<p>Différence “standard” :<br />
-<span class="math display">\[Traité - Contrôle \\ T_1 - C_1\]</span><br />
-Différence de différence est l’estimation :<br />
+<p>Différence “standard” :
+<span class="math display">\[Traité - Contrôle \\ T_1 - C_1\]</span>
+Différence de différence est l’estimation :
 <span class="math display">\[DiD = (Traité_{post}-Traité_{anté})-(Contrôle_{post}-Contrôle_{anté}) \\ DiD = (T_1-T_0)-(C_1-C_0)\]</span></p>
 <p>Notations classiques :<br />
 - <span class="math inline">\(T_1=\mu_{11}\)</span> ; <span class="math inline">\(T_0=\mu_{10}\)</span> ; <span class="math inline">\(C_1=\mu_{01}\)</span> ; <span class="math inline">\(C_0=\mu_{00}\)</span><br />
@@ -400,7 +400,7 @@ Le modèle linéaire simple (premières estimations)<br />
 <li>Variable omise ou hétérogénéité inobservée (corrélée à la variable dépendante et à une autre variable explicative): sur/sous-estimation de la valeur absolue du paramètre.</li>
 <li>Simultanéité (variable explicative dépend de la variable expliquée): effet plus complexe. Pas d’intuition évidente.</li>
 </ul>
-<p>Solution <span class="math inline">\(\Rightarrow\)</span> variable instrumentale: trouver une variable instrumentale exogène qui impacte ma variable expliquée <span class="math inline">\(y_i\)</span> uniquement par l’intermédiaire de son effet sur la variable explicative <span class="math inline">\(x_i\)</span> suspecte d’endogénéité.<br />
+<p>Solution <span class="math inline">\(\Rightarrow\)</span> variable instrumentale: trouver une variable instrumentale exogène qui impacte ma variable expliquée <span class="math inline">\(y_i\)</span> uniquement par l’intermédiaire de son effet sur la variable explicative <span class="math inline">\(x_i\)</span> suspecte d’endogénéité.
 <span class="math display">\[ instrument \rightarrow var\_endo \rightarrow var\_dep\]</span></p>
 <p>Sachant que <span class="math inline">\(cov(x_{endo},\epsilon) \neq 0\)</span>, on introduit une variable instrumentale (<span class="math inline">\(z_{inst}\)</span>) telle que:</p>
 <ul>
@@ -445,8 +445,8 @@ Le modèle linéaire simple (premières estimations)<br />
 </div>
 <div id="econométrie-des-panels" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Econométrie des panels</h2>
-<p>L’économétrie des panels rend visible et permet de traiter deux problèmes classiques :<br />
-1. L’autocorrélation des résidus,<br />
+<p>L’économétrie des panels rend visible et permet de traiter deux problèmes classiques :
+1. L’autocorrélation des résidus,
 2. L’hétérogénéité inobservée.</p>
 <p><strong>Autocorrélation des résidus</strong></p>
 <ul>

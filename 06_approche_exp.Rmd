@@ -1,5 +1,9 @@
 # Modélisation et identification causale, vol. 2 {#mod-id2}
 
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
+```
+
 ```{r}
 library(lfe)
 library(AER)
@@ -17,7 +21,7 @@ felm(y ~ x1 + x2 | f1 + f2 | x3 + x4 | clu1 + clu2, data, weights, ...)
 # soit
 felm(var_dep ~ vars_indep | vars_effet_fixe | vars_instrumentales | vars_cluster_se, data, weights, ...)
 # si on veut seulement clusteriser les erreurs-types, on remplace
-# vars_effet_fixe et/ou vars_instrumentales par 0 
+# vars_effet_fixe et/ou vars_instrumentales par 0
 felm(y ~ x1+x2 |0|0|clu1+clu2, data, weights, ...)
 
 # Pour les variables instrumentales - plus détaillé plus tard
@@ -43,7 +47,7 @@ Pour connaître l'effet du traitement, groupe 'traité' diffère du groupe de co
 3. Différences de différences
 4. Régression par discontinuité
 
-### Expériences aléatoires contrôlées 
+### Expériences aléatoires contrôlées
 2 exemples d'expériences aléatoires contrôlées:
 
 * Expérience à essais randomisés contrôlés (*randomised controlled trials (RCT) experiments*)
@@ -91,10 +95,10 @@ On reprend l'opposition groupe traité versus groupe de contrôle des expérienc
   * différence prétraitement est la différence liée aux "inobservables"
   * différence post-traitement est la différence liée aux "inobservables" + effet causal
   * différence de différence est l'effet causal (diff post - diff pré)
-  
-Différence "standard" :  
-$$Traité - Contrôle \\ T_1 - C_1$$  
-Différence de différence est l'estimation :  
+
+Différence "standard" :
+$$Traité - Contrôle \\ T_1 - C_1$$
+Différence de différence est l'estimation :
 $$DiD = (Traité_{post}-Traité_{anté})-(Contrôle_{post}-Contrôle_{anté}) \\ DiD = (T_1-T_0)-(C_1-C_0)$$
 
 Notations classiques :\
@@ -145,7 +149,7 @@ Désavantages:
 * les effets sont sans biais uniquement si la forme fonctionnelle entre la variable d'assignation et la variable de résultat est bien modélisée, y compris:
   * des relations non-linéaires (augmentation - plateau - augmentation)
   * des interactions (pente coef 1 - seuil - pente coef 2)
-  
+
 **Estimations économétriques**\
 Le modèle linéaire simple (premières estimations)\
 - $y_i = \beta_0 + \beta_1 x + \beta_2 (x>seuil) + \epsilon_i$,\
@@ -198,7 +202,7 @@ Violation de la 6ème hypothèse des MCO ($Cov(x_i,\epsilon_i \neq 0)$ absence d
 * Variable omise ou hétérogénéité inobservée (corrélée à la variable dépendante et à une autre variable explicative): sur/sous-estimation de la valeur absolue du paramètre.
 * Simultanéité (variable explicative dépend de la variable expliquée): effet plus complexe. Pas d'intuition évidente.
 
-Solution $\Rightarrow$ variable instrumentale: trouver une variable instrumentale exogène qui impacte ma variable expliquée $y_i$ uniquement par l'intermédiaire de son effet sur la variable explicative $x_i$ suspecte d'endogénéité.  
+Solution $\Rightarrow$ variable instrumentale: trouver une variable instrumentale exogène qui impacte ma variable expliquée $y_i$ uniquement par l'intermédiaire de son effet sur la variable explicative $x_i$ suspecte d'endogénéité.
 $$ instrument \rightarrow var\_endo \rightarrow var\_dep$$
 
 Sachant que $cov(x_{endo},\epsilon) \neq 0$, on introduit une variable instrumentale ($z_{inst}$) telle que:
@@ -208,7 +212,7 @@ Sachant que $cov(x_{endo},\epsilon) \neq 0$, on introduit une variable instrumen
 
 Vrai modèle^[Différent du modèle *théorique*.]: $y = a_{vrai} + b_{vrai} x_{endo} + c_{vrai} x_2 + \epsilon$ avec $cov(x_{endo},\epsilon) \neq 0$.
 
-**Première étape**: on régresse la variable endogène à la fois sur l'instrument et sur les autres variables explicatives. NB: on met toutes les variables explicatives même non pertinentes en première étape. 
+**Première étape**: on régresse la variable endogène à la fois sur l'instrument et sur les autres variables explicatives. NB: on met toutes les variables explicatives même non pertinentes en première étape.
 $$x_{endo} = a_0 + a_1 z_{inst} + a_2 x_2 + \epsilon_{prem}$$
 
 On récupère de cette première régression $x'_{endo}$, la prédiction de la variable endogène $x_{endo}$:
@@ -250,9 +254,9 @@ felm(y ~ x_endo + x1 + x2 |0| z1+ z2 |0, data, weights, ...)
 ```
 
 ## Econométrie des panels
-L'économétrie des panels rend visible et permet de traiter deux problèmes classiques :  
-1. L'autocorrélation des résidus,  
-2. L'hétérogénéité inobservée.  
+L'économétrie des panels rend visible et permet de traiter deux problèmes classiques :
+1. L'autocorrélation des résidus,
+2. L'hétérogénéité inobservée.
 
 **Autocorrélation des résidus**
 
@@ -267,14 +271,14 @@ L'économétrie des panels rend visible et permet de traiter deux problèmes cla
 * Question: peut-on dire que dans notre vrai modèle cette erreur constante $\alpha_i$ par individu est indépendante des variables explicatives, soit $cov(\alpha_i,x_k) = 0$ ?
   * Oui $\rightarrow$ estimation *pooling* ou aléatoire est la bonne.
   * Non $\rightarrow$ hypothèse des MCO $cov(\epsilon_i,x_k) = 0$ n'est pas respectée. Le modèle des MCO n'est pas consistant pour estimer les $\beta \rightarrow$ modèles à effets fixes ou en différences premières.
-  
+
 ### Le modèle homogène, ou *pooled*
 
 ou comment résoudre le problème d'autocorrélation des résidus.
 
 Modèle estimé par les MCO: $y_{it}=\beta_0+\beta_1 x_{it}+...+\beta_k x_{kit} + \epsilon_{it}$
 
-Le modèle *pooled/pooling* ou modèle homogène suppose que tous les résidus ont la même variance et qu'il n'y a pas d'autocorrélation des résidus.  
+Le modèle *pooled/pooling* ou modèle homogène suppose que tous les résidus ont la même variance et qu'il n'y a pas d'autocorrélation des résidus.
 ```{r}
 lm(y ~ x1 + x2, data)
 # ou
@@ -340,7 +344,7 @@ On peut introduire un effet fixe par unité de groupe (e.g. individu, pays, etc.
 
 La conjoncture commune capturée par l'effet fixe temps:
 
-* Tout avec des variables dichotomiques^[A éviter car prend beaucoup de place et de mémoire sur la console R.]: 
+* Tout avec des variables dichotomiques^[A éviter car prend beaucoup de place et de mémoire sur la console R.]:
 
 $$y_{it}=\beta_i X_{it} + \alpha_i + \delta_t + \epsilon_{it}$$
 

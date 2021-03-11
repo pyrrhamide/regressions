@@ -1,6 +1,10 @@
 
 # Nettoyage des données {- #nettoyage}
 
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
+```
+
 On nettoie les données en prévision des régressions futures. On dichotomise notamment les modalités des variables explicatives pour les régressions logistiques (*codage disjonctif complet* - on nous recommandait ça, mais on a établi que R arrivait à dichotomiser les modalités des variables comme un grand, tant que les variables sont du type facteur).
 
 Par exemple :

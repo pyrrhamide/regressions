@@ -2,6 +2,10 @@
 
 # Régressions linéaires {#reg-lin}
 
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
+```
+
 ## Moindres Carrés Ordinaires - hypothèses
 
 $$Y_i = \beta_0 + \beta_iX_i + \epsilon_i$$ pour $i = 1,...,n$
@@ -63,13 +67,13 @@ Par exemple, on interagit le PIB avec le taux de natalité. Tu obtiens les résu
 - $\beta_3$ le coefficient de l'interaction entre les deux variables.\
 Pour obtenir le vrai effet du PIB et du taux de natalité sur la $var\_dep$, tu additionnes ces trois coefficients.
 
-## Régression linéaire de probabilité  
+## Régression linéaire de probabilité
 
 *Pas correct, please disregard. Je corrige ça bientôt.*
 
 Note KF: voir [ici](https://scpoecon.github.io/ScPoEconometrics/linreg.html#a-particular-rescaling-the-log-transform) pour compléter cette partie.
 
-Cependant en sociologie, il est rare d'avoir une variable continue à expliquer. On a généralement des variables catégorielles (qui peuvent être une variable quanti transformée en variable quali). Le modèle de régression linéaire ne fonctionne plus dans ce cas, on se tourne vers le modèle de **régression linéaire de probabilité** qui prend comme variable dépendante une variable dichotomique^[Du coup on viole la première hypothèse des MCO sur la linéarité des paramètres.]. 
+Cependant en sociologie, il est rare d'avoir une variable continue à expliquer. On a généralement des variables catégorielles (qui peuvent être une variable quanti transformée en variable quali). Le modèle de régression linéaire ne fonctionne plus dans ce cas, on se tourne vers le modèle de **régression linéaire de probabilité** qui prend comme variable dépendante une variable dichotomique^[Du coup on viole la première hypothèse des MCO sur la linéarité des paramètres.].
 
 La ligne R reste la même, seule la nature de la $var\_dep$ change.\
 Tu lis le coefficient de cette manière : "toutes choses égales par ailleurs, pour une unité de plus/pour un changement de catégorie de $x$, la probabilité que l'évènement $y=1$ se passe augmente (resp. diminue)^[Je suis pas sûre de la lecture exacte du coefficient, mais en gros ça fonctionne comme ça.]."

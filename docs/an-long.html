@@ -227,8 +227,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="an-long.html#cb34-1" aria-hidden="true" tabindex="-1"></a>lineaire <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_indep, <span class="at">data=</span>d)</span></code></pre></div>
 <p>Modèle pooled:
 <span class="math display">\[y_{i,t} = \alpha + \beta k_{i,t} + \gamma n_{i,t} + \epsilon_{i,t}\]</span></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="an-long.html#cb35-1" aria-hidden="true" tabindex="-1"></a>pooled <span class="ot">&lt;-</span> <span class="fu">plm</span>(var_dep <span class="sc">~</span> var_indep, </span>
-<span id="cb35-2"><a href="an-long.html#cb35-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">data=</span>d, </span>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="an-long.html#cb35-1" aria-hidden="true" tabindex="-1"></a>pooled <span class="ot">&lt;-</span> <span class="fu">plm</span>(var_dep <span class="sc">~</span> var_indep,</span>
+<span id="cb35-2"><a href="an-long.html#cb35-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">data=</span>d,</span>
 <span id="cb35-3"><a href="an-long.html#cb35-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;var_individu&quot;</span>,<span class="st">&quot;var_temporelle&quot;</span>),</span>
 <span id="cb35-4"><a href="an-long.html#cb35-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">model=</span><span class="st">&quot;pooling&quot;</span>)</span></code></pre></div>
 <p>Modèle à effet fixe:

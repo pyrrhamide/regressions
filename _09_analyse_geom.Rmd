@@ -1,6 +1,10 @@
 # Analyses géométriques des données {#agd}
 
-```{r eval=FALSE}
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
+```
+
+```{r}
 library(FactoMineR)
 library(Factoshiny)
 library(explor)
@@ -12,4 +16,4 @@ library(explor)
 
 ## Analyse Factorielle des Correspondances
 
-## Classification Ascendante Hiérachique 
+## Classification Ascendante Hiérachique

@@ -2,7 +2,11 @@
 
 # Statistiques descriptives {- #stat-desc}
 
-```{r eval=FALSE}
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
+```
+
+```{r}
 ## Packages à charger, nécessaire pour l'analyse ##
 library(tidyverse)
 library(questionr) # pour effectuer des tris à plat et des tris croisés
@@ -14,7 +18,7 @@ library(GDAtools)
 
 On importe les données puis on les observe. Ci-dessous j'ai mis des fonctions de bases avec un dataframe qui n'existe pas.
 
-```{r eval=FALSE}
+```{r}
 dim(d)
 names(d)
 str(d)

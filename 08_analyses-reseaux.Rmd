@@ -1,5 +1,9 @@
 # (PART) Autres méthodes {-}
 
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
+```
+
 # Analyses de réseaux {#an-res}
 
 ```{r}
@@ -10,7 +14,7 @@ graph <- graph.adjacency(df,mode="directed")
 ```
 
 ## Bases de la théorie
-- **Graphe** : ensemble d'unités (sommets) connectées par une ou plusieurs relations (arêtes)  
+- **Graphe** : ensemble d'unités (sommets) connectées par une ou plusieurs relations (arêtes)
   - Sommets (noeuds, *vertices*) : unités
   - Arêtes (liens, *edges*) : relations
 - Réseaux *complets* v réseaux *personnels* (réseaux **égo-centrés**)
@@ -24,7 +28,7 @@ length(E(graph))
 ```
 
 ### Matrices
-Ou comment stocker ses données avant de les traiter.  
+Ou comment stocker ses données avant de les traiter.
 
 - d'adjacence
   - matrice symétrique avec liens non-orientés (du coup liens réciproques)
@@ -38,7 +42,7 @@ Ou comment stocker ses données avant de les traiter.
 - Non-orientés
 
 ## Structures locales
-Ou comment un réseau s'organise.  
+Ou comment un réseau s'organise.
 
 - Noeuds isolés
 - Dyades
@@ -54,7 +58,7 @@ Ou comment un réseau s'organise.
   - Trois-cycles : forme d'échange généralisé
 - Clique : sous-ensemble de noeuds où toutes les paires de noeuds existants sont connectés.
   - *Modularité* : mesure segmentation d'un réseau en *modules*. Réseau à modularité élevée a densité élevée entre les noeusd qui font partie d'un même module, densité faible entre noeuds appartenant à modules différents.
-  
+
 ```{r}
 # Trois algorithmes de modularité
 wtc <- walktrap.community(graph)
@@ -66,7 +70,7 @@ modularity(graph, membership(wtc))
 modularity(graph, membership(grd))
 modularity(graph, membership(spn))
 ```
-  
+
 ## Connectivité
 - **Chaîne**/*walk* : parcours sur graphe non orienté allant d'un noeud à un autre en empruntant des arêtes (liens)
 - **Chemin** : chaîne mais pour un **graphe orienté**
@@ -82,7 +86,7 @@ modularity(graph, membership(spn))
 - **Average path length** : distance moyenne entre toutes les pairs de noeuds dans un réseau (moins sensible à des outiliers que le diamètre).
 - **Eccentricité** : distance depuis un noeud de départ vers le noeud le plus loin dans le réseau.
 - **Rayon** : eccentricité minimale des noeuds. La plus petite distance à laquelle puisse se trouver un noeud de tous les autres (infini si graphe est non connecté)
-  
+
 ```{r}
 shortest.paths(graph, algorithm="unweighted")
 
@@ -105,16 +109,16 @@ eccentricity(graph)
 radius(graph)
 
 ```
-  
-## Mesures basiques de cohésion
-Tous les noeuds sont-ils liés entre eux? Quels types de liens existent dans le réseau et dans quelle quantité?  
 
-- **Transitivité** : $\frac{nombre.triades.transitives}{nombre.triades}$  
+## Mesures basiques de cohésion
+Tous les noeuds sont-ils liés entre eux? Quels types de liens existent dans le réseau et dans quelle quantité?
+
+- **Transitivité** : $\frac{nombre.triades.transitives}{nombre.triades}$
   - *égal à 1 si tous les noeuds sont liés à tous les autres noeuds* (connectivité complète)
   - Excède rarement 0.2 dans réseaux aléatoires.
   - Souvent compris entre 0.3 et 0.6 dans les réseaux empiriques.
-- **Densité** : $\frac{nombre.liens.existants}{nb.liens.pouvant.existés}$  
-  - $\frac{L}{(n*(n-1))}$ liens orientés  
+- **Densité** : $\frac{nombre.liens.existants}{nb.liens.pouvant.existés}$
+  - $\frac{L}{(n*(n-1))}$ liens orientés
   - $\frac{L}{\frac{(n*(n-1))}{2}}$ liens non-orientés
 - **Coefficient de *clustering* ** : mesure de cohésion dans le voisinage d'un noeud (combien de mes amis sont amis entre eux). 2 mesures :
   - Mesure *locale* : on mesure d'abord pour chaque noeud *i*, le $Cl_{i}$ ensuite on prend la moyenne $\sum_{i = 1}^{n}$$\frac{Cl_{i}}{n}$. Tends to 1.
@@ -135,7 +139,7 @@ clusters(graph)
 ```
 
 ## Mesures de diversité
-Tous mes groupes sont-ils représentés proportionnellement dans mon réseau?   
+Tous mes groupes sont-ils représentés proportionnellement dans mon réseau?
 
 - Deux familles de mesures:
   - proportion (ou pourcentage) d'une catégorie sur la totalité
@@ -149,7 +153,7 @@ get.Blau.index <- function(x, type) {
   return(1 - sum(prop.table(table(x))^2))}
 
 # Indice de diversité de Blau
-qualif_blau <- get.Blau.index(as.factor(V(graph)$variable)) 
+qualif_blau <- get.Blau.index(as.factor(V(graph)$variable))
   # on applique la fonction de l'IB à la variable x
 qualif_blau
 
@@ -164,7 +168,7 @@ qualif_hhi
 ```
 
 ## Mesures de centralité
-Y a-t-il un noeud ou groupe de noeuds qui a une plus grande importance/qui est le plus relié dans le réseau?  
+Y a-t-il un noeud ou groupe de noeuds qui a une plus grande importance/qui est le plus relié dans le réseau?
 
 - Centralité de **degré** (*degree*)
   - noeuds les plus "actifs" (les plus connectées, qui sont liés à un plus grand nombre de noeuds) $C_D(i) =$ $\sum_{j=1}^{n}x_{ij} = \sum_{j=1}^{n} x_{ji}$
@@ -183,7 +187,7 @@ Y a-t-il un noeud ou groupe de noeuds qui a une plus grande importance/qui est l
   - La **distribution des centralités** des noeuds;
   - Des indicateurs de "centralisation" agrégés.
     - mesure de centralisation de Freeman
-  
+
 ```{r}
 # Centralité de degré
 degree(graph,mode="all")
@@ -195,9 +199,9 @@ betweenness(graph,directed=TRUE)
 
 # Centralité de proximité
 # il faut d'abord enlever les noeuds isolés, sinon le calcul ne marche pas
-Isolated = which(degree(graph)==0) 
+Isolated = which(degree(graph)==0)
 graph2 = delete.vertices(graph, Isolated) # on construit un nouveau graphe en enlevant Isolated
-  
+
   # on calcule la proximité sur ce graphe
 close_graph <- closeness(graph2, mode='all', normalized = FALSE)
 # pour obtenir la valeur normalisée, la commande est :
@@ -206,4 +210,3 @@ close_graph2 <- closeness(graph2, mode='all', normalized = TRUE)
 # Centralité de vecteur propre
 eigen_centrality(graph, scale = TRUE, weights = NULL)
 ```
-

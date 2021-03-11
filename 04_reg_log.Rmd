@@ -1,6 +1,10 @@
 
 # Régressions logistiques {#reg-log}
 
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
+```
+
 $$logit(p) = log(\frac{p}{1-p}) = \beta_0 + \sum_{j=1}^n \beta_j X_{ij}$$
 
 ## Régression logistique dichotomique
@@ -20,14 +24,14 @@ Pour vérifier si les variables sont indépendantes, tu regardes la *residual de
 ```{r}
 # On met le modèle précédent à jour, en ajoutant des interactions.
 
-# pour une unique interaction  
+# pour une unique interaction
 model_7 <- update(model_6, . ~ . + var_indep1*var_indep2)
 
-# pour interagir toutes les modalités de toutes les variables entre elles (interaction d'ordre 2)  
-model_8 <- glm(var_dep_dicho ~ (var_indep1 + var_indep2 + var_indep3)^2, data = d, weights = poids, family=binomial)  
+# pour interagir toutes les modalités de toutes les variables entre elles (interaction d'ordre 2)
+model_8 <- glm(var_dep_dicho ~ (var_indep1 + var_indep2 + var_indep3)^2, data = d, weights = poids, family=binomial)
 
 # pour interagir var_indep3 avec var_indep1 et var_indep2 [plus rapide que d'écrire individuellement chaque interaction]
-model_9 <- glm(var_dep_dicho ~ (var_indep1 + var_indep2)*var_indep3, data = d, weights = poids, family=binomial) 
+model_9 <- glm(var_dep_dicho ~ (var_indep1 + var_indep2)*var_indep3, data = d, weights = poids, family=binomial)
 
 # le modèle saturé (interaction d'ordre 3 - toutes les interactions inférieures seront automatiquement là)
 model_10 <- glm(var_dep_dicho ~ var_indep1*var_indep2*var_indep3,d,binomial)

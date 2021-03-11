@@ -350,8 +350,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li><strong>Densité</strong> : <span class="math inline">\(\frac{nombre.liens.existants}{nb.liens.pouvant.existés}\)</span>
 <ul>
-<li><span class="math inline">\(\frac{L}{(n*(n-1))}\)</span> liens orientés<br />
-</li>
+<li><span class="math inline">\(\frac{L}{(n*(n-1))}\)</span> liens orientés</li>
 <li><span class="math inline">\(\frac{L}{\frac{(n*(n-1))}{2}}\)</span> liens non-orientés</li>
 </ul></li>
 <li><strong>Coefficient de <em>clustering</em> </strong> : mesure de cohésion dans le voisinage d’un noeud (combien de mes amis sont amis entre eux). 2 mesures :
@@ -389,7 +388,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb42-3"><a href="an-res.html#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(x))<span class="sc">^</span><span class="dv">2</span>))}</span>
 <span id="cb42-4"><a href="an-res.html#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb42-5"><a href="an-res.html#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Indice de diversité de Blau</span></span>
-<span id="cb42-6"><a href="an-res.html#cb42-6" aria-hidden="true" tabindex="-1"></a>qualif_blau <span class="ot">&lt;-</span> <span class="fu">get.Blau.index</span>(<span class="fu">as.factor</span>(<span class="fu">V</span>(graph)<span class="sc">$</span>variable)) </span>
+<span id="cb42-6"><a href="an-res.html#cb42-6" aria-hidden="true" tabindex="-1"></a>qualif_blau <span class="ot">&lt;-</span> <span class="fu">get.Blau.index</span>(<span class="fu">as.factor</span>(<span class="fu">V</span>(graph)<span class="sc">$</span>variable))</span>
 <span id="cb42-7"><a href="an-res.html#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># on applique la fonction de l&#39;IB à la variable x</span></span>
 <span id="cb42-8"><a href="an-res.html#cb42-8" aria-hidden="true" tabindex="-1"></a>qualif_blau</span>
 <span id="cb42-9"><a href="an-res.html#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
@@ -445,9 +444,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb43-8"><a href="an-res.html#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb43-9"><a href="an-res.html#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité de proximité</span></span>
 <span id="cb43-10"><a href="an-res.html#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="co"># il faut d&#39;abord enlever les noeuds isolés, sinon le calcul ne marche pas</span></span>
-<span id="cb43-11"><a href="an-res.html#cb43-11" aria-hidden="true" tabindex="-1"></a>Isolated <span class="ot">=</span> <span class="fu">which</span>(<span class="fu">degree</span>(graph)<span class="sc">==</span><span class="dv">0</span>) </span>
+<span id="cb43-11"><a href="an-res.html#cb43-11" aria-hidden="true" tabindex="-1"></a>Isolated <span class="ot">=</span> <span class="fu">which</span>(<span class="fu">degree</span>(graph)<span class="sc">==</span><span class="dv">0</span>)</span>
 <span id="cb43-12"><a href="an-res.html#cb43-12" aria-hidden="true" tabindex="-1"></a>graph2 <span class="ot">=</span> <span class="fu">delete.vertices</span>(graph, Isolated) <span class="co"># on construit un nouveau graphe en enlevant Isolated</span></span>
-<span id="cb43-13"><a href="an-res.html#cb43-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb43-13"><a href="an-res.html#cb43-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb43-14"><a href="an-res.html#cb43-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># on calcule la proximité sur ce graphe</span></span>
 <span id="cb43-15"><a href="an-res.html#cb43-15" aria-hidden="true" tabindex="-1"></a>close_graph <span class="ot">&lt;-</span> <span class="fu">closeness</span>(graph2, <span class="at">mode=</span><span class="st">&#39;all&#39;</span>, <span class="at">normalized =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb43-16"><a href="an-res.html#cb43-16" aria-hidden="true" tabindex="-1"></a><span class="co"># pour obtenir la valeur normalisée, la commande est :</span></span>

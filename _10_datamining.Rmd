@@ -1,24 +1,27 @@
 # Datamining {#datamining}
 
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
+```
+
 ## Analyses textuelles
 
-```{r eval=FALSE}
+```{r}
 library(R.temis)
 ```
 
 ## Webscrapping
 
-```{r eval=FALSE}
+```{r}
 library(rvest)
 ```
 
 ## Cartographie
 
-```{r eval=FALSE}
+```{r}
 library(sf)
 library(mapview)
 
 library(cartography)
 library(tmap)
 ```
-
