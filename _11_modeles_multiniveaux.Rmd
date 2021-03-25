@@ -1,0 +1,12 @@
+# Modèles multiniveaux {#multniv}
+
+Lire doc de l'INSEE.
+
+Structure emboîtée des données: variables référant individus + variables/caractéristiques référant GROUPES d'individus (e.g. données scolaires : élève + classe + école + etc.). Infos qui, dans sous-E de données, a son commun à tous les indivs de l'échantillon. Contre hypothèse MCO sur indépendance des observations.
+
+Deux groupes clairement distincts dans représentation graphique des observations. Comportements différents ou sous-E d'invids différent ? e.g. une courbe sans indicatrice de groupe: sur/sous-estimation de l'effet du diplôme sur le salaire, sans prise en compte des entreprises différents.
+
+2 familles de modèles multiniveaux:
+
+* modèle à effets aléatoires
+* modèle à effets fixes
