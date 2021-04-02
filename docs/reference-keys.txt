@@ -23,8 +23,12 @@ le-modèle-homogène-ou-pooled
 les-modèles-à-effet-aléatoire
 le-problème-dhétérogénéité-inobservée
 modèle-à-effets-fixes-fixed-effects
+effets-fixes-ou-effets-aléatoires
 modèles-en-différences-premières-first-difference
 se-concentrer-sur-la-variance-interindividuelle-et-éliminer-la-variance-intra-individuelle
+régression-between
+limites-des-effets-fixes
+extension-logistique
 an-long
 pseudo-panels
 modèles-linéaires

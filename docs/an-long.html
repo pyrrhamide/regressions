@@ -56,6 +56,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -172,6 +173,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3.2" data-path="mod-id2.html"><a href="mod-id2.html#les-modèles-à-effet-aléatoire"><i class="fa fa-check"></i><b>4.3.2</b> Les modèles à effet aléatoire</a></li>
 <li class="chapter" data-level="4.3.3" data-path="mod-id2.html"><a href="mod-id2.html#le-problème-dhétérogénéité-inobservée"><i class="fa fa-check"></i><b>4.3.3</b> Le problème d’hétérogénéité inobservée</a></li>
 <li class="chapter" data-level="4.3.4" data-path="mod-id2.html"><a href="mod-id2.html#se-concentrer-sur-la-variance-interindividuelle-et-éliminer-la-variance-intra-individuelle"><i class="fa fa-check"></i><b>4.3.4</b> Se concentrer sur la variance interindividuelle et éliminer la variance intra-individuelle</a></li>
+<li class="chapter" data-level="4.3.5" data-path="mod-id2.html"><a href="mod-id2.html#limites-des-effets-fixes"><i class="fa fa-check"></i><b>4.3.5</b> Limites des effets fixes</a></li>
+<li class="chapter" data-level="4.3.6" data-path="mod-id2.html"><a href="mod-id2.html#extension-logistique"><i class="fa fa-check"></i><b>4.3.6</b> Extension logistique</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="an-long.html"><a href="an-long.html"><i class="fa fa-check"></i><b>5</b> Analyses longitudinales</a>
@@ -216,7 +219,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="an-long" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Analyses longitudinales</h1>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="an-long.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="an-long.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
+<span id="cb38-2"><a href="an-long.html#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="an-long.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb38-4"><a href="an-long.html#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span></code></pre></div>
 <div id="pseudo-panels" class="section level2" number="5.1">
 <h2><span class="header-section-number">5.1</span> Pseudo-panels</h2>
 </div>
@@ -224,22 +230,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">5.2</span> Modèles linéaires</h2>
 <p>Modèle de base:
 <span class="math display">\[y_{i,t} = \alpha_i + \beta_i k_{i,t} + \gamma_i n_{i,t} + \epsilon_{i,t}\]</span></p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="an-long.html#cb34-1" aria-hidden="true" tabindex="-1"></a>lineaire <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_indep, <span class="at">data=</span>d)</span></code></pre></div>
-<p>Modèle pooled:
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="an-long.html#cb39-1" aria-hidden="true" tabindex="-1"></a>lineaire <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> X2, <span class="at">data=</span>d)</span></code></pre></div>
+<p>Modèle pooled<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>:
 <span class="math display">\[y_{i,t} = \alpha + \beta k_{i,t} + \gamma n_{i,t} + \epsilon_{i,t}\]</span></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="an-long.html#cb35-1" aria-hidden="true" tabindex="-1"></a>pooled <span class="ot">&lt;-</span> <span class="fu">plm</span>(var_dep <span class="sc">~</span> var_indep,</span>
-<span id="cb35-2"><a href="an-long.html#cb35-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">data=</span>d,</span>
-<span id="cb35-3"><a href="an-long.html#cb35-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;var_individu&quot;</span>,<span class="st">&quot;var_temporelle&quot;</span>),</span>
-<span id="cb35-4"><a href="an-long.html#cb35-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">model=</span><span class="st">&quot;pooling&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="an-long.html#cb40-1" aria-hidden="true" tabindex="-1"></a>pooled <span class="ot">&lt;-</span> <span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> X2,</span>
+<span id="cb40-2"><a href="an-long.html#cb40-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> d,</span>
+<span id="cb40-3"><a href="an-long.html#cb40-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;var_individu&quot;</span>,<span class="st">&quot;var_temporelle&quot;</span>),</span>
+<span id="cb40-4"><a href="an-long.html#cb40-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">model =</span> <span class="st">&quot;pooling&quot;</span>)</span></code></pre></div>
 <p>Modèle à effet fixe:
 <span class="math display">\[y_{i,t} = \alpha_i + \beta k_{i,t} + \gamma n_{i,t} + \epsilon_{i,t}\]</span></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="an-long.html#cb36-1" aria-hidden="true" tabindex="-1"></a>effet_fixe <span class="ot">&lt;-</span> <span class="fu">plm</span>(var_dep <span class="sc">~</span> var_indep,</span>
-<span id="cb36-2"><a href="an-long.html#cb36-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>d,</span>
-<span id="cb36-3"><a href="an-long.html#cb36-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;var_individu&quot;</span>,<span class="st">&quot;var_temporelle&quot;</span>),</span>
-<span id="cb36-4"><a href="an-long.html#cb36-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">model=</span><span class="st">&quot;within&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="an-long.html#cb41-1" aria-hidden="true" tabindex="-1"></a>effet_fixe <span class="ot">&lt;-</span> <span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2,</span>
+<span id="cb41-2"><a href="an-long.html#cb41-2" aria-hidden="true" tabindex="-1"></a>                  data,</span>
+<span id="cb41-3"><a href="an-long.html#cb41-3" aria-hidden="true" tabindex="-1"></a>                  index,</span>
+<span id="cb41-4"><a href="an-long.html#cb41-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">model =</span> <span class="st">&quot;within&quot;</span>)</span>
+<span id="cb41-5"><a href="an-long.html#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="an-long.html#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co"># twoways: estimer l&#39;effet fixe individuelle et l&#39;effet fixe temporel</span></span>
+<span id="cb41-7"><a href="an-long.html#cb41-7" aria-hidden="true" tabindex="-1"></a>model_sete <span class="ot">&lt;-</span> <span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2,</span>
+<span id="cb41-8"><a href="an-long.html#cb41-8" aria-hidden="true" tabindex="-1"></a>                  data,</span>
+<span id="cb41-9"><a href="an-long.html#cb41-9" aria-hidden="true" tabindex="-1"></a>                  index,</span>
+<span id="cb41-10"><a href="an-long.html#cb41-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">model =</span> <span class="st">&quot;within&quot;</span>,</span>
+<span id="cb41-11"><a href="an-long.html#cb41-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">effect =</span> <span class="st">&quot;twoways&quot;</span>)</span></code></pre></div>
+<p>Tests</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="an-long.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Test de Fischer ##</span></span>
+<span id="cb42-2"><a href="an-long.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Test sur la pertinence de l&#39;hypothèse de l&#39;existence d&#39;un effet fixe individuel (s&#39;applique aussi au modèle pooled). Seule la p-value nous intéresse.</span></span>
+<span id="cb42-3"><a href="an-long.html#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(effet_fixe, <span class="at">vcov. =</span> vcovHC, <span class="at">type =</span> <span class="st">&quot;HC1&quot;</span>)</span>
+<span id="cb42-4"><a href="an-long.html#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="an-long.html#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="do">## pFtest: F-test pour comparer le pouvoir explicatif du modèle A par rapport au modèle B ##</span></span>
+<span id="cb42-6"><a href="an-long.html#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">pFtest</span>(effet_fixe, pooled)</span>
+<span id="cb42-7"><a href="an-long.html#cb42-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-8"><a href="an-long.html#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Test de Hausman ##</span></span>
+<span id="cb42-9"><a href="an-long.html#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="fu">phtest</span>(effet_fixe, pooled)</span></code></pre></div>
 </div>
 <div id="modèles-dynamiques" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> Modèles dynamiques</h2>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="an-long.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> <span class="fu">lag</span>(y) <span class="sc">+</span> <span class="fu">lag</span>(X1) <span class="sc">+</span> x2,</span>
+<span id="cb43-2"><a href="an-long.html#cb43-2" aria-hidden="true" tabindex="-1"></a>    data,</span>
+<span id="cb43-3"><a href="an-long.html#cb43-3" aria-hidden="true" tabindex="-1"></a>    index,</span>
+<span id="cb43-4"><a href="an-long.html#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> <span class="st">&quot;within&quot;</span>, <span class="co"># ou autre</span></span>
+<span id="cb43-5"><a href="an-long.html#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">effect =</span> <span class="st">&quot;individual&quot;</span>) <span class="co"># ou autre</span></span></code></pre></div>
 </div>
 <div id="modèles-non-linéaires" class="section level2" number="5.4">
 <h2><span class="header-section-number">5.4</span> Modèles non-linéaires</h2>
@@ -255,6 +283,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
+<div class="footnotes">
+<hr />
+<ol start="8">
+<li id="fn8"><p>Moindres Carrés Ordinaires askip???<a href="an-long.html#fnref8" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
             </section>
 
           </div>

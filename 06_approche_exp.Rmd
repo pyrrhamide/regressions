@@ -12,7 +12,7 @@ library(plm)
 library(lmtest)
 ```
 
-Je mets immédiatement les lignes de codes complètes ici. Il est fortement recommandé d'utiliser la fonction `felm()` du package `lfe` pour toutes les techniques de ce cours, mais il est aussi possible d'utiliser `lm()`, `plm()` ou `ivreg()` pour de petites vérifications.
+Je mets immédiatement les lignes de codes complètes ici. Il est fortement recommandé d'utiliser la fonction `felm()` du package `lfe` pour toutes les techniques de ce cours, mais il est aussi possible d'utiliser `lm()`, `plm::plm()` ou `ivreg()` pour de petites vérifications.
 
 La fonction `felm()` fait tout: les effets fixes, les effets aléatoires, les variables instrumentales, la clusterisation des erreurs-types...it's the GOAT `r emo::ji("goat")`.
 ```{r}
@@ -294,7 +294,7 @@ Deux possibilités:
     * correction par cluster / *robust clustered standard errors* : on corrige les écart-types pour tenir compte à la fois de l'hétéroscédasticité des résidus et de leur autocorrélation par cluster (individus, nations, famille...) $\rightarrow$ hétérogénéité des variances des résidus + résidus clusterisés donc homogénéité des variances des résidus au sein des groupes.
 2. Modéliser l'erreur comme la combinaison d'une erreur individuelle fixe et d'une erreur temporelle $\Rightarrow$ modèle à effet aléatoire (*random effect*).
 ```{r}
-# Là il y a une flopée de méthodes possibles pour corriger les écart-types, mais la manière la plus simple est d'utiliser directement la fonction felm()
+# Là il y a une flopée de méthodes possibles pour corriger les écart-types, mais la manière la plus simple est d'utiliser directement la fonction felm() en précisant la variable de groupe pour obtenir des erreurs-types robustes clusterisées.
 # Utilise felm(), jdcjdr.
 felm(y ~ x1 + x2 |0|0| var_cluster_se, data)
 ```
@@ -326,6 +326,8 @@ $$y_{it} = \beta_0 + \beta_i x_{it} + \alpha_i + \epsilon_{it}$$
 
 $$(y_{it} - \bar y_i) = \beta_i (x_{it} - \bar x_i) + (\epsilon_{it} - \bar \epsilon_i)$$
 ```{r}
+# Estimation des effets fixes
+
 ## Avec les effets fixes ##
 lm(y ~ factor(var_indiv)+x1+x2, data)
 
@@ -357,6 +359,24 @@ plm(y ~ x1 + x2 + factor(var_temps), index, model="within", data)
 plm(y ~ x1 + x2, index, model="within", effect="twoways", data) # très lent
 ```
 
+#### Effets fixes ou effets aléatoires ?
+
+Comment choisir?
+
+Test de Hausman: on regarde si l'estimation par effets fixes produit des résultats significativement différents d'un modèle à effets aléatoires.
+
+* Si le test de Hausman est significatif, on privilégiera les effets fixes.
+* Si le test de Hausman n'est pas significatif, on privilégiera les effets aléatoires.
+
+```{r}
+regfe <- plm(y ~ x1 + x2, data, index, model = "within")
+regre <- plm(y ~ x1 + x2, data, index, model = "random")
+
+phtest(regfe, regre)
+# p-value significative -> effets fixes.
+# p-value non significative -> effets aléatoires.
+```
+
 #### Modèles en différences premières (*first difference*)
 
 Expliquer les évolutions par les évolutions (e.g différence revenu entre 1 année, puis 2, puis 5, etc...)
@@ -374,4 +394,83 @@ Différence entre effets fixes & différences premières:
 plm(y ~ x1 + x2, index, model = "fd", data)
 ```
 
+**Effets fixes et différences premières. Remarques**
+
+* Double effet: réduction du problème d'autocorrélation et suppression du problème d'hétérogénéité inobservée invariante dans le temps.
+* Interprétation: les évolutions expliquent les évolutions.
+* LSDV: variables dichotomiques en très grand nombre (quand on les estime) $\Rightarrow$ on n'imprime généralement pas les résultats.
+* Disparition de la constante en effets fixes mais pas en différences premières.
+
+* **Disparition de toutes les variables constantes dans le temps** $\Rightarrow$ effet contenu dans les variables dichotomiques individuelles.
+    * ex: immigration.
+    * Parfois, les variables présumées constantes se maintiennent en raison de points aberrants:
+        * incohérence de déclaration d'une vague à l'autre,
+        * changement de sexe,
+        * diplômes tardifs...
+* On peut les introduire malgré tout en les croisant avec une variable temporelle. L'interprétation reste en terme d'évolution.
+
 ### Se concentrer sur la variance interindividuelle et éliminer la variance intra-individuelle
+
+**Etudier la variance interindividuelle**
+
+* Le modèle à effets fixes ou *within* permet d'étudier les évolutions intra-individuelles.
+* La régression homogène (*pooled*) ou celles à effets aléatoires sont deux manières d'analyser une combinaison de variations intra-individuelles et interindividuelles.
+* Peut-on étudier les variations strictement interindividuelles? Oui, de deux façons:
+    * Régression toute simple sur une seule période.
+    * Régression *between*.
+    
+#### Régression *between*
+
+Régression où l'on explique la moyenne par individu de la variable expliquée par les moyennes par individu des variables explicatives.
+$$\bar y = \beta_0 + \beta_1 \bar x_{1i} + ... + \beta_k \bar x_{ki} + \bar \epsilon_i$$
+
+Cette régression informe sur la variation interindividuelle. Elle peut être considérée comme la bonne régression:
+
+* Si la variation intra-individuelle dans le temps est négligeable,
+* Si les individus qui connaissent des variations intra-individuelles sont non représentatifs.
+
+```{r}
+plm(y ~ x1 + x2, index, model = "between", data)
+```
+
+### Limites des effets fixes
+
+* On estime les effets sur les individus qui connaissent des évolutions.
+    * Si $y_i$ ne change pas en fonction de $t$, alors $y_i$ capturé par l’effet fixe $a_i$.
+    * Ces évolutions, surtout sur des variables explicatives qualitatives, peuvent être estimées sur des individus rares et très singuliers : biais de sélection
+    * Les variables explicatives du changement peuvent être aussi très singulières
+        * Ex extrême: changement de sexe. 
+        Cela revient à considérer que la différence de résultats entre les sexes est estimée par l’évolution de résultat pour ceux qui changent de sexe
+        * Ex classique: promotion non-cadre $\rightarrow$ cadre
+    * Les effets fixes reviennent à considérer que les évolutions estimées sur les gens qui changent sont représentatives des différence d’état entre gens qui changent pas.
+
+* Les effets fixes permettent bien de corriger l’hétérogénéité inobservée! Mais une partie seulement
+    * L’hétérogénéité inobservée invariante dans le temps...
+
+* Mais...transforment une régression en une régression en évolution...
+    * Où un facteur d’évolution corrélé aux autres peut être inobservé et conduire à biaiser les autres
+    * Où il peut y avoir simultanéité des évolutions de la variable indépendante et des variables indépendantes
+    * $\Rightarrow$ variables instrumentales (si on en trouve)
+
+* Pas de correction de l’hétérogénéité inobservée qui varie dans le temps…
+* Ontologie essentialiste
+    * Effet individuel: fonds inchangé, permanent, toujours le même.
+* Les évolutions expliquent les évolutions, mais le fixe n'explique pas le changement (sauf spécification contraire).
+
+### Extension logistique
+
+* Probit (effets aléatoires), Logistique (effets fixes, effets aléatoires)^[Logit en panel.]
+    * NB: modèles probit déconseillés avec des effets fixes.
+* Package `pglm`:
+    * binomial models (logit and probit), count models (poisson and negbin) and ordered models (logit and probit).
+    * Syntaxe (exemple - actuellement, la méthode *within* et *between* ne fonctionne pas pour les modèles logit et probit avec pglm.)
+```{r}
+pglm(y ~ x1 + x2, index, data, family = "binomial", model = "random")
+```
+    
+* Package `survival`:
+    * clogit
+```{r}
+clogit(y ~ x1 + x2 + strata(var_indiv), data) # je suis pas sûre. de toute façon on n'utilise pas cette méthode.
+```
+    

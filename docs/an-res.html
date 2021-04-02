@@ -56,6 +56,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -172,6 +173,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3.2" data-path="mod-id2.html"><a href="mod-id2.html#les-modèles-à-effet-aléatoire"><i class="fa fa-check"></i><b>4.3.2</b> Les modèles à effet aléatoire</a></li>
 <li class="chapter" data-level="4.3.3" data-path="mod-id2.html"><a href="mod-id2.html#le-problème-dhétérogénéité-inobservée"><i class="fa fa-check"></i><b>4.3.3</b> Le problème d’hétérogénéité inobservée</a></li>
 <li class="chapter" data-level="4.3.4" data-path="mod-id2.html"><a href="mod-id2.html#se-concentrer-sur-la-variance-interindividuelle-et-éliminer-la-variance-intra-individuelle"><i class="fa fa-check"></i><b>4.3.4</b> Se concentrer sur la variance interindividuelle et éliminer la variance intra-individuelle</a></li>
+<li class="chapter" data-level="4.3.5" data-path="mod-id2.html"><a href="mod-id2.html#limites-des-effets-fixes"><i class="fa fa-check"></i><b>4.3.5</b> Limites des effets fixes</a></li>
+<li class="chapter" data-level="4.3.6" data-path="mod-id2.html"><a href="mod-id2.html#extension-logistique"><i class="fa fa-check"></i><b>4.3.6</b> Extension logistique</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="an-long.html"><a href="an-long.html"><i class="fa fa-check"></i><b>5</b> Analyses longitudinales</a>
@@ -216,10 +219,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="an-res" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Analyses de réseaux</h1>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="an-res.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
-<span id="cb37-2"><a href="an-res.html#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-3"><a href="an-res.html#cb37-3" aria-hidden="true" tabindex="-1"></a>graph <span class="ot">&lt;-</span> <span class="fu">graph.data.frame</span>(links,nodes,<span class="at">directed=</span><span class="cn">TRUE</span>)</span>
-<span id="cb37-4"><a href="an-res.html#cb37-4" aria-hidden="true" tabindex="-1"></a>graph <span class="ot">&lt;-</span> <span class="fu">graph.adjacency</span>(df,<span class="at">mode=</span><span class="st">&quot;directed&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="an-res.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb44-2"><a href="an-res.html#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="an-res.html#cb44-3" aria-hidden="true" tabindex="-1"></a>graph <span class="ot">&lt;-</span> <span class="fu">graph.data.frame</span>(links,nodes,<span class="at">directed=</span><span class="cn">TRUE</span>)</span>
+<span id="cb44-4"><a href="an-res.html#cb44-4" aria-hidden="true" tabindex="-1"></a>graph <span class="ot">&lt;-</span> <span class="fu">graph.adjacency</span>(df,<span class="at">mode=</span><span class="st">&quot;directed&quot;</span>)</span></code></pre></div>
 <div id="bases-de-la-théorie" class="section level2" number="6.1">
 <h2><span class="header-section-number">6.1</span> Bases de la théorie</h2>
 <ul>
@@ -230,11 +233,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li>Réseaux <em>complets</em> v réseaux <em>personnels</em> (réseaux <strong>égo-centrés</strong>)</li>
 </ul>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="an-res.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Taille du réseau = nombre de noeuds</span></span>
-<span id="cb38-2"><a href="an-res.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">V</span>(graph))</span>
-<span id="cb38-3"><a href="an-res.html#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-4"><a href="an-res.html#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Nombre de liens</span></span>
-<span id="cb38-5"><a href="an-res.html#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">E</span>(graph))</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="an-res.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Taille du réseau = nombre de noeuds</span></span>
+<span id="cb45-2"><a href="an-res.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">V</span>(graph))</span>
+<span id="cb45-3"><a href="an-res.html#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="an-res.html#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Nombre de liens</span></span>
+<span id="cb45-5"><a href="an-res.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">E</span>(graph))</span></code></pre></div>
 <div id="matrices" class="section level3" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> Matrices</h3>
 <p>Ou comment stocker ses données avant de les traiter.</p>
@@ -286,15 +289,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><em>Modularité</em> : mesure segmentation d’un réseau en <em>modules</em>. Réseau à modularité élevée a densité élevée entre les noeusd qui font partie d’un même module, densité faible entre noeuds appartenant à modules différents.</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="an-res.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Trois algorithmes de modularité</span></span>
-<span id="cb39-2"><a href="an-res.html#cb39-2" aria-hidden="true" tabindex="-1"></a>wtc <span class="ot">&lt;-</span> <span class="fu">walktrap.community</span>(graph)</span>
-<span id="cb39-3"><a href="an-res.html#cb39-3" aria-hidden="true" tabindex="-1"></a>grd <span class="ot">&lt;-</span> <span class="fu">fastgreedy.community</span>(graph)</span>
-<span id="cb39-4"><a href="an-res.html#cb39-4" aria-hidden="true" tabindex="-1"></a>spn <span class="ot">&lt;-</span> <span class="fu">spinglass.community</span>(graph)</span>
-<span id="cb39-5"><a href="an-res.html#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-6"><a href="an-res.html#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Indicateur de modularité pour le réseau</span></span>
-<span id="cb39-7"><a href="an-res.html#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(graph, <span class="fu">membership</span>(wtc))</span>
-<span id="cb39-8"><a href="an-res.html#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(graph, <span class="fu">membership</span>(grd))</span>
-<span id="cb39-9"><a href="an-res.html#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(graph, <span class="fu">membership</span>(spn))</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="an-res.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Trois algorithmes de modularité</span></span>
+<span id="cb46-2"><a href="an-res.html#cb46-2" aria-hidden="true" tabindex="-1"></a>wtc <span class="ot">&lt;-</span> <span class="fu">walktrap.community</span>(graph)</span>
+<span id="cb46-3"><a href="an-res.html#cb46-3" aria-hidden="true" tabindex="-1"></a>grd <span class="ot">&lt;-</span> <span class="fu">fastgreedy.community</span>(graph)</span>
+<span id="cb46-4"><a href="an-res.html#cb46-4" aria-hidden="true" tabindex="-1"></a>spn <span class="ot">&lt;-</span> <span class="fu">spinglass.community</span>(graph)</span>
+<span id="cb46-5"><a href="an-res.html#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="an-res.html#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Indicateur de modularité pour le réseau</span></span>
+<span id="cb46-7"><a href="an-res.html#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(graph, <span class="fu">membership</span>(wtc))</span>
+<span id="cb46-8"><a href="an-res.html#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(graph, <span class="fu">membership</span>(grd))</span>
+<span id="cb46-9"><a href="an-res.html#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(graph, <span class="fu">membership</span>(spn))</span></code></pre></div>
 </div>
 <div id="connectivité" class="section level2" number="6.3">
 <h2><span class="header-section-number">6.3</span> Connectivité</h2>
@@ -318,25 +321,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>Eccentricité</strong> : distance depuis un noeud de départ vers le noeud le plus loin dans le réseau.</li>
 <li><strong>Rayon</strong> : eccentricité minimale des noeuds. La plus petite distance à laquelle puisse se trouver un noeud de tous les autres (infini si graphe est non connecté)</li>
 </ul>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="an-res.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shortest.paths</span>(graph, <span class="at">algorithm=</span><span class="st">&quot;unweighted&quot;</span>)</span>
-<span id="cb40-2"><a href="an-res.html#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-3"><a href="an-res.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Shortest path entre deux noeuds</span></span>
-<span id="cb40-4"><a href="an-res.html#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="fu">get.shortest.paths</span>(graph,</span>
-<span id="cb40-5"><a href="an-res.html#cb40-5" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">V</span>(graph)[name<span class="sc">==</span><span class="st">&quot;name1&quot;</span>],</span>
-<span id="cb40-6"><a href="an-res.html#cb40-6" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">V</span>(graph)[name<span class="sc">==</span><span class="st">&quot;name2&quot;</span>],</span>
-<span id="cb40-7"><a href="an-res.html#cb40-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mode=</span><span class="st">&quot;all&quot;</span>, <span class="at">output=</span><span class="st">&quot;both&quot;</span>)</span>
-<span id="cb40-8"><a href="an-res.html#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-9"><a href="an-res.html#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Distance moyenne entre les noeuds</span></span>
-<span id="cb40-10"><a href="an-res.html#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="fu">average.path.length</span>(graph)</span>
-<span id="cb40-11"><a href="an-res.html#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-12"><a href="an-res.html#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Diamètre</span></span>
-<span id="cb40-13"><a href="an-res.html#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="fu">diameter</span>(graph)</span>
-<span id="cb40-14"><a href="an-res.html#cb40-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-15"><a href="an-res.html#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Eccentricité</span></span>
-<span id="cb40-16"><a href="an-res.html#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="fu">eccentricity</span>(graph)</span>
-<span id="cb40-17"><a href="an-res.html#cb40-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-18"><a href="an-res.html#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Rayon : eccentricité la plus faible</span></span>
-<span id="cb40-19"><a href="an-res.html#cb40-19" aria-hidden="true" tabindex="-1"></a><span class="fu">radius</span>(graph)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="an-res.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shortest.paths</span>(graph, <span class="at">algorithm=</span><span class="st">&quot;unweighted&quot;</span>)</span>
+<span id="cb47-2"><a href="an-res.html#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="an-res.html#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Shortest path entre deux noeuds</span></span>
+<span id="cb47-4"><a href="an-res.html#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="fu">get.shortest.paths</span>(graph,</span>
+<span id="cb47-5"><a href="an-res.html#cb47-5" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">V</span>(graph)[name<span class="sc">==</span><span class="st">&quot;name1&quot;</span>],</span>
+<span id="cb47-6"><a href="an-res.html#cb47-6" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">V</span>(graph)[name<span class="sc">==</span><span class="st">&quot;name2&quot;</span>],</span>
+<span id="cb47-7"><a href="an-res.html#cb47-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mode=</span><span class="st">&quot;all&quot;</span>, <span class="at">output=</span><span class="st">&quot;both&quot;</span>)</span>
+<span id="cb47-8"><a href="an-res.html#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="an-res.html#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Distance moyenne entre les noeuds</span></span>
+<span id="cb47-10"><a href="an-res.html#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="fu">average.path.length</span>(graph)</span>
+<span id="cb47-11"><a href="an-res.html#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-12"><a href="an-res.html#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Diamètre</span></span>
+<span id="cb47-13"><a href="an-res.html#cb47-13" aria-hidden="true" tabindex="-1"></a><span class="fu">diameter</span>(graph)</span>
+<span id="cb47-14"><a href="an-res.html#cb47-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-15"><a href="an-res.html#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Eccentricité</span></span>
+<span id="cb47-16"><a href="an-res.html#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="fu">eccentricity</span>(graph)</span>
+<span id="cb47-17"><a href="an-res.html#cb47-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-18"><a href="an-res.html#cb47-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Rayon : eccentricité la plus faible</span></span>
+<span id="cb47-19"><a href="an-res.html#cb47-19" aria-hidden="true" tabindex="-1"></a><span class="fu">radius</span>(graph)</span></code></pre></div>
 </div>
 <div id="mesures-basiques-de-cohésion" class="section level2" number="6.4">
 <h2><span class="header-section-number">6.4</span> Mesures basiques de cohésion</h2>
@@ -359,17 +362,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Mesure <em>globale</em> : <span class="math inline">\(\sum_{i=1}^{n}\)</span><span class="math inline">\(\frac{nombre.liens.existants.entre.amis.de.i}{nombre.liens.possibles.entre.amis.de.i}\)</span>. Tends to 0 =&gt; transitivité.</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="an-res.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transitivité du réseau</span></span>
-<span id="cb41-2"><a href="an-res.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">transitivity</span>(graph)</span>
-<span id="cb41-3"><a href="an-res.html#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-4"><a href="an-res.html#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Transitivité d&#39;un noeud</span></span>
-<span id="cb41-5"><a href="an-res.html#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="fu">transitivity</span>(graph,<span class="at">type=</span><span class="st">&quot;local&quot;</span>)</span>
-<span id="cb41-6"><a href="an-res.html#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-7"><a href="an-res.html#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Densité du réseau</span></span>
-<span id="cb41-8"><a href="an-res.html#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="fu">graph.density</span>(graph)</span>
-<span id="cb41-9"><a href="an-res.html#cb41-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-10"><a href="an-res.html#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Nombre d&#39;îles, i.e. clusters</span></span>
-<span id="cb41-11"><a href="an-res.html#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="fu">clusters</span>(graph)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="an-res.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transitivité du réseau</span></span>
+<span id="cb48-2"><a href="an-res.html#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">transitivity</span>(graph)</span>
+<span id="cb48-3"><a href="an-res.html#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="an-res.html#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Transitivité d&#39;un noeud</span></span>
+<span id="cb48-5"><a href="an-res.html#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="fu">transitivity</span>(graph,<span class="at">type=</span><span class="st">&quot;local&quot;</span>)</span>
+<span id="cb48-6"><a href="an-res.html#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-7"><a href="an-res.html#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Densité du réseau</span></span>
+<span id="cb48-8"><a href="an-res.html#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="fu">graph.density</span>(graph)</span>
+<span id="cb48-9"><a href="an-res.html#cb48-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-10"><a href="an-res.html#cb48-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Nombre d&#39;îles, i.e. clusters</span></span>
+<span id="cb48-11"><a href="an-res.html#cb48-11" aria-hidden="true" tabindex="-1"></a><span class="fu">clusters</span>(graph)</span></code></pre></div>
 </div>
 <div id="mesures-de-diversité" class="section level2" number="6.5">
 <h2><span class="header-section-number">6.5</span> Mesures de diversité</h2>
@@ -383,23 +386,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>Indice de diversité de Blau</strong> <span class="math inline">\(\in[0;\frac{k-1}{k}]\)</span> Une seule catégorie représentée =&gt; toutes les catégories représentées équitablement (utile si plus de 2 catégories - variante de l’indice Herfindahl-Hirschmann (HHI))</li>
 <li><strong>Indice de variation qualitative, IQV</strong> <span class="math inline">\(\in[0;1]\)</span> Une seule catégorie représentée =&gt; toutes les catégories représentées équitablement (<strong>un indice POUR CHAQUE ATTRIBUT d’intérêt</strong>)</li>
 </ul>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="an-res.html#cb42-1" aria-hidden="true" tabindex="-1"></a>get.Blau.index <span class="ot">&lt;-</span> <span class="cf">function</span>(x, type) {</span>
-<span id="cb42-2"><a href="an-res.html#cb42-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">factor</span>(x, <span class="at">levels =</span> type);</span>
-<span id="cb42-3"><a href="an-res.html#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(x))<span class="sc">^</span><span class="dv">2</span>))}</span>
-<span id="cb42-4"><a href="an-res.html#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-5"><a href="an-res.html#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Indice de diversité de Blau</span></span>
-<span id="cb42-6"><a href="an-res.html#cb42-6" aria-hidden="true" tabindex="-1"></a>qualif_blau <span class="ot">&lt;-</span> <span class="fu">get.Blau.index</span>(<span class="fu">as.factor</span>(<span class="fu">V</span>(graph)<span class="sc">$</span>variable))</span>
-<span id="cb42-7"><a href="an-res.html#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># on applique la fonction de l&#39;IB à la variable x</span></span>
-<span id="cb42-8"><a href="an-res.html#cb42-8" aria-hidden="true" tabindex="-1"></a>qualif_blau</span>
-<span id="cb42-9"><a href="an-res.html#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-10"><a href="an-res.html#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Indice de variation qualitative</span></span>
-<span id="cb42-11"><a href="an-res.html#cb42-11" aria-hidden="true" tabindex="-1"></a>qualif_iqv <span class="ot">=</span> qualif_blau <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> (<span class="dv">1</span> <span class="sc">/</span> <span class="fu">length</span>(<span class="fu">levels</span>(<span class="fu">as.factor</span>(Proportions<span class="sc">$</span>Var1)))))</span>
-<span id="cb42-12"><a href="an-res.html#cb42-12" aria-hidden="true" tabindex="-1"></a>qualif_iqv</span>
-<span id="cb42-13"><a href="an-res.html#cb42-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># IQV de Qualification!!!</span></span>
-<span id="cb42-14"><a href="an-res.html#cb42-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-15"><a href="an-res.html#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="co"># HHI qui est égal à 1 - qualif_blau</span></span>
-<span id="cb42-16"><a href="an-res.html#cb42-16" aria-hidden="true" tabindex="-1"></a>qualif_hhi <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> qualif_blau</span>
-<span id="cb42-17"><a href="an-res.html#cb42-17" aria-hidden="true" tabindex="-1"></a>qualif_hhi</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="an-res.html#cb49-1" aria-hidden="true" tabindex="-1"></a>get.Blau.index <span class="ot">&lt;-</span> <span class="cf">function</span>(x, type) {</span>
+<span id="cb49-2"><a href="an-res.html#cb49-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">factor</span>(x, <span class="at">levels =</span> type);</span>
+<span id="cb49-3"><a href="an-res.html#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">prop.table</span>(<span class="fu">table</span>(x))<span class="sc">^</span><span class="dv">2</span>))}</span>
+<span id="cb49-4"><a href="an-res.html#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="an-res.html#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Indice de diversité de Blau</span></span>
+<span id="cb49-6"><a href="an-res.html#cb49-6" aria-hidden="true" tabindex="-1"></a>qualif_blau <span class="ot">&lt;-</span> <span class="fu">get.Blau.index</span>(<span class="fu">as.factor</span>(<span class="fu">V</span>(graph)<span class="sc">$</span>variable))</span>
+<span id="cb49-7"><a href="an-res.html#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># on applique la fonction de l&#39;IB à la variable x</span></span>
+<span id="cb49-8"><a href="an-res.html#cb49-8" aria-hidden="true" tabindex="-1"></a>qualif_blau</span>
+<span id="cb49-9"><a href="an-res.html#cb49-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-10"><a href="an-res.html#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Indice de variation qualitative</span></span>
+<span id="cb49-11"><a href="an-res.html#cb49-11" aria-hidden="true" tabindex="-1"></a>qualif_iqv <span class="ot">=</span> qualif_blau <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> (<span class="dv">1</span> <span class="sc">/</span> <span class="fu">length</span>(<span class="fu">levels</span>(<span class="fu">as.factor</span>(Proportions<span class="sc">$</span>Var1)))))</span>
+<span id="cb49-12"><a href="an-res.html#cb49-12" aria-hidden="true" tabindex="-1"></a>qualif_iqv</span>
+<span id="cb49-13"><a href="an-res.html#cb49-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># IQV de Qualification!!!</span></span>
+<span id="cb49-14"><a href="an-res.html#cb49-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-15"><a href="an-res.html#cb49-15" aria-hidden="true" tabindex="-1"></a><span class="co"># HHI qui est égal à 1 - qualif_blau</span></span>
+<span id="cb49-16"><a href="an-res.html#cb49-16" aria-hidden="true" tabindex="-1"></a>qualif_hhi <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> qualif_blau</span>
+<span id="cb49-17"><a href="an-res.html#cb49-17" aria-hidden="true" tabindex="-1"></a>qualif_hhi</span></code></pre></div>
 </div>
 <div id="mesures-de-centralité" class="section level2" number="6.6">
 <h2><span class="header-section-number">6.6</span> Mesures de centralité</h2>
@@ -434,29 +437,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="an-res.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité de degré</span></span>
-<span id="cb43-2"><a href="an-res.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">degree</span>(graph,<span class="at">mode=</span><span class="st">&quot;all&quot;</span>)</span>
-<span id="cb43-3"><a href="an-res.html#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">degree</span>(graph,<span class="at">mode=</span><span class="st">&quot;in&quot;</span>)</span>
-<span id="cb43-4"><a href="an-res.html#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">degree</span>(graph,<span class="at">mode=</span><span class="st">&quot;out&quot;</span>)</span>
-<span id="cb43-5"><a href="an-res.html#cb43-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-6"><a href="an-res.html#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité d&#39;intermédiarité</span></span>
-<span id="cb43-7"><a href="an-res.html#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="fu">betweenness</span>(graph,<span class="at">directed=</span><span class="cn">TRUE</span>)</span>
-<span id="cb43-8"><a href="an-res.html#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-9"><a href="an-res.html#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité de proximité</span></span>
-<span id="cb43-10"><a href="an-res.html#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="co"># il faut d&#39;abord enlever les noeuds isolés, sinon le calcul ne marche pas</span></span>
-<span id="cb43-11"><a href="an-res.html#cb43-11" aria-hidden="true" tabindex="-1"></a>Isolated <span class="ot">=</span> <span class="fu">which</span>(<span class="fu">degree</span>(graph)<span class="sc">==</span><span class="dv">0</span>)</span>
-<span id="cb43-12"><a href="an-res.html#cb43-12" aria-hidden="true" tabindex="-1"></a>graph2 <span class="ot">=</span> <span class="fu">delete.vertices</span>(graph, Isolated) <span class="co"># on construit un nouveau graphe en enlevant Isolated</span></span>
-<span id="cb43-13"><a href="an-res.html#cb43-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-14"><a href="an-res.html#cb43-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># on calcule la proximité sur ce graphe</span></span>
-<span id="cb43-15"><a href="an-res.html#cb43-15" aria-hidden="true" tabindex="-1"></a>close_graph <span class="ot">&lt;-</span> <span class="fu">closeness</span>(graph2, <span class="at">mode=</span><span class="st">&#39;all&#39;</span>, <span class="at">normalized =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb43-16"><a href="an-res.html#cb43-16" aria-hidden="true" tabindex="-1"></a><span class="co"># pour obtenir la valeur normalisée, la commande est :</span></span>
-<span id="cb43-17"><a href="an-res.html#cb43-17" aria-hidden="true" tabindex="-1"></a>close_graph2 <span class="ot">&lt;-</span> <span class="fu">closeness</span>(graph2, <span class="at">mode=</span><span class="st">&#39;all&#39;</span>, <span class="at">normalized =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb43-18"><a href="an-res.html#cb43-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-19"><a href="an-res.html#cb43-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité de vecteur propre</span></span>
-<span id="cb43-20"><a href="an-res.html#cb43-20" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen_centrality</span>(graph, <span class="at">scale =</span> <span class="cn">TRUE</span>, <span class="at">weights =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="an-res.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité de degré</span></span>
+<span id="cb50-2"><a href="an-res.html#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">degree</span>(graph,<span class="at">mode=</span><span class="st">&quot;all&quot;</span>)</span>
+<span id="cb50-3"><a href="an-res.html#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">degree</span>(graph,<span class="at">mode=</span><span class="st">&quot;in&quot;</span>)</span>
+<span id="cb50-4"><a href="an-res.html#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="fu">degree</span>(graph,<span class="at">mode=</span><span class="st">&quot;out&quot;</span>)</span>
+<span id="cb50-5"><a href="an-res.html#cb50-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-6"><a href="an-res.html#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité d&#39;intermédiarité</span></span>
+<span id="cb50-7"><a href="an-res.html#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="fu">betweenness</span>(graph,<span class="at">directed=</span><span class="cn">TRUE</span>)</span>
+<span id="cb50-8"><a href="an-res.html#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="an-res.html#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité de proximité</span></span>
+<span id="cb50-10"><a href="an-res.html#cb50-10" aria-hidden="true" tabindex="-1"></a><span class="co"># il faut d&#39;abord enlever les noeuds isolés, sinon le calcul ne marche pas</span></span>
+<span id="cb50-11"><a href="an-res.html#cb50-11" aria-hidden="true" tabindex="-1"></a>Isolated <span class="ot">=</span> <span class="fu">which</span>(<span class="fu">degree</span>(graph)<span class="sc">==</span><span class="dv">0</span>)</span>
+<span id="cb50-12"><a href="an-res.html#cb50-12" aria-hidden="true" tabindex="-1"></a>graph2 <span class="ot">=</span> <span class="fu">delete.vertices</span>(graph, Isolated) <span class="co"># on construit un nouveau graphe en enlevant Isolated</span></span>
+<span id="cb50-13"><a href="an-res.html#cb50-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-14"><a href="an-res.html#cb50-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># on calcule la proximité sur ce graphe</span></span>
+<span id="cb50-15"><a href="an-res.html#cb50-15" aria-hidden="true" tabindex="-1"></a>close_graph <span class="ot">&lt;-</span> <span class="fu">closeness</span>(graph2, <span class="at">mode=</span><span class="st">&#39;all&#39;</span>, <span class="at">normalized =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb50-16"><a href="an-res.html#cb50-16" aria-hidden="true" tabindex="-1"></a><span class="co"># pour obtenir la valeur normalisée, la commande est :</span></span>
+<span id="cb50-17"><a href="an-res.html#cb50-17" aria-hidden="true" tabindex="-1"></a>close_graph2 <span class="ot">&lt;-</span> <span class="fu">closeness</span>(graph2, <span class="at">mode=</span><span class="st">&#39;all&#39;</span>, <span class="at">normalized =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb50-18"><a href="an-res.html#cb50-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-19"><a href="an-res.html#cb50-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Centralité de vecteur propre</span></span>
+<span id="cb50-20"><a href="an-res.html#cb50-20" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen_centrality</span>(graph, <span class="at">scale =</span> <span class="cn">TRUE</span>, <span class="at">weights =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 
 </div>
 </div>
+
+
 
 
 

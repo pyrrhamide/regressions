@@ -56,6 +56,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -172,6 +173,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3.2" data-path="mod-id2.html"><a href="mod-id2.html#les-modèles-à-effet-aléatoire"><i class="fa fa-check"></i><b>4.3.2</b> Les modèles à effet aléatoire</a></li>
 <li class="chapter" data-level="4.3.3" data-path="mod-id2.html"><a href="mod-id2.html#le-problème-dhétérogénéité-inobservée"><i class="fa fa-check"></i><b>4.3.3</b> Le problème d’hétérogénéité inobservée</a></li>
 <li class="chapter" data-level="4.3.4" data-path="mod-id2.html"><a href="mod-id2.html#se-concentrer-sur-la-variance-interindividuelle-et-éliminer-la-variance-intra-individuelle"><i class="fa fa-check"></i><b>4.3.4</b> Se concentrer sur la variance interindividuelle et éliminer la variance intra-individuelle</a></li>
+<li class="chapter" data-level="4.3.5" data-path="mod-id2.html"><a href="mod-id2.html#limites-des-effets-fixes"><i class="fa fa-check"></i><b>4.3.5</b> Limites des effets fixes</a></li>
+<li class="chapter" data-level="4.3.6" data-path="mod-id2.html"><a href="mod-id2.html#extension-logistique"><i class="fa fa-check"></i><b>4.3.6</b> Extension logistique</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="an-long.html"><a href="an-long.html"><i class="fa fa-check"></i><b>5</b> Analyses longitudinales</a>
@@ -216,29 +219,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="mod-id2" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Modélisation et identification causale, vol. 2</h1>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="mod-id2.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lfe)</span>
-<span id="cb22-2"><a href="mod-id2.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
-<span id="cb22-3"><a href="mod-id2.html#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb22-4"><a href="mod-id2.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
-<span id="cb22-5"><a href="mod-id2.html#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code></pre></div>
-<p>Je mets immédiatement les lignes de codes complètes ici. Il est fortement recommandé d’utiliser la fonction <code>felm()</code> du package <code>lfe</code> pour toutes les techniques de ce cours, mais il est aussi possible d’utiliser <code>lm()</code>, <code>plm()</code> ou <code>ivreg()</code> pour de petites vérifications.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="mod-id2.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lfe)</span>
+<span id="cb1-2"><a href="mod-id2.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb1-3"><a href="mod-id2.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb1-4"><a href="mod-id2.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
+<span id="cb1-5"><a href="mod-id2.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code></pre></div>
+<p>Je mets immédiatement les lignes de codes complètes ici. Il est fortement recommandé d’utiliser la fonction <code>felm()</code> du package <code>lfe</code> pour toutes les techniques de ce cours, mais il est aussi possible d’utiliser <code>lm()</code>, <code>plm::plm()</code> ou <code>ivreg()</code> pour de petites vérifications.</p>
 <p>La fonction <code>felm()</code> fait tout: les effets fixes, les effets aléatoires, les variables instrumentales, la clusterisation des erreurs-types…it’s the GOAT 🐐.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="mod-id2.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## La syntaxe des commandes principales ##</span></span>
-<span id="cb23-2"><a href="mod-id2.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> f1 <span class="sc">+</span> f2 <span class="sc">|</span> x3 <span class="sc">+</span> x4 <span class="sc">|</span> clu1 <span class="sc">+</span> clu2, data, weights, ...)</span>
-<span id="cb23-3"><a href="mod-id2.html#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># soit</span></span>
-<span id="cb23-4"><a href="mod-id2.html#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(var_dep <span class="sc">~</span> vars_indep <span class="sc">|</span> vars_effet_fixe <span class="sc">|</span> vars_instrumentales <span class="sc">|</span> vars_cluster_se, data, weights, ...)</span>
-<span id="cb23-5"><a href="mod-id2.html#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># si on veut seulement clusteriser les erreurs-types, on remplace</span></span>
-<span id="cb23-6"><a href="mod-id2.html#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># vars_effet_fixe et/ou vars_instrumentales par 0</span></span>
-<span id="cb23-7"><a href="mod-id2.html#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1<span class="sc">+</span>x2 <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span><span class="dv">0</span><span class="sc">|</span>clu1<span class="sc">+</span>clu2, data, weights, ...)</span>
-<span id="cb23-8"><a href="mod-id2.html#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-9"><a href="mod-id2.html#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour les variables instrumentales - plus détaillé plus tard</span></span>
-<span id="cb23-10"><a href="mod-id2.html#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ivreg</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
-<span id="cb23-11"><a href="mod-id2.html#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># soit</span></span>
-<span id="cb23-12"><a href="mod-id2.html#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ivreg</span>(var_dep <span class="sc">~</span> var_endo <span class="sc">+</span> vars_indep <span class="sc">|</span> vars_exo_inst, data, weights, ...)</span>
-<span id="cb23-13"><a href="mod-id2.html#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-14"><a href="mod-id2.html#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour les données de panel/effets fixes et tout ça</span></span>
-<span id="cb23-15"><a href="mod-id2.html#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;var_indiv&quot;</span>,<span class="st">&quot;var_temps&quot;</span>), data, <span class="at">model =</span> <span class="st">&quot;pooling&quot;</span>)</span>
-<span id="cb23-16"><a href="mod-id2.html#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># voir la documentation pour les autres &quot;model&quot; et également les &quot;effect&quot;.</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="mod-id2.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## La syntaxe des commandes principales ##</span></span>
+<span id="cb2-2"><a href="mod-id2.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> f1 <span class="sc">+</span> f2 <span class="sc">|</span> x3 <span class="sc">+</span> x4 <span class="sc">|</span> clu1 <span class="sc">+</span> clu2, data, weights, ...)</span>
+<span id="cb2-3"><a href="mod-id2.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># soit</span></span>
+<span id="cb2-4"><a href="mod-id2.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(var_dep <span class="sc">~</span> vars_indep <span class="sc">|</span> vars_effet_fixe <span class="sc">|</span> vars_instrumentales <span class="sc">|</span> vars_cluster_se, data, weights, ...)</span>
+<span id="cb2-5"><a href="mod-id2.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># si on veut seulement clusteriser les erreurs-types, on remplace</span></span>
+<span id="cb2-6"><a href="mod-id2.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># vars_effet_fixe et/ou vars_instrumentales par 0</span></span>
+<span id="cb2-7"><a href="mod-id2.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1<span class="sc">+</span>x2 <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span><span class="dv">0</span><span class="sc">|</span>clu1<span class="sc">+</span>clu2, data, weights, ...)</span>
+<span id="cb2-8"><a href="mod-id2.html#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="mod-id2.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour les variables instrumentales - plus détaillé plus tard</span></span>
+<span id="cb2-10"><a href="mod-id2.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ivreg</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
+<span id="cb2-11"><a href="mod-id2.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># soit</span></span>
+<span id="cb2-12"><a href="mod-id2.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ivreg</span>(var_dep <span class="sc">~</span> var_endo <span class="sc">+</span> vars_indep <span class="sc">|</span> vars_exo_inst, data, weights, ...)</span>
+<span id="cb2-13"><a href="mod-id2.html#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="mod-id2.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour les données de panel/effets fixes et tout ça</span></span>
+<span id="cb2-15"><a href="mod-id2.html#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;var_indiv&quot;</span>,<span class="st">&quot;var_temps&quot;</span>), data, <span class="at">model =</span> <span class="st">&quot;pooling&quot;</span>)</span>
+<span id="cb2-16"><a href="mod-id2.html#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># voir la documentation pour les autres &quot;model&quot; et également les &quot;effect&quot;.</span></span></code></pre></div>
 <div id="approches-expérimentales" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Approches expérimentales</h2>
 <p>Groupe traité v groupe de contrôle.</p>
@@ -365,30 +368,30 @@ Le modèle linéaire simple (premières estimations)<br />
 - attention de bien centrer la variable <span class="math inline">\(x\)</span> autour du seuil ! <span class="math inline">\(x&#39; = x-seuil\)</span>,<br />
 - <span class="math inline">\(y_i = \beta_0 + \beta_1 x&#39; + \beta_2 x^{&#39;2} + \beta_3(x&#39;&gt;0) + \beta_4x&#39; \times (x&#39;&gt;0) + \beta_5 x^{&#39;2} \times (x&#39;&gt;0) + \epsilon_i\)</span>,<br />
 - l’effet causal est mesuré par <span class="math inline">\(\beta_3\)</span>.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="mod-id2.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regression discontinuity design - je recommende de regarder directement le code du prof et de lancer les commandes.</span></span>
-<span id="cb24-2"><a href="mod-id2.html#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="mod-id2.html#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># recentrage de la variable autour du seuil</span></span>
-<span id="cb24-4"><a href="mod-id2.html#cb24-4" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>var_cont_cent <span class="ot">&lt;-</span> d<span class="sc">$</span>var_continue <span class="sc">-</span> valeur_seuil_au_choix <span class="co"># commande parmi plein d&#39;autres, là c&#39;est toi qui prend l&#39;initiative</span></span>
-<span id="cb24-5"><a href="mod-id2.html#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="mod-id2.html#cb24-6" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix),<span class="at">data=</span>d)</span>
-<span id="cb24-7"><a href="mod-id2.html#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># suppose que pente est la même à gauche et à droite du seuil</span></span>
-<span id="cb24-8"><a href="mod-id2.html#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-9"><a href="mod-id2.html#cb24-9" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_cont_cent<span class="sc">+</span><span class="fu">I</span>(var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>),<span class="at">data=</span>d)</span>
-<span id="cb24-10"><a href="mod-id2.html#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="mod-id2.html#cb24-11" aria-hidden="true" tabindex="-1"></a>pr2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">+</span></span>
-<span id="cb24-12"><a href="mod-id2.html#cb24-12" aria-hidden="true" tabindex="-1"></a>          <span class="fu">I</span>((var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">*</span>var_continue),<span class="at">data=</span>d)</span>
-<span id="cb24-13"><a href="mod-id2.html#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-14"><a href="mod-id2.html#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co"># pour cacher les points extrêmes de la base (pour garder la linéarité)</span></span>
-<span id="cb24-15"><a href="mod-id2.html#cb24-15" aria-hidden="true" tabindex="-1"></a>pr2b <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">+</span></span>
-<span id="cb24-16"><a href="mod-id2.html#cb24-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">*</span>var_continue),</span>
-<span id="cb24-17"><a href="mod-id2.html#cb24-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">data=</span>d[d<span class="sc">$</span>var_continue<span class="sc">&gt;=</span>valeur1 <span class="sc">&amp;</span> d<span class="sc">$</span>var_continue<span class="sc">&lt;=</span>valeur2,])</span>
-<span id="cb24-18"><a href="mod-id2.html#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co"># pr2 et pr2b supposent que l&#39;effet est linéaire des deux cotés du seuil</span></span>
-<span id="cb24-19"><a href="mod-id2.html#cb24-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-20"><a href="mod-id2.html#cb24-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-21"><a href="mod-id2.html#cb24-21" aria-hidden="true" tabindex="-1"></a>pr3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_cont_cent<span class="sc">+</span></span>
-<span id="cb24-22"><a href="mod-id2.html#cb24-22" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>(var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">+</span></span>
-<span id="cb24-23"><a href="mod-id2.html#cb24-23" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">*</span>var_cont_cent)<span class="sc">+</span></span>
-<span id="cb24-24"><a href="mod-id2.html#cb24-24" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">*</span>var_cont_cent2),<span class="at">data=</span>d)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="mod-id2.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regression discontinuity design - je recommende de regarder directement le code du prof et de lancer les commandes.</span></span>
+<span id="cb3-2"><a href="mod-id2.html#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="mod-id2.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># recentrage de la variable autour du seuil</span></span>
+<span id="cb3-4"><a href="mod-id2.html#cb3-4" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>var_cont_cent <span class="ot">&lt;-</span> d<span class="sc">$</span>var_continue <span class="sc">-</span> valeur_seuil_au_choix <span class="co"># commande parmi plein d&#39;autres, là c&#39;est toi qui prend l&#39;initiative</span></span>
+<span id="cb3-5"><a href="mod-id2.html#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="mod-id2.html#cb3-6" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix),<span class="at">data=</span>d)</span>
+<span id="cb3-7"><a href="mod-id2.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># suppose que pente est la même à gauche et à droite du seuil</span></span>
+<span id="cb3-8"><a href="mod-id2.html#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="mod-id2.html#cb3-9" aria-hidden="true" tabindex="-1"></a>pr1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_cont_cent<span class="sc">+</span><span class="fu">I</span>(var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>),<span class="at">data=</span>d)</span>
+<span id="cb3-10"><a href="mod-id2.html#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="mod-id2.html#cb3-11" aria-hidden="true" tabindex="-1"></a>pr2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">+</span></span>
+<span id="cb3-12"><a href="mod-id2.html#cb3-12" aria-hidden="true" tabindex="-1"></a>          <span class="fu">I</span>((var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">*</span>var_continue),<span class="at">data=</span>d)</span>
+<span id="cb3-13"><a href="mod-id2.html#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="mod-id2.html#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># pour cacher les points extrêmes de la base (pour garder la linéarité)</span></span>
+<span id="cb3-15"><a href="mod-id2.html#cb3-15" aria-hidden="true" tabindex="-1"></a>pr2b <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_continue<span class="sc">+</span><span class="fu">I</span>(var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">+</span></span>
+<span id="cb3-16"><a href="mod-id2.html#cb3-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_continue<span class="sc">&gt;=</span>valeur_seuil_au_choix)<span class="sc">*</span>var_continue),</span>
+<span id="cb3-17"><a href="mod-id2.html#cb3-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">data=</span>d[d<span class="sc">$</span>var_continue<span class="sc">&gt;=</span>valeur1 <span class="sc">&amp;</span> d<span class="sc">$</span>var_continue<span class="sc">&lt;=</span>valeur2,])</span>
+<span id="cb3-18"><a href="mod-id2.html#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># pr2 et pr2b supposent que l&#39;effet est linéaire des deux cotés du seuil</span></span>
+<span id="cb3-19"><a href="mod-id2.html#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="mod-id2.html#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="mod-id2.html#cb3-21" aria-hidden="true" tabindex="-1"></a>pr3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_cont_cent<span class="sc">+</span></span>
+<span id="cb3-22"><a href="mod-id2.html#cb3-22" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>(var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">+</span></span>
+<span id="cb3-23"><a href="mod-id2.html#cb3-23" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">*</span>var_cont_cent)<span class="sc">+</span></span>
+<span id="cb3-24"><a href="mod-id2.html#cb3-24" aria-hidden="true" tabindex="-1"></a>            <span class="fu">I</span>((var_cont_cent<span class="sc">&gt;=</span><span class="dv">0</span>)<span class="sc">*</span>var_cont_cent2),<span class="at">data=</span>d)</span></code></pre></div>
 </div>
 </div>
 <div id="variables-instrumentales" class="section level2" number="4.2">
@@ -407,7 +410,7 @@ Le modèle linéaire simple (premières estimations)<br />
 <li><span class="math inline">\(cov(z_{inst},x_{endo}) \neq 0\)</span>, et</li>
 <li><span class="math inline">\(cov(z_{inst},\epsilon) = 0\)</span></li>
 </ul>
-<p>Vrai modèle<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>: <span class="math inline">\(y = a_{vrai} + b_{vrai} x_{endo} + c_{vrai} x_2 + \epsilon\)</span> avec <span class="math inline">\(cov(x_{endo},\epsilon) \neq 0\)</span>.</p>
+<p>Vrai modèle<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>: <span class="math inline">\(y = a_{vrai} + b_{vrai} x_{endo} + c_{vrai} x_2 + \epsilon\)</span> avec <span class="math inline">\(cov(x_{endo},\epsilon) \neq 0\)</span>.</p>
 <p><strong>Première étape</strong>: on régresse la variable endogène à la fois sur l’instrument et sur les autres variables explicatives. NB: on met toutes les variables explicatives même non pertinentes en première étape.
 <span class="math display">\[x_{endo} = a_0 + a_1 z_{inst} + a_2 x_2 + \epsilon_{prem}\]</span></p>
 <p>On récupère de cette première régression <span class="math inline">\(x&#39;_{endo}\)</span>, la prédiction de la variable endogène <span class="math inline">\(x_{endo}\)</span>:
@@ -415,33 +418,33 @@ Le modèle linéaire simple (premières estimations)<br />
 <p><strong>Deuxième étape</strong>: on introduit cette prédiction dans la régression à la place <span class="math inline">\(x_{endo}\)</span>.
 <span class="math display">\[y = a_{est} + b_{est} x&#39;_{endo} + c_{est} x_2 + \epsilon_{deux}\]</span></p>
 <p>Comme <span class="math inline">\(z_{inst}\)</span> et <span class="math inline">\(x_2\)</span> ne sont pas corrélés avec le résidu <span class="math inline">\(\epsilon\)</span>, alors <span class="math inline">\(x&#39;_{endo}\)</span> n’est plus corrélé avec <span class="math inline">\(\epsilon\)</span>, l’estimateur des variables instrumentales permet d’estimer sans biais <span class="math inline">\(b_{vrai}\)</span> (et le reste).</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="mod-id2.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 1ère façon de procéder ##</span></span>
-<span id="cb25-2"><a href="mod-id2.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># MCO &quot;naïve&quot;</span></span>
-<span id="cb25-3"><a href="mod-id2.html#cb25-3" aria-hidden="true" tabindex="-1"></a>mco <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2, data, weights, ...)</span>
-<span id="cb25-4"><a href="mod-id2.html#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="mod-id2.html#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Forme réduite - impact des instruments sur variable dépendante (facultatif)</span></span>
-<span id="cb25-6"><a href="mod-id2.html#cb25-6" aria-hidden="true" tabindex="-1"></a>fr <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
-<span id="cb25-7"><a href="mod-id2.html#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-8"><a href="mod-id2.html#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Première étape: regression endogene sur autres variables indépendantes et instruments</span></span>
-<span id="cb25-9"><a href="mod-id2.html#cb25-9" aria-hidden="true" tabindex="-1"></a>pe <span class="ot">&lt;-</span> <span class="fu">lm</span>(x_endo <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
-<span id="cb25-10"><a href="mod-id2.html#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-11"><a href="mod-id2.html#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Deuxième étape: on introduit la prediction dans la régression &quot;naïve&quot;</span></span>
-<span id="cb25-12"><a href="mod-id2.html#cb25-12" aria-hidden="true" tabindex="-1"></a>mco2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> pe<span class="sc">$</span>fitted.values <span class="sc">+</span> x1 <span class="sc">+</span> x2, data, weights, ...)</span>
-<span id="cb25-13"><a href="mod-id2.html#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-14"><a href="mod-id2.html#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Deuxième façon de procéder ##</span></span>
-<span id="cb25-15"><a href="mod-id2.html#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Régression variable instrumentale directe, sans première étape</span></span>
-<span id="cb25-16"><a href="mod-id2.html#cb25-16" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ivreg</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
-<span id="cb25-17"><a href="mod-id2.html#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-18"><a href="mod-id2.html#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour voir les coefficients de la première étape</span></span>
-<span id="cb25-19"><a href="mod-id2.html#cb25-19" aria-hidden="true" tabindex="-1"></a>z<span class="sc">$</span>coefficients1</span>
-<span id="cb25-20"><a href="mod-id2.html#cb25-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-21"><a href="mod-id2.html#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Documentation officielle [vérifier si dans cours]:</span></span>
-<span id="cb25-22"><a href="mod-id2.html#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that exogenous regressors have to be included as instruments for themselves. For example, if there is one exogenous regressor ex and one endogenous regressor en with instrument in, the appropriate formula would be</span></span>
-<span id="cb25-23"><a href="mod-id2.html#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ivreg</span>(y <span class="sc">~</span> ex <span class="sc">+</span> en <span class="sc">|</span> ex <span class="sc">+</span> <span class="cf">in</span>)</span>
-<span id="cb25-24"><a href="mod-id2.html#cb25-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-25"><a href="mod-id2.html#cb25-25" aria-hidden="true" tabindex="-1"></a><span class="do">## Troisième façon de procéder ##</span></span>
-<span id="cb25-26"><a href="mod-id2.html#cb25-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Régression avec instruments, sans effet fixe et sans clusterisation</span></span>
-<span id="cb25-27"><a href="mod-id2.html#cb25-27" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span> z1<span class="sc">+</span> z2 <span class="sc">|</span><span class="dv">0</span>, data, weights, ...)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="mod-id2.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 1ère façon de procéder ##</span></span>
+<span id="cb4-2"><a href="mod-id2.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># MCO &quot;naïve&quot;</span></span>
+<span id="cb4-3"><a href="mod-id2.html#cb4-3" aria-hidden="true" tabindex="-1"></a>mco <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2, data, weights, ...)</span>
+<span id="cb4-4"><a href="mod-id2.html#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="mod-id2.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Forme réduite - impact des instruments sur variable dépendante (facultatif)</span></span>
+<span id="cb4-6"><a href="mod-id2.html#cb4-6" aria-hidden="true" tabindex="-1"></a>fr <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
+<span id="cb4-7"><a href="mod-id2.html#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="mod-id2.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Première étape: regression endogene sur autres variables indépendantes et instruments</span></span>
+<span id="cb4-9"><a href="mod-id2.html#cb4-9" aria-hidden="true" tabindex="-1"></a>pe <span class="ot">&lt;-</span> <span class="fu">lm</span>(x_endo <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
+<span id="cb4-10"><a href="mod-id2.html#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="mod-id2.html#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Deuxième étape: on introduit la prediction dans la régression &quot;naïve&quot;</span></span>
+<span id="cb4-12"><a href="mod-id2.html#cb4-12" aria-hidden="true" tabindex="-1"></a>mco2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> pe<span class="sc">$</span>fitted.values <span class="sc">+</span> x1 <span class="sc">+</span> x2, data, weights, ...)</span>
+<span id="cb4-13"><a href="mod-id2.html#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="mod-id2.html#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Deuxième façon de procéder ##</span></span>
+<span id="cb4-15"><a href="mod-id2.html#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Régression variable instrumentale directe, sans première étape</span></span>
+<span id="cb4-16"><a href="mod-id2.html#cb4-16" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ivreg</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> z1 <span class="sc">+</span> z2, data, weights, ...)</span>
+<span id="cb4-17"><a href="mod-id2.html#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="mod-id2.html#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour voir les coefficients de la première étape</span></span>
+<span id="cb4-19"><a href="mod-id2.html#cb4-19" aria-hidden="true" tabindex="-1"></a>z<span class="sc">$</span>coefficients1</span>
+<span id="cb4-20"><a href="mod-id2.html#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="mod-id2.html#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Documentation officielle [vérifier si dans cours]:</span></span>
+<span id="cb4-22"><a href="mod-id2.html#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that exogenous regressors have to be included as instruments for themselves. For example, if there is one exogenous regressor ex and one endogenous regressor en with instrument in, the appropriate formula would be</span></span>
+<span id="cb4-23"><a href="mod-id2.html#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ivreg</span>(y <span class="sc">~</span> ex <span class="sc">+</span> en <span class="sc">|</span> ex <span class="sc">+</span> <span class="cf">in</span>)</span>
+<span id="cb4-24"><a href="mod-id2.html#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="mod-id2.html#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="do">## Troisième façon de procéder ##</span></span>
+<span id="cb4-26"><a href="mod-id2.html#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Régression avec instruments, sans effet fixe et sans clusterisation</span></span>
+<span id="cb4-27"><a href="mod-id2.html#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x_endo <span class="sc">+</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span> z1<span class="sc">+</span> z2 <span class="sc">|</span><span class="dv">0</span>, data, weights, ...)</span></code></pre></div>
 </div>
 <div id="econométrie-des-panels" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Econométrie des panels</h2>
@@ -469,9 +472,9 @@ Le modèle linéaire simple (premières estimations)<br />
 <p>ou comment résoudre le problème d’autocorrélation des résidus.</p>
 <p>Modèle estimé par les MCO: <span class="math inline">\(y_{it}=\beta_0+\beta_1 x_{it}+...+\beta_k x_{kit} + \epsilon_{it}\)</span></p>
 <p>Le modèle <em>pooled/pooling</em> ou modèle homogène suppose que tous les résidus ont la même variance et qu’il n’y a pas d’autocorrélation des résidus.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="mod-id2.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, data)</span>
-<span id="cb26-2"><a href="mod-id2.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ou</span></span>
-<span id="cb26-3"><a href="mod-id2.html#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, data, <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;individu&quot;</span>,<span class="st">&quot;temps&quot;</span>), <span class="at">model =</span> <span class="st">&quot;pooling&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="mod-id2.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, data)</span>
+<span id="cb5-2"><a href="mod-id2.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ou</span></span>
+<span id="cb5-3"><a href="mod-id2.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, data, <span class="at">index=</span><span class="fu">c</span>(<span class="st">&quot;individu&quot;</span>,<span class="st">&quot;temps&quot;</span>), <span class="at">model =</span> <span class="st">&quot;pooling&quot;</span>)</span></code></pre></div>
 <p><strong>La résolution du problème d’autocorrélation des résidus</strong></p>
 <p>Deux possibilités:</p>
 <ol style="list-style-type: decimal">
@@ -482,9 +485,9 @@ Le modèle linéaire simple (premières estimations)<br />
 </ul></li>
 <li>Modéliser l’erreur comme la combinaison d’une erreur individuelle fixe et d’une erreur temporelle <span class="math inline">\(\Rightarrow\)</span> modèle à effet aléatoire (<em>random effect</em>).</li>
 </ol>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="mod-id2.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Là il y a une flopée de méthodes possibles pour corriger les écart-types, mais la manière la plus simple est d&#39;utiliser directement la fonction felm()</span></span>
-<span id="cb27-2"><a href="mod-id2.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Utilise felm(), jdcjdr.</span></span>
-<span id="cb27-3"><a href="mod-id2.html#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span><span class="dv">0</span><span class="sc">|</span> var_cluster_se, data)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="mod-id2.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Là il y a une flopée de méthodes possibles pour corriger les écart-types, mais la manière la plus simple est d&#39;utiliser directement la fonction felm() en précisant la variable de groupe pour obtenir des erreurs-types robustes clusterisées.</span></span>
+<span id="cb6-2"><a href="mod-id2.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Utilise felm(), jdcjdr.</span></span>
+<span id="cb6-3"><a href="mod-id2.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span><span class="dv">0</span><span class="sc">|</span> var_cluster_se, data)</span></code></pre></div>
 </div>
 <div id="les-modèles-à-effet-aléatoire" class="section level3" number="4.3.2">
 <h3><span class="header-section-number">4.3.2</span> Les modèles à effet aléatoire</h3>
@@ -495,7 +498,7 @@ Le modèle linéaire simple (premières estimations)<br />
 <li>La technique d’estimation est celle des moindres carrés généralisés.</li>
 <li>L’avantage de ce modèle est de permettre une décomposition de la variance des résidus en un facteur individuel (i.e. <em>between</em>, et le cas échéant un facteur temporel) et un facteur idiosyncrasique [big words].</li>
 </ul>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="mod-id2.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, data, index, <span class="at">model =</span> <span class="st">&quot;random&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="mod-id2.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, data, index, <span class="at">model =</span> <span class="st">&quot;random&quot;</span>)</span></code></pre></div>
 </div>
 <div id="le-problème-dhétérogénéité-inobservée" class="section level3" number="4.3.3">
 <h3><span class="header-section-number">4.3.3</span> Le problème d’hétérogénéité inobservée</h3>
@@ -513,34 +516,51 @@ Le modèle linéaire simple (premières estimations)<br />
 <li>Modèle “<em>within</em>”* : modèle (sans constante) où l’on centre chaque variable (explicative ou expliquée), càd où l’on calcule l’écart à la moyenne de la variable pour l’individu.</li>
 </ul>
 <p><span class="math display">\[(y_{it} - \bar y_i) = \beta_i (x_{it} - \bar x_i) + (\epsilon_{it} - \bar \epsilon_i)\]</span></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="mod-id2.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Avec les effets fixes ##</span></span>
-<span id="cb29-2"><a href="mod-id2.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">factor</span>(var_indiv)<span class="sc">+</span>x1<span class="sc">+</span>x2, data)</span>
-<span id="cb29-3"><a href="mod-id2.html#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="mod-id2.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Avec l&#39;estimateur within et le pkg plm ##</span></span>
-<span id="cb29-5"><a href="mod-id2.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, index, <span class="at">model =</span> <span class="st">&quot;within&quot;</span>, data)</span>
-<span id="cb29-6"><a href="mod-id2.html#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-7"><a href="mod-id2.html#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Avec l&#39;estimateur within et le pkg lfe ##</span></span>
-<span id="cb29-8"><a href="mod-id2.html#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> var_indiv, data)</span>
-<span id="cb29-9"><a href="mod-id2.html#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># en clusterisant les erreurs types par individu</span></span>
-<span id="cb29-10"><a href="mod-id2.html#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> var_indiv <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span> var_indiv, data)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="mod-id2.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimation des effets fixes</span></span>
+<span id="cb8-2"><a href="mod-id2.html#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="mod-id2.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Avec les effets fixes ##</span></span>
+<span id="cb8-4"><a href="mod-id2.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">factor</span>(var_indiv)<span class="sc">+</span>x1<span class="sc">+</span>x2, data)</span>
+<span id="cb8-5"><a href="mod-id2.html#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="mod-id2.html#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Avec l&#39;estimateur within et le pkg plm ##</span></span>
+<span id="cb8-7"><a href="mod-id2.html#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, index, <span class="at">model =</span> <span class="st">&quot;within&quot;</span>, data)</span>
+<span id="cb8-8"><a href="mod-id2.html#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="mod-id2.html#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Avec l&#39;estimateur within et le pkg lfe ##</span></span>
+<span id="cb8-10"><a href="mod-id2.html#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> var_indiv, data)</span>
+<span id="cb8-11"><a href="mod-id2.html#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># en clusterisant les erreurs types par individu</span></span>
+<span id="cb8-12"><a href="mod-id2.html#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">felm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">|</span> var_indiv <span class="sc">|</span><span class="dv">0</span><span class="sc">|</span> var_indiv, data)</span></code></pre></div>
 <p><strong>Deux effets fixes: groupes et temps</strong></p>
 <p>On peut introduire un effet fixe par unité de groupe (e.g. individu, pays, etc.) et un effet fixe par unité de temps.</p>
 <p>La conjoncture commune capturée par l’effet fixe temps:</p>
 <ul>
-<li>Tout avec des variables dichotomiques<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>:</li>
+<li>Tout avec des variables dichotomiques<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>:</li>
 </ul>
 <p><span class="math display">\[y_{it}=\beta_i X_{it} + \alpha_i + \delta_t + \epsilon_{it}\]</span></p>
 <ul>
 <li><em>Within</em> + variables dichotomiques de temps.</li>
 </ul>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="mod-id2.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> <span class="fu">factor</span>(var_temps), index, <span class="at">model=</span><span class="st">&quot;within&quot;</span>, data)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="mod-id2.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> <span class="fu">factor</span>(var_temps), index, <span class="at">model=</span><span class="st">&quot;within&quot;</span>, data)</span></code></pre></div>
 <ul>
 <li><em>Two ways within</em> (formule pour panel cylindrés)</li>
 </ul>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="mod-id2.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, index, <span class="at">model=</span><span class="st">&quot;within&quot;</span>, <span class="at">effect=</span><span class="st">&quot;twoways&quot;</span>, data) <span class="co"># très lent</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="mod-id2.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, index, <span class="at">model=</span><span class="st">&quot;within&quot;</span>, <span class="at">effect=</span><span class="st">&quot;twoways&quot;</span>, data) <span class="co"># très lent</span></span></code></pre></div>
 </div>
-<div id="modèles-en-différences-premières-first-difference" class="section level4" number="4.3.3.2">
-<h4><span class="header-section-number">4.3.3.2</span> Modèles en différences premières (<em>first difference</em>)</h4>
+<div id="effets-fixes-ou-effets-aléatoires" class="section level4" number="4.3.3.2">
+<h4><span class="header-section-number">4.3.3.2</span> Effets fixes ou effets aléatoires ?</h4>
+<p>Comment choisir?</p>
+<p>Test de Hausman: on regarde si l’estimation par effets fixes produit des résultats significativement différents d’un modèle à effets aléatoires.</p>
+<ul>
+<li>Si le test de Hausman est significatif, on privilégiera les effets fixes.</li>
+<li>Si le test de Hausman n’est pas significatif, on privilégiera les effets aléatoires.</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="mod-id2.html#cb11-1" aria-hidden="true" tabindex="-1"></a>regfe <span class="ot">&lt;-</span> <span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, data, index, <span class="at">model =</span> <span class="st">&quot;within&quot;</span>)</span>
+<span id="cb11-2"><a href="mod-id2.html#cb11-2" aria-hidden="true" tabindex="-1"></a>regre <span class="ot">&lt;-</span> <span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, data, index, <span class="at">model =</span> <span class="st">&quot;random&quot;</span>)</span>
+<span id="cb11-3"><a href="mod-id2.html#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="mod-id2.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">phtest</span>(regfe, regre)</span>
+<span id="cb11-5"><a href="mod-id2.html#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># p-value significative -&gt; effets fixes.</span></span>
+<span id="cb11-6"><a href="mod-id2.html#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># p-value non significative -&gt; effets aléatoires.</span></span></code></pre></div>
+</div>
+<div id="modèles-en-différences-premières-first-difference" class="section level4" number="4.3.3.3">
+<h4><span class="header-section-number">4.3.3.3</span> Modèles en différences premières (<em>first difference</em>)</h4>
 <p>Expliquer les évolutions par les évolutions (e.g différence revenu entre 1 année, puis 2, puis 5, etc…)
 <span class="math display">\[ (y_{it} - y_{it-1})=\beta_i (x_{it} - x_{it-1}) + (\epsilon_{it} - \epsilon_{it-1})\]</span>
 Le choix du retard:</p>
@@ -553,20 +573,115 @@ Le choix du retard:</p>
 <li>panel à deux périodes: modèles équivalents (uniquement lorsque le modèle <em>within</em> comporte aussi un effet fixe temps).</li>
 <li>panel à plusieurs périodes: le modèle à effets fixes est une moyenne de variations de courtes et de longues périodes.</li>
 </ul>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="mod-id2.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, index, <span class="at">model =</span> <span class="st">&quot;fd&quot;</span>, data)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="mod-id2.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, index, <span class="at">model =</span> <span class="st">&quot;fd&quot;</span>, data)</span></code></pre></div>
+<p><strong>Effets fixes et différences premières. Remarques</strong></p>
+<ul>
+<li><p>Double effet: réduction du problème d’autocorrélation et suppression du problème d’hétérogénéité inobservée invariante dans le temps.</p></li>
+<li><p>Interprétation: les évolutions expliquent les évolutions.</p></li>
+<li><p>LSDV: variables dichotomiques en très grand nombre (quand on les estime) <span class="math inline">\(\Rightarrow\)</span> on n’imprime généralement pas les résultats.</p></li>
+<li><p>Disparition de la constante en effets fixes mais pas en différences premières.</p></li>
+<li><p><strong>Disparition de toutes les variables constantes dans le temps</strong> <span class="math inline">\(\Rightarrow\)</span> effet contenu dans les variables dichotomiques individuelles.</p>
+<ul>
+<li>ex: immigration.</li>
+<li>Parfois, les variables présumées constantes se maintiennent en raison de points aberrants:
+<ul>
+<li>incohérence de déclaration d’une vague à l’autre,</li>
+<li>changement de sexe,</li>
+<li>diplômes tardifs…</li>
+</ul></li>
+</ul></li>
+<li><p>On peut les introduire malgré tout en les croisant avec une variable temporelle. L’interprétation reste en terme d’évolution.</p></li>
+</ul>
 </div>
 </div>
 <div id="se-concentrer-sur-la-variance-interindividuelle-et-éliminer-la-variance-intra-individuelle" class="section level3" number="4.3.4">
 <h3><span class="header-section-number">4.3.4</span> Se concentrer sur la variance interindividuelle et éliminer la variance intra-individuelle</h3>
+<p><strong>Etudier la variance interindividuelle</strong></p>
+<ul>
+<li>Le modèle à effets fixes ou <em>within</em> permet d’étudier les évolutions intra-individuelles.</li>
+<li>La régression homogène (<em>pooled</em>) ou celles à effets aléatoires sont deux manières d’analyser une combinaison de variations intra-individuelles et interindividuelles.</li>
+<li>Peut-on étudier les variations strictement interindividuelles? Oui, de deux façons:
+<ul>
+<li>Régression toute simple sur une seule période.</li>
+<li>Régression <em>between</em>.</li>
+</ul></li>
+</ul>
+<div id="régression-between" class="section level4" number="4.3.4.1">
+<h4><span class="header-section-number">4.3.4.1</span> Régression <em>between</em></h4>
+<p>Régression où l’on explique la moyenne par individu de la variable expliquée par les moyennes par individu des variables explicatives.
+<span class="math display">\[\bar y = \beta_0 + \beta_1 \bar x_{1i} + ... + \beta_k \bar x_{ki} + \bar \epsilon_i\]</span></p>
+<p>Cette régression informe sur la variation interindividuelle. Elle peut être considérée comme la bonne régression:</p>
+<ul>
+<li>Si la variation intra-individuelle dans le temps est négligeable,</li>
+<li>Si les individus qui connaissent des variations intra-individuelles sont non représentatifs.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="mod-id2.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, index, <span class="at">model =</span> <span class="st">&quot;between&quot;</span>, data)</span></code></pre></div>
+</div>
+</div>
+<div id="limites-des-effets-fixes" class="section level3" number="4.3.5">
+<h3><span class="header-section-number">4.3.5</span> Limites des effets fixes</h3>
+<ul>
+<li>On estime les effets sur les individus qui connaissent des évolutions.
+<ul>
+<li>Si <span class="math inline">\(y_i\)</span> ne change pas en fonction de <span class="math inline">\(t\)</span>, alors <span class="math inline">\(y_i\)</span> capturé par l’effet fixe <span class="math inline">\(a_i\)</span>.</li>
+<li>Ces évolutions, surtout sur des variables explicatives qualitatives, peuvent être estimées sur des individus rares et très singuliers : biais de sélection</li>
+<li>Les variables explicatives du changement peuvent être aussi très singulières
+<ul>
+<li>Ex extrême: changement de sexe.
+Cela revient à considérer que la différence de résultats entre les sexes est estimée par l’évolution de résultat pour ceux qui changent de sexe</li>
+<li>Ex classique: promotion non-cadre <span class="math inline">\(\rightarrow\)</span> cadre</li>
+</ul></li>
+<li>Les effets fixes reviennent à considérer que les évolutions estimées sur les gens qui changent sont représentatives des différence d’état entre gens qui changent pas.</li>
+</ul></li>
+<li>Les effets fixes permettent bien de corriger l’hétérogénéité inobservée! Mais une partie seulement
+<ul>
+<li>L’hétérogénéité inobservée invariante dans le temps…</li>
+</ul></li>
+<li>Mais…transforment une régression en une régression en évolution…
+<ul>
+<li>Où un facteur d’évolution corrélé aux autres peut être inobservé et conduire à biaiser les autres</li>
+<li>Où il peut y avoir simultanéité des évolutions de la variable indépendante et des variables indépendantes</li>
+<li><span class="math inline">\(\Rightarrow\)</span> variables instrumentales (si on en trouve)</li>
+</ul></li>
+<li>Pas de correction de l’hétérogénéité inobservée qui varie dans le temps…</li>
+<li>Ontologie essentialiste
+<ul>
+<li>Effet individuel: fonds inchangé, permanent, toujours le même.</li>
+</ul></li>
+<li>Les évolutions expliquent les évolutions, mais le fixe n’explique pas le changement (sauf spécification contraire).</li>
+</ul>
+</div>
+<div id="extension-logistique" class="section level3" number="4.3.6">
+<h3><span class="header-section-number">4.3.6</span> Extension logistique</h3>
+<ul>
+<li>Probit (effets aléatoires), Logistique (effets fixes, effets aléatoires)<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>
+<ul>
+<li>NB: modèles probit déconseillés avec des effets fixes.</li>
+</ul></li>
+<li>Package <code>pglm</code>:
+<ul>
+<li>binomial models (logit and probit), count models (poisson and negbin) and ordered models (logit and probit).</li>
+<li>Syntaxe (exemple - actuellement, la méthode <em>within</em> et <em>between</em> ne fonctionne pas pour les modèles logit et probit avec pglm.)</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="mod-id2.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pglm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, index, data, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="at">model =</span> <span class="st">&quot;random&quot;</span>)</span></code></pre></div>
+<ul>
+<li>Package <code>survival</code>:
+<ul>
+<li>clogit</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="mod-id2.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">clogit</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> <span class="fu">strata</span>(var_indiv), data) <span class="co"># je suis pas sûre. de toute façon on n&#39;utilise pas cette méthode.</span></span></code></pre></div>
 
 </div>
 </div>
 </div>
 <div class="footnotes">
 <hr />
-<ol start="5">
-<li id="fn5"><p>Différent du modèle <em>théorique</em>.<a href="mod-id2.html#fnref5" class="footnote-back">↩︎</a></p></li>
-<li id="fn6"><p>A éviter car prend beaucoup de place et de mémoire sur la console R.<a href="mod-id2.html#fnref6" class="footnote-back">↩︎</a></p></li>
+<ol start="1">
+<li id="fn1"><p>Différent du modèle <em>théorique</em>.<a href="mod-id2.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>A éviter car prend beaucoup de place et de mémoire sur la console R.<a href="mod-id2.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Logit en panel.<a href="mod-id2.html#fnref3" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
