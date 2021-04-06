@@ -1,0 +1,14 @@
+# (APPENDIX) RMarkdown {#rmd}
+
+## Entête YAML
+
+## Code R
+
+## Texte
+
+## Autres possibilités
+
+* faire un site (comme celui-ci),
+* un blog,
+* des slides,
+* ton CV...

@@ -20,11 +20,11 @@ Le modèle de régression linéaire est estimé à partir de la méthode des Moi
 **Important pour les cours suivants** -- les MCO suivent 6 hypothèses:
 
 1. Linéarité des paramètres (relation linéaire entre $Y$ et $X$, $Y$ continue).
-2. Absence d'autocorrélation des variables explicatives (il ne faut pas qu'une variable soit le multiple d'une autre).
-3. Homoscédasticité (la variance des erreur-types est la même pour toutes les observations).
+2. Absence d'autocorrélation des variables explicatives (il ne faut pas qu'une variable soit le multiple d'une autre, autrement les logiciels d'analyse les confondent et c'est pas top).
+3. Homoscédasticité des erreurs-types (la variance des erreur-types est la même pour toutes les observations).
 4. Absence d'autocorrélation des résidus (les résidus sont indépendants les uns des autres. Sinon voudrait dire que les observations sont corrélées entre elles).
 5. Normalité des résidus (moyenne des résidus égale à 0).
-6. Absence de corrélation entre les variables explicatives et le résidu *dans le modèle théorique*.
+6. Absence de corrélation entre les variables explicatives et le résidu *dans le modèle théorique* (risque de sur/sous-estimation du coefficient de la variable explicative).
 
 La violation d'une ou plusieurs de ces hypothèses implique un changement de variables, ou l'utilisation d'un différent modèle de régression.
 
@@ -44,7 +44,7 @@ plot(d$var_dep, d$var_indep)
 abline(model_1)
 ```
 
-On interprète seulement les coefficients statistiquement significatifs (avec des petites étoiles) : un coefficient statistiquement significatif veut dire qu'on peut rejeter l'hypothèse que la variable explicative n'influence pas la variable à expliquer. Toutefois ça peut être intéressant de dire "je suis surprise que cette variable n'est pas d'effet, ce qui va à l'encontre de mon hypothèse/de la littérature, blabla."
+On interprète seulement les coefficients statistiquement significatifs (avec des petites étoiles) : un coefficient statistiquement significatif veut dire qu'on peut rejeter l'hypothèse que la variable explicative n'influence pas la variable à expliquer. Toutefois ça peut être intéressant de dire "je suis surpris.e que cette variable n'est pas d'effet, ce qui va à l'encontre de mon hypothèse/de la littérature, blabla."
 
 ```{r eval=FALSE}
 # régression linéraire multiple (plusieurs var indeps) sans interaction
@@ -60,16 +60,19 @@ model_4 <- lm(var_dep ~ var_indep1 + var_indep2 + var_indep3 + var_indep1*var_in
 model_4 <- update(model_3, . ~ . + var_indep1*var_indep2)
 ```
 
-Le coefficient d'interaction s'additionne aux coefficients de base des catégories qui correspondent à ce nouveau coef.\
-Par exemple, on interagit le PIB avec le taux de natalité. Tu obtiens les résultats suivants :\
-- $\beta_1$ le coefficient du PIB;\
-- $\beta_2$ le coefficient du taux de natalité;\
-- $\beta_3$ le coefficient de l'interaction entre les deux variables.\
+Le coefficient d'interaction s'additionne aux coefficients de base des catégories qui correspondent à ce nouveau coef.
+
+Par exemple, on interagit le PIB avec le taux de natalité. Tu obtiens les résultats suivants :
+
+* $\beta_1$ le coefficient du PIB;
+* $\beta_2$ le coefficient du taux de natalité;
+* $\beta_3$ le coefficient de l'interaction entre les deux variables.
+
 Pour obtenir le vrai effet du PIB et du taux de natalité sur la $var\_dep$, tu additionnes ces trois coefficients.
 
 ## Régression linéaire de probabilité
 
-*Pas correct, please disregard. Je corrige ça bientôt.*
+*Pas correct, please disregard. Je corrige ça un jour.*
 
 Note KF: voir [ici](https://scpoecon.github.io/ScPoEconometrics/linreg.html#a-particular-rescaling-the-log-transform) pour compléter cette partie.
 

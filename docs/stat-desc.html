@@ -133,7 +133,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="index.html">Méthodes du master</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Présentation</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Présentation</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#le-site"><i class="fa fa-check"></i>Le site</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#mea-culpa"><i class="fa fa-check"></i>Mea culpa</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#aide-moi-à-taider"><i class="fa fa-check"></i>Aide moi à t’aider</a></li>
+</ul></li>
 <li class="part"><span><b>I Démarrage</b></span></li>
 <li class="chapter" data-level="" data-path="stat-desc.html"><a href="stat-desc.html"><i class="fa fa-check"></i>Statistiques descriptives</a></li>
 <li class="chapter" data-level="" data-path="nettoyage.html"><a href="nettoyage.html"><i class="fa fa-check"></i>Nettoyage des données</a></li>
@@ -226,27 +231,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-5"><a href="stat-desc.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glm2) <span class="co"># pour effectuer régressions logistiques</span></span>
 <span id="cb1-6"><a href="stat-desc.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet) <span class="co"># pour effectuer régressions logistiques polytomiques</span></span>
 <span id="cb1-7"><a href="stat-desc.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GDAtools)</span></code></pre></div>
-<p>On importe les données puis on les observe. Ci-dessous j’ai mis des fonctions de bases avec un dataframe qui n’existe pas.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="stat-desc.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(d)</span>
-<span id="cb2-2"><a href="stat-desc.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(d)</span>
-<span id="cb2-3"><a href="stat-desc.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(d)</span>
+<p>On importe les données puis on les observe. Ci-dessous j’ai mis des fonctions de bases avec un dataframe qui n’existe pas. J’ai lu récemment que ce n’était pas très <em>data analyst</em> que de faire <code>View(data_frame)</code> pour visualiser les données. A la place, il faut utiliser la console (ou ton script) pour en apprendre le plus possible sur tes données<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="stat-desc.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(d) <span class="co"># nb lignes (observations) et nb colonnes (variables-normalement)</span></span>
+<span id="cb2-2"><a href="stat-desc.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(d) </span>
+<span id="cb2-3"><a href="stat-desc.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(d) <span class="co"># type des variables</span></span>
 <span id="cb2-4"><a href="stat-desc.html#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="stat-desc.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(d))</span>
 <span id="cb2-6"><a href="stat-desc.html#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="stat-desc.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(d<span class="sc">$</span>x)</span>
 <span id="cb2-8"><a href="stat-desc.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(d<span class="sc">$</span>x)</span>
-<span id="cb2-9"><a href="stat-desc.html#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="stat-desc.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(d<span class="sc">$</span>x,d<span class="sc">$</span>y,<span class="at">useNA=</span><span class="st">&quot;ifany&quot;</span>)</span>
-<span id="cb2-11"><a href="stat-desc.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(d<span class="sc">$</span>x,d<span class="sc">$</span>y,<span class="at">useNA=</span><span class="st">&quot;ifany&quot;</span>))</span>
-<span id="cb2-12"><a href="stat-desc.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rprop</span>(<span class="fu">table</span>(d<span class="sc">$</span>x,d<span class="sc">$</span>y))</span>
-<span id="cb2-13"><a href="stat-desc.html#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="stat-desc.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># corrélation</span></span>
-<span id="cb2-15"><a href="stat-desc.html#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(d<span class="sc">$</span>x,d<span class="sc">$</span>y,<span class="at">method=</span><span class="st">&#39;pearson&#39;</span>)</span>
-<span id="cb2-16"><a href="stat-desc.html#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="stat-desc.html#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># test du khi-deux</span></span>
-<span id="cb2-18"><a href="stat-desc.html#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(d<span class="sc">$</span>x, d<span class="sc">$</span>y)</span></code></pre></div>
-<p>Toutefois, ces mesures ne devraient pas suffire pour décider de faire une régression linéaire ! Il faut également visualiser les données, pour être sûr.e que la répartition soit bien linéaire.</p>
+<span id="cb2-9"><a href="stat-desc.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(d<span class="sc">$</span>x) <span class="co"># au choix</span></span>
+<span id="cb2-10"><a href="stat-desc.html#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="stat-desc.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(d<span class="sc">$</span>x,d<span class="sc">$</span>y,<span class="at">useNA=</span><span class="st">&quot;ifany&quot;</span>)</span>
+<span id="cb2-12"><a href="stat-desc.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(d<span class="sc">$</span>x,d<span class="sc">$</span>y,<span class="at">useNA=</span><span class="st">&quot;ifany&quot;</span>))</span>
+<span id="cb2-13"><a href="stat-desc.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">rprop</span>(<span class="fu">table</span>(d<span class="sc">$</span>x,d<span class="sc">$</span>y))</span>
+<span id="cb2-14"><a href="stat-desc.html#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="stat-desc.html#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># corrélation</span></span>
+<span id="cb2-16"><a href="stat-desc.html#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(d<span class="sc">$</span>x,d<span class="sc">$</span>y,<span class="at">method=</span><span class="st">&#39;pearson&#39;</span>)</span>
+<span id="cb2-17"><a href="stat-desc.html#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="stat-desc.html#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># test du khi-deux</span></span>
+<span id="cb2-19"><a href="stat-desc.html#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(d<span class="sc">$</span>x, d<span class="sc">$</span>y)</span></code></pre></div>
+<p>Toutefois, ces mesures ne suffisent pas pour décider de faire une régression linéaire ! Il faut également visualiser les données, pour être sûr.e que la répartition soit bien linéaire.</p>
 
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>Après, ce n’est pas la fin du monde si tu décides de visualiser ta base entièrement. Je le fais.<a href="stat-desc.html#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
             </section>
 

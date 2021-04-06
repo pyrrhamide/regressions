@@ -133,7 +133,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="index.html">Méthodes du master</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Présentation</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Présentation</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#le-site"><i class="fa fa-check"></i>Le site</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#mea-culpa"><i class="fa fa-check"></i>Mea culpa</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#aide-moi-à-taider"><i class="fa fa-check"></i>Aide moi à t’aider</a></li>
+</ul></li>
 <li class="part"><span><b>I Démarrage</b></span></li>
 <li class="chapter" data-level="" data-path="stat-desc.html"><a href="stat-desc.html"><i class="fa fa-check"></i>Statistiques descriptives</a></li>
 <li class="chapter" data-level="" data-path="nettoyage.html"><a href="nettoyage.html"><i class="fa fa-check"></i>Nettoyage des données</a></li>
@@ -219,9 +224,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="nettoyage" class="section level1 unnumbered">
 <h1>Nettoyage des données</h1>
-<p>On nettoie les données en prévision des régressions futures. On dichotomise notamment les modalités des variables explicatives pour les régressions logistiques (<em>codage disjonctif complet</em> - on nous recommandait ça, mais on a établi que R arrivait à dichotomiser les modalités des variables comme un grand, tant que les variables sont du type facteur).</p>
+<p>Il faut nettoyer pour éviter le plus d’erreur au niveau des commandes. Ca veut dire gérer les non-réponses, changer la nature des variables, changer leurs noms, réordonner les modalités…</p>
+<p>J’adhère à la philosophie d’Hadley Wickham: une ligne = une observation, et une colonne = une variable. Dans le cas des données de panel, ça veut dire avoir plusieurs lignes par année pour une unité (individu, pays…). Je ne m’attarde pas dessus, mais si tes données sont semi-propres, intéresse toi à la fonction <code>tidyr::pivot_longer</code>.</p>
+<p>On nettoie les données en prévision des régressions futures. On dichotomise notamment les modalités des variables explicatives pour les régressions logistiques (<em>codage disjonctif complet</em> - on nous recommandait ça pendant le M1, mais R peut dichotomiser les modalités des variables comme un grand, tant que les variables sont du type facteur).</p>
 <p>Par exemple :</p>
-<p>On a une variable couleur qui prend comme <span class="math inline">\(n\)</span> modalités 1 = bleu ; 2 = blanc ; 3 = rouge. On va la transformer en <span class="math inline">\(n-1\)</span> variables (dans ce cas, 2) binaires, une indiquant si c’est bleu (0 = non ; 1 = oui), une indiquant si c’est blanc (<em>idem</em>). Il n’y a pas besoin de créer une troisième variable dichotomique car, par défaut, une observation qui est à bleu = 0 et blanc = 0 serait à rouge = 1:</p>
+<p>On a une variable couleur qui prend comme <span class="math inline">\(n\)</span> modalités 1 = bleu ; 2 = blanc ; 3 = rouge. On va la transformer en <span class="math inline">\(n-1\)</span> (dans ce cas, 2) variables binaires, une indiquant si c’est bleu (0 = non ; 1 = oui), une indiquant si c’est blanc (<em>idem</em>). Il n’y a pas besoin de créer une troisième variable dichotomique car, par défaut, une observation qui est à bleu = 0 et blanc = 0 serait à rouge = 1:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="nettoyage.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># méthode du prof</span></span>
 <span id="cb3-2"><a href="nettoyage.html#cb3-2" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>bleu[d<span class="sc">$</span>couleur<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb3-3"><a href="nettoyage.html#cb3-3" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>bleu[d<span class="sc">$</span>couleur<span class="sc">!=</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
@@ -234,9 +241,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-10"><a href="nettoyage.html#cb3-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">blanc =</span> <span class="fu">ifelse</span>(couleur<span class="sc">==</span><span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span></code></pre></div>
 <p>En gros, pour une variable à <span class="math inline">\(n\)</span> modalités/catégories que tu veux utiliser dans une régression, tu génères <span class="math inline">\(n-1\)</span> variables dichotomiques. Toutefois, ce n’est pas du tout nécessaire parce que les fonctions de régressions de R dichotomisent automatiquement les modalités des variables catégorielles.</p>
 <p>Si tu as une variable à <span class="math inline">\(n\)</span> modalités, tu peux aussi choisir de regrouper deux modas ensemble et de les coder en 0 et le reste des modas en 1.</p>
-<p><strong>Important</strong> : une fois que tu as déterminé toutes tes variables explicatives, transforme les en facteur et change leur niveau. Les régressions fonctionnent avec des variables facteurs.<br />
-Exemple : une variable des mentions du bac qui est à l’origine sous la forme caractère. Les mentions seront rangées par ordre alphabétique et non par ordre hiérachique.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="nettoyage.html#cb4-1" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>mentions <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>mentions, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">&#39;Sans mention&#39;</span>,<span class="st">&#39;Passable&#39;</span>,<span class="st">&#39;Assez bien&#39;</span>,<span class="st">&#39;Bien&#39;</span>,<span class="st">&#39;Très bien&#39;</span>))</span></code></pre></div>
+<p><strong>Important</strong> : une fois que tu as déterminé toutes tes variables explicatives, transforme les en facteur et change leur niveau/ordre. Les régressions fonctionnent avec des variables facteurs.</p>
+<p>Exemple : prenons une variable des mentions du bac qui est à l’origine sous la forme caractère. Sous le format caractère, les mentions seront rangées par ordre alphabétique et non par ordre hiérachique “évident”. Il revient à toi d’ordonner les modalités comme tu le souhaites.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="nettoyage.html#cb4-1" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>mentions <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>mentions, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">&#39;Sans mention&#39;</span>,<span class="st">&#39;Passable&#39;</span>,<span class="st">&#39;Assez bien&#39;</span>,<span class="st">&#39;Bien&#39;</span>,<span class="st">&#39;Très bien&#39;</span>))</span>
+<span id="cb4-2"><a href="nettoyage.html#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="nettoyage.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: il existe d&#39;autres fonctions du pkg forcats pour accélérer l&#39;ordonnancement des modalités. Je te laisse les découvrir, moi j&#39;ai pas le time, j&#39;ai curling sur gazon.</span></span></code></pre></div>
 
 </div>
 

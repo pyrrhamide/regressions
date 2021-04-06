@@ -133,7 +133,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="index.html">Méthodes du master</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Présentation</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Présentation</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#le-site"><i class="fa fa-check"></i>Le site</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#mea-culpa"><i class="fa fa-check"></i>Mea culpa</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#aide-moi-à-taider"><i class="fa fa-check"></i>Aide moi à t’aider</a></li>
+</ul></li>
 <li class="part"><span><b>I Démarrage</b></span></li>
 <li class="chapter" data-level="" data-path="stat-desc.html"><a href="stat-desc.html"><i class="fa fa-check"></i>Statistiques descriptives</a></li>
 <li class="chapter" data-level="" data-path="nettoyage.html"><a href="nettoyage.html"><i class="fa fa-check"></i>Nettoyage des données</a></li>
@@ -228,15 +233,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><span class="math inline">\(\beta_i\)</span> est le coefficient de la variable explicative <span class="math inline">\(X_i\)</span>.</li>
 <li><span class="math inline">\(\epsilon_i\)</span> est l’erreur-type/le résidu, propre à l’individu <span class="math inline">\(i\)</span>.</li>
 </ul>
-<p>Le modèle de régression linéaire est estimé à partir de la méthode des Moindres Carrés Ordinaires (MCO). Cette méthode consiste à minimiser la somme des carrés des écarts<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, écarts pondérés dans le cas multidimensionnel, entre chaque point du nuage de régression et son projeté, parallèlement à l’axe des ordonnées, sur la droite de régression. On estime les paramètres <span class="math inline">\(\beta_i\)</span> de telle sorte que <span class="math inline">\(\Sigma_i\epsilon_i^2\)</span> soit minimale (donc on cherche à réduire la place du hasard dans notre modèle).</p>
+<p>Le modèle de régression linéaire est estimé à partir de la méthode des Moindres Carrés Ordinaires (MCO). Cette méthode consiste à minimiser la somme des carrés des écarts<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>, écarts pondérés dans le cas multidimensionnel, entre chaque point du nuage de régression et son projeté, parallèlement à l’axe des ordonnées, sur la droite de régression. On estime les paramètres <span class="math inline">\(\beta_i\)</span> de telle sorte que <span class="math inline">\(\Sigma_i\epsilon_i^2\)</span> soit minimale (donc on cherche à réduire la place du hasard dans notre modèle).</p>
 <p><strong>Important pour les cours suivants</strong> – les MCO suivent 6 hypothèses:</p>
 <ol style="list-style-type: decimal">
 <li>Linéarité des paramètres (relation linéaire entre <span class="math inline">\(Y\)</span> et <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span> continue).</li>
-<li>Absence d’autocorrélation des variables explicatives (il ne faut pas qu’une variable soit le multiple d’une autre).</li>
-<li>Homoscédasticité (la variance des erreur-types est la même pour toutes les observations).</li>
+<li>Absence d’autocorrélation des variables explicatives (il ne faut pas qu’une variable soit le multiple d’une autre, autrement les logiciels d’analyse les confondent et c’est pas top).</li>
+<li>Homoscédasticité des erreurs-types (la variance des erreur-types est la même pour toutes les observations).</li>
 <li>Absence d’autocorrélation des résidus (les résidus sont indépendants les uns des autres. Sinon voudrait dire que les observations sont corrélées entre elles).</li>
 <li>Normalité des résidus (moyenne des résidus égale à 0).</li>
-<li>Absence de corrélation entre les variables explicatives et le résidu <em>dans le modèle théorique</em>.</li>
+<li>Absence de corrélation entre les variables explicatives et le résidu <em>dans le modèle théorique</em> (risque de sur/sous-estimation du coefficient de la variable explicative).</li>
 </ol>
 <p>La violation d’une ou plusieurs de ces hypothèses implique un changement de variables, ou l’utilisation d’un différent modèle de régression.</p>
 </div>
@@ -251,7 +256,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-5"><a href="reg-lin.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># pour visualiser la régression</span></span>
 <span id="cb5-6"><a href="reg-lin.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(d<span class="sc">$</span>var_dep, d<span class="sc">$</span>var_indep)</span>
 <span id="cb5-7"><a href="reg-lin.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model_1)</span></code></pre></div>
-<p>On interprète seulement les coefficients statistiquement significatifs (avec des petites étoiles) : un coefficient statistiquement significatif veut dire qu’on peut rejeter l’hypothèse que la variable explicative n’influence pas la variable à expliquer. Toutefois ça peut être intéressant de dire “je suis surprise que cette variable n’est pas d’effet, ce qui va à l’encontre de mon hypothèse/de la littérature, blabla.”</p>
+<p>On interprète seulement les coefficients statistiquement significatifs (avec des petites étoiles) : un coefficient statistiquement significatif veut dire qu’on peut rejeter l’hypothèse que la variable explicative n’influence pas la variable à expliquer. Toutefois ça peut être intéressant de dire “je suis surpris.e que cette variable n’est pas d’effet, ce qui va à l’encontre de mon hypothèse/de la littérature, blabla.”</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="reg-lin.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># régression linéraire multiple (plusieurs var indeps) sans interaction</span></span>
 <span id="cb6-2"><a href="reg-lin.html#cb6-2" aria-hidden="true" tabindex="-1"></a>model_2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3, <span class="at">data =</span> d)</span>
 <span id="cb6-3"><a href="reg-lin.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># si on souhaite obtenir un modèle pondéré</span></span>
@@ -263,20 +268,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-9"><a href="reg-lin.html#cb6-9" aria-hidden="true" tabindex="-1"></a>model_4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3 <span class="sc">+</span> var_indep1<span class="sc">*</span>var_indep2, <span class="at">data =</span> d, <span class="at">weights =</span> poids)</span>
 <span id="cb6-10"><a href="reg-lin.html#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ou</span></span>
 <span id="cb6-11"><a href="reg-lin.html#cb6-11" aria-hidden="true" tabindex="-1"></a>model_4 <span class="ot">&lt;-</span> <span class="fu">update</span>(model_3, . <span class="sc">~</span> . <span class="sc">+</span> var_indep1<span class="sc">*</span>var_indep2)</span></code></pre></div>
-<p>Le coefficient d’interaction s’additionne aux coefficients de base des catégories qui correspondent à ce nouveau coef.<br />
-Par exemple, on interagit le PIB avec le taux de natalité. Tu obtiens les résultats suivants :<br />
-- <span class="math inline">\(\beta_1\)</span> le coefficient du PIB;<br />
-- <span class="math inline">\(\beta_2\)</span> le coefficient du taux de natalité;<br />
-- <span class="math inline">\(\beta_3\)</span> le coefficient de l’interaction entre les deux variables.<br />
-Pour obtenir le vrai effet du PIB et du taux de natalité sur la <span class="math inline">\(var\_dep\)</span>, tu additionnes ces trois coefficients.</p>
+<p>Le coefficient d’interaction s’additionne aux coefficients de base des catégories qui correspondent à ce nouveau coef.</p>
+<p>Par exemple, on interagit le PIB avec le taux de natalité. Tu obtiens les résultats suivants :</p>
+<ul>
+<li><span class="math inline">\(\beta_1\)</span> le coefficient du PIB;</li>
+<li><span class="math inline">\(\beta_2\)</span> le coefficient du taux de natalité;</li>
+<li><span class="math inline">\(\beta_3\)</span> le coefficient de l’interaction entre les deux variables.</li>
+</ul>
+<p>Pour obtenir le vrai effet du PIB et du taux de natalité sur la <span class="math inline">\(var\_dep\)</span>, tu additionnes ces trois coefficients.</p>
 </div>
 <div id="régression-linéaire-de-probabilité" class="section level2" number="1.3">
 <h2><span class="header-section-number">1.3</span> Régression linéaire de probabilité</h2>
-<p><em>Pas correct, please disregard. Je corrige ça bientôt.</em></p>
+<p><em>Pas correct, please disregard. Je corrige ça un jour.</em></p>
 <p>Note KF: voir <a href="https://scpoecon.github.io/ScPoEconometrics/linreg.html#a-particular-rescaling-the-log-transform">ici</a> pour compléter cette partie.</p>
-<p>Cependant en sociologie, il est rare d’avoir une variable continue à expliquer. On a généralement des variables catégorielles (qui peuvent être une variable quanti transformée en variable quali). Le modèle de régression linéaire ne fonctionne plus dans ce cas, on se tourne vers le modèle de <strong>régression linéaire de probabilité</strong> qui prend comme variable dépendante une variable dichotomique<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
+<p>Cependant en sociologie, il est rare d’avoir une variable continue à expliquer. On a généralement des variables catégorielles (qui peuvent être une variable quanti transformée en variable quali). Le modèle de régression linéaire ne fonctionne plus dans ce cas, on se tourne vers le modèle de <strong>régression linéaire de probabilité</strong> qui prend comme variable dépendante une variable dichotomique<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
 <p>La ligne R reste la même, seule la nature de la <span class="math inline">\(var\_dep\)</span> change.<br />
-Tu lis le coefficient de cette manière : “toutes choses égales par ailleurs, pour une unité de plus/pour un changement de catégorie de <span class="math inline">\(x\)</span>, la probabilité que l’évènement <span class="math inline">\(y=1\)</span> se passe augmente (resp. diminue)<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.”</p>
+Tu lis le coefficient de cette manière : “toutes choses égales par ailleurs, pour une unité de plus/pour un changement de catégorie de <span class="math inline">\(x\)</span>, la probabilité que l’évènement <span class="math inline">\(y=1\)</span> se passe augmente (resp. diminue)<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.”</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="reg-lin.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># régression linéaire de probabilité</span></span>
 <span id="cb7-2"><a href="reg-lin.html#cb7-2" aria-hidden="true" tabindex="-1"></a>model_5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep_dicho <span class="sc">~</span> var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3, <span class="at">data =</span> d, <span class="at">weights =</span> poids)</span></code></pre></div>
 
@@ -284,10 +291,10 @@ Tu lis le coefficient de cette manière : “toutes choses égales par ailleurs,
 </div>
 <div class="footnotes">
 <hr />
-<ol start="1">
-<li id="fn1"><p>Ecart par rapport à la ligne de régression. On a un nuage de point, une droite qui traverse ces points. La plupart des points ne seront pas sur la droite: la distance entre la droite et le point est le résidu.<a href="reg-lin.html#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p>Du coup on viole la première hypothèse des MCO sur la linéarité des paramètres.<a href="reg-lin.html#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>Je suis pas sûre de la lecture exacte du coefficient, mais en gros ça fonctionne comme ça.<a href="reg-lin.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<ol start="2">
+<li id="fn2"><p>Ecart par rapport à la ligne de régression. On a un nuage de point, une droite qui traverse ces points. La plupart des points ne seront pas sur la droite: la distance entre la droite et le point est le résidu.<a href="reg-lin.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Du coup on viole la première hypothèse des MCO sur la linéarité des paramètres.<a href="reg-lin.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>Je suis pas sûre de la lecture exacte du coefficient, mais en gros ça fonctionne comme ça.<a href="reg-lin.html#fnref4" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

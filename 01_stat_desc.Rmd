@@ -16,17 +16,18 @@ library(nnet) # pour effectuer régressions logistiques polytomiques
 library(GDAtools)
 ```
 
-On importe les données puis on les observe. Ci-dessous j'ai mis des fonctions de bases avec un dataframe qui n'existe pas.
+On importe les données puis on les observe. Ci-dessous j'ai mis des fonctions de bases avec un dataframe qui n'existe pas. J'ai lu récemment que ce n'était pas très *data analyst* que de faire `View(data_frame)` pour visualiser les données. A la place, il faut utiliser la console (ou ton script) pour en apprendre le plus possible sur tes données^[Après, ce n'est pas la fin du monde si tu décides de visualiser ta base entièrement. Je le fais.]
 
 ```{r}
-dim(d)
-names(d)
-str(d)
+dim(d) # nb lignes (observations) et nb colonnes (variables-normalement)
+names(d) 
+str(d) # type des variables
 
 sum(is.na(d))
 
 summary(d$x)
 unique(d$x)
+levels(d$x) # au choix
 
 table(d$x,d$y,useNA="ifany")
 prop.table(table(d$x,d$y,useNA="ifany"))
@@ -39,4 +40,4 @@ cor(d$x,d$y,method='pearson')
 chisq.test(d$x, d$y)
 ```
 
-Toutefois, ces mesures ne devraient pas suffire pour décider de faire une régression linéaire ! Il faut également visualiser les données, pour être sûr.e que la répartition soit bien linéaire.
+Toutefois, ces mesures ne suffisent pas pour décider de faire une régression linéaire ! Il faut également visualiser les données, pour être sûr.e que la répartition soit bien linéaire.

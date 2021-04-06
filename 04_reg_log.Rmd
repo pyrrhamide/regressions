@@ -17,7 +17,7 @@ On lance d'abord le modèle de régression logistique à effets principaux, ou m
 model_6 <- glm(var_dep_dicho ~ var_indep1 + var_indep2 + var_indep3, data = d, weights = poids, family=binomial)
 ```
 
-*Petite note sur le modèle de l'indépendance totale* : c'est le modèle dans lequel tu balances tes variables explicatives sans interaction ou association, pour vérifier si les variables sont indépendantes entre elles, càd si `r emo::ji("sparkles")` *toutes choses égales par ailleurs* `r emo::ji("sparkles")` elles expliquent le phénomène à elles seules. Cependant, en socio, c'est inimaginable que la classe sociale et le sexe agissent indépendamment l'un de l'autre, c'est pour cette raison qu'on choisirait d'intéragir ces variables entre elles.
+*Petite note sur le modèle de l'indépendance totale* : c'est le modèle dans lequel tu balances tes variables explicatives sans interaction ou association, pour vérifier si les variables sont indépendantes entre elles, càd si `r emo::ji("sparkles")` *toutes choses égales par ailleurs* `r emo::ji("sparkles")` elles expliquent le phénomène à elles seules. Cependant, en socio, c'est inimaginable que la classe sociale et le sexe agissent indépendamment l'un de l'autre, c'est pour cette raison qu'on choisirait d'interagir ces variables entre elles.
 
 Pour vérifier si les variables sont indépendantes, tu regardes la *residual deviance* : si c'est un nb énorme^[Plus sérieusement, si la valeur dépasse largement le seuil critique de la distribution du khi-deux (selon les degrés de libertés of course), on rejette l'hypothèse de l'indépendance statistique entre les variables. Vu qu'il reste quand même un pâté de déviance à expliquer, on introduit des interactions dans le modèle de l'indépendance totale.], direction interaction-ville.
 
@@ -37,11 +37,14 @@ model_9 <- glm(var_dep_dicho ~ (var_indep1 + var_indep2)*var_indep3, data = d, w
 model_10 <- glm(var_dep_dicho ~ var_indep1*var_indep2*var_indep3,d,binomial)
 ```
 
-Le coefficient d'interaction s'additionne aux coefficients de base des catégories qui correspondent à ce nouveau coef.\
-Par exemple, on interagit le sexe et le niveau de diplôme. Tu obtiens les résultats suivants :\
-- $\beta_1$ le coefficient pour sexe=1 (par exemple les filles);\
-- $\beta_2$ le coefficient du niveau de diplôme=1 (par exemple ceux qui ont obtenu une licence);\
-- $\beta_3$ le coefficient de l'interaction entre les deux **modalités**.\
+Le coefficient d'interaction s'additionne aux coefficients de base des catégories qui correspondent à ce nouveau coef.
+
+Par exemple, on interagit le sexe et le niveau de diplôme. Tu obtiens les résultats suivants :
+
+- $\beta_1$ le coefficient pour sexe=1 (par exemple les filles);
+- $\beta_2$ le coefficient du niveau de diplôme=1 (par exemple ceux qui ont obtenu une licence);
+- $\beta_3$ le coefficient de l'interaction entre les deux **modalités**.
+
 Pour obtenir le vrai effet de l'obtention de la licence chez les filles sur la $var\_dep$, tu additionnes ces trois coefficients. Tu ne peux pas additionner le coefficient d'interaction pour les garçons avec licence, ou les filles sans licence.
 
 On veut voir si l'ajout de ces interactions est statistiquement significative (il y a la méthode qui suit, et [une autre qu'on a vu plus tard](#analyse-de-deviance)). On effectue un test statistique sur l'interaction, qui est distribué comme une loi du khi-deux, sur la différence de vraisemblance entre les modèles d'indépendance et d'interaction.
@@ -66,13 +69,15 @@ C'est une phrase assez dégueulasse. Toutefois c'est un modèle de régression s
 model_10 <- multinom(var_dep_poly ~ var_indep1 + var_indep2 + var_indep3, data=d, weights=poids)
 ```
 
+Si je me souviens bien, on ne s'est pas attardé dessus parce que la fonction était cassée. Le package `qessmasteR` (en cours de développement) contient la fonction `multi_mpl` pour effectuer ce type de régression.
+
 ## Odds ratio {#odds-ratio-complet}
 
 Passons à un truc dont on parle beaucoup en classe : les **odds ratio**. Les coefficients d'une régression logistique ne sont pas évidents à interpréter (dans le sens où c'est long de dire "le logit de probabilité" et que humainement, c'est moche). On passe donc les coefficients logit par la fonction exponentielle, ce qui nous donne les odds ratio (OR).
 
-Un OR est la chance qu'un évènement $y=1$ se passe pour une condition B, par rapport à ce que cet évènement $y=1$ se passe pour une condition A (condition de ref).
+Un OR est la chance qu'un évènement $y=1$ plutôt que $y=0$^[à vérifier.] se passe pour une condition B, par rapport à ce que cet évènement $y=1$ se passe pour une condition A (condition de ref).
 
-L'OR est compris entre $[0;+\infty[$. Pour un OR compris entre 0 et 1, la chance que le truc se passe pour un groupe B est en fait moindre que la chance qu'il se passe pour le groupe A, mais on dira quand même "l'évènement a 0.14 fois plus de chance de se passer pour le groupe B que pour le groupe A".
+L'OR est compris entre $[0;+\infty[$. Pour un OR compris entre 0 et 1, la chance que le truc se passe pour un groupe B est en fait moindre que la chance qu'il se passe pour le groupe A, mais on dira quand même "l'évènement a 0.14 fois plus de chance de se passer pour le groupe B que pour le groupe A". Après, il va de soi que multiplier quelque chose par une valeur inférieure à 1 diminue le résultat.
 
 Pour obtenir les coefficients de la régression en OR, on utilise la commande suivante :
 
@@ -93,3 +98,11 @@ La formule pour calculer l'OR est la suivante:
 $$ OR = \frac{m_{1,1} \times m_{2,2}}{m_{2,1} \times m_{1,2}} $$
 
 Là j'ai calculé l'odds ratio/la chance que je sois à l'heure sachant qu'il y a une feuille sur les rails.
+
+Il existe trois relations selon la valeur de l'OR:
+
+* OR < 1: indique une relation négative entre deux variables (moins de chance que).
+* OR = 1: indique une relation neutre entre deux variables (même chance que).
+* OR > 1: indique une relation positive entre les deux variables (plus de chance que).
+
+Pour obtenir l'odds ratio inverse de celui qu'on a dans les mains, on peut diviser 1 par l'OR. Attention à l'interprétation!
