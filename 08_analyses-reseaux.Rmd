@@ -57,12 +57,12 @@ Ou comment un réseau s'organise.
   - Transitive : l'ami de mon ami est mon ami
   - Trois-cycles : forme d'échange généralisé
 - Clique : sous-ensemble de noeuds où toutes les paires de noeuds existants sont connectés.
-  - *Modularité* : mesure segmentation d'un réseau en *modules*. Réseau à modularité élevée a densité élevée entre les noeusd qui font partie d'un même module, densité faible entre noeuds appartenant à modules différents.
+  - *Modularité* : mesure segmentation d'un réseau en *modules*. Réseau à modularité élevée a densité élevée entre les noeuds qui font partie d'un même module, densité faible entre noeuds appartenant à modules différents.
 
 ```{r}
 # Trois algorithmes de modularité
 wtc <- walktrap.community(graph)
-grd <- fastgreedy.community(graph)
+grd <- fastgreedy.community(graph) # fonctionne uniquement pour liens non-orientés
 spn <- spinglass.community(graph)
 
 # Indicateur de modularité pour le réseau
