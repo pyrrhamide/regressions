@@ -297,7 +297,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="an-res.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Trois algorithmes de modularité</span></span>
 <span id="cb3-2"><a href="an-res.html#cb3-2" aria-hidden="true" tabindex="-1"></a>wtc <span class="ot">&lt;-</span> <span class="fu">walktrap.community</span>(graph)</span>
 <span id="cb3-3"><a href="an-res.html#cb3-3" aria-hidden="true" tabindex="-1"></a>grd <span class="ot">&lt;-</span> <span class="fu">fastgreedy.community</span>(graph) <span class="co"># fonctionne uniquement pour liens non-orientés</span></span>
-<span id="cb3-4"><a href="an-res.html#cb3-4" aria-hidden="true" tabindex="-1"></a>spn <span class="ot">&lt;-</span> <span class="fu">spinglass.community</span>(graph)</span>
+<span id="cb3-4"><a href="an-res.html#cb3-4" aria-hidden="true" tabindex="-1"></a>spn <span class="ot">&lt;-</span> <span class="fu">spinglass.community</span>(graph) <span class="co"># fonctionne si tous les noeuds sont connectés (aucun noeud isolé)</span></span>
 <span id="cb3-5"><a href="an-res.html#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="an-res.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Indicateur de modularité pour le réseau</span></span>
 <span id="cb3-7"><a href="an-res.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(graph, <span class="fu">membership</span>(wtc))</span>

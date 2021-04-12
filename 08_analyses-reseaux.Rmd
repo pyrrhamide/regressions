@@ -63,7 +63,7 @@ Ou comment un réseau s'organise.
 # Trois algorithmes de modularité
 wtc <- walktrap.community(graph)
 grd <- fastgreedy.community(graph) # fonctionne uniquement pour liens non-orientés
-spn <- spinglass.community(graph)
+spn <- spinglass.community(graph) # fonctionne si tous les noeuds sont connectés (aucun noeud isolé)
 
 # Indicateur de modularité pour le réseau
 modularity(graph, membership(wtc))
