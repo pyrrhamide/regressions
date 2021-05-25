@@ -74,16 +74,16 @@ modularity(graph, membership(spn))
 ## Connectivité
 - **Chaîne**/*walk* : parcours sur graphe non orienté allant d'un noeud à un autre en empruntant des arêtes (liens)
 - **Chemin** : chaîne mais pour un **graphe orienté**
-- Chaîne/chemin **élementaire** (*path*) si chaque noeud y apparaît au plus une fois.
-- **Géodésique** (*geodesic*) : chaine/chemin élémentaire la/le plus court(e) (*shortest path*) entre deux noeuds.
-- **Cycle** : départ et arrivée de la chaine/chemin élémentaire est le même noeud.
+- Chaîne/chemin **élémentaire** (*path*) si chaque noeud y apparaît au plus une fois.
+- **Géodésique** (*geodesic*) : chaîne/chemin élémentaire la/le plus court(e) (*shortest path*) entre deux noeuds.
+- **Cycle** : départ et arrivée de la chaîne/chemin élémentaire est le même noeud.
 - Graphe **connexe** (*connected*) : chemin ou chaîne entre toute paire de noeuds.
   - **Composante** : sous-graphe maximalement connecté.
 - **Distance (géodésique)** : nb de pas (plus courts chemins) entre un noeud et l'autre.
   - noeuds connectés ont distance 1
   - noeuds dans composantes différentes ont distance infinie
 - **Diamètre** : distance la plus longue entre deux noeuds.
-- **Average path length** : distance moyenne entre toutes les pairs de noeuds dans un réseau (moins sensible à des outiliers que le diamètre).
+- **Average path length** : distance moyenne entre toutes les pairs de noeuds dans un réseau (moins sensible à des outliers que le diamètre).
 - **Eccentricité** : distance depuis un noeud de départ vers le noeud le plus loin dans le réseau.
 - **Rayon** : eccentricité minimale des noeuds. La plus petite distance à laquelle puisse se trouver un noeud de tous les autres (infini si graphe est non connecté)
 

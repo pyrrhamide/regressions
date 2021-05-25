@@ -53,11 +53,9 @@ Pour connaître l'effet du traitement, groupe 'traité' diffère du groupe de co
 * Expérience à essais randomisés contrôlés (*randomised controlled trials (RCT) experiments*)
 * Expériences par questionnaire (*randomised survey experiment*)
 
-On prend un groupe qui rempli les mêmes caractéristiques (du type la promo du M2) à qui on applique un ou des traitements différents pour voir si les résultats sur une variable à expliquer diffèrent.
+On prend un groupe uniforme, qui rempli les mêmes caractéristiques, à qui on applique un ou des traitements différents pour voir si les résultats sur une variable à expliquer diffèrent.
 
-Il y a deux directrices. On est allés voir l'une ou l'autre l'année dernière (dans le contexte de l'expérience aléatoire, disons qu'on les a choisi aléatoirement) et c'est celle qu'on a vu qui est devenue notre interlocutrice principale (c'est la ventilation aléatoire il me semble). Du coup, au sein de la promo (normalement uniforme mais tmtc que nan), on est soumis à un traitement différent selon la dir. Y a-t-il une différence de notes/de moral en fonction de la personne ?
-
-Dans cette situation que je viens de décrire, il devrait normalement y avoir un troisième groupe (groupe de contrôle - indépendance du traitement) sans interlocutrice.
+Il y a du soleil. **Aléatoirement**, on soumet les individus à des traitements différents (c'est la ventilation aléatoire): une partie du groupe se met à l'ombre, une autre applique de la crème solaire, et une autre ne fait rien (c'est le groupe de contrôle - indépendance du traitement). Avec cette expérience, quel est le traitement qui réduit le plus les chances d'attraper un coup de soleil ?
 
 **Pourquoi l'expérience randomisée ?**
 
@@ -124,7 +122,7 @@ Quand on n'a pas de panel :\
 
 * Hypothèses fortes:
   * la différence entre le traitement et le contrôle serait restée constante en l'absence de traitement.
-  * ou redit autrement, la différence de différence est unniquement due au "traitement" et non à un autre changement intervenu dans le groupe traité entre la période 1 et 2.
+  * ou redit autrement, la différence de différence est uniquement due au "traitement" et non à un autre changement intervenu dans le groupe traité entre la période 1 et 2.
 * Si on dispose de plus de deux périodes, on peut faire une vérification graphique.
 
 ### Régression par discontinuité (*Regression discontinuity design*)
@@ -167,7 +165,7 @@ Le modèle linéaire avec changement de forme\
 - l'effet causal est mesuré par $\beta_3$.
 
 ```{r}
-# Regression discontinuity design - je recommende de regarder directement le code du prof et de lancer les commandes.
+# Regression discontinuity design - je recommande de regarder directement le code du prof et de lancer les commandes.
 
 # recentrage de la variable autour du seuil
 d$var_cont_cent <- d$var_continue - valeur_seuil_au_choix # commande parmi plein d'autres, là c'est toi qui prend l'initiative

@@ -30,7 +30,7 @@ La violation d'une ou plusieurs de ces hypothèses implique un changement de var
 
 
 ## Régressions linéaires simple et multiple
-La **régression linéaire** prend comme variable dépendante/à expliquer ($var\_dep$) une variable quantitative continue, telle que la température, le PIB, mon envie de dormir progressive pendant les cours d'EQ...les variables explicatives/indépendantes peuvent être quantitatives ou qualitatives.
+La **régression linéaire** prend comme variable dépendante/à expliquer ($var\_dep$) une variable quantitative continue, telle que la température, le PIB, la distance...les variables explicatives/indépendantes peuvent être quantitatives ou qualitatives.
 
 Tu lis les coefficients de la régression de la manière suivante : "toutes choses égales par ailleurs, pour une unité de $x_i$ ($var\_indep$) en plus, $y_i$ ($var\_dep$) augmente/diminue de $\beta_i$ (le coefficient)" ou bien "toutes choses égales par ailleurs, pour un changement de catégorie de $x$, $y$ augmente/diminue de {coefficient}".
 

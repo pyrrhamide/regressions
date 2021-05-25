@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1 Régressions linéaires | Toutes les méthodes du master</title>
-  <meta name="description" content="1 Régressions linéaires | Toutes les méthodes du master" />
+  <title>A RMarkdown | Toutes les méthodes du master</title>
+  <meta name="description" content="A RMarkdown | Toutes les méthodes du master" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="1 Régressions linéaires | Toutes les méthodes du master" />
+  <meta property="og:title" content="A RMarkdown | Toutes les méthodes du master" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="pyrrhamide/regressions" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1 Régressions linéaires | Toutes les méthodes du master" />
+  <meta name="twitter:title" content="A RMarkdown | Toutes les méthodes du master" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="nettoyage.html"/>
-<link rel="next" href="reg-log.html"/>
+<link rel="prev" href="datamining.html"/>
+
 <script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -258,79 +258,228 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="reg-lin" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Régressions linéaires</h1>
-<div id="moindres-carrés-ordinaires---hypothèses" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Moindres Carrés Ordinaires - hypothèses</h2>
-<p><span class="math display">\[Y_i = \beta_0 + \beta_iX_i + \epsilon_i\]</span> pour <span class="math inline">\(i = 1,...,n\)</span></p>
+<div id="rmarkdown" class="section level1" number="9">
+<h1><span class="header-section-number">A</span> RMarkdown</h1>
+<div id="présentation-de-rmarkdown" class="section level2" number="9.1">
+<h2><span class="header-section-number">A.1</span> Présentation de RMarkdown</h2>
+<div id="c-koi" class="section level3" number="9.1.1">
+<h3><span class="header-section-number">A.1.1</span> c koi?</h3>
+<p>R + Markdown.</p>
+<p>Markdown est un langage simple pour mettre en forme des documents. C’est pratique si on veut construire des pages web sans connaître HTML.</p>
+<p>RMarkdown est un complément de Markdown: on peut exécuter des scripts R tout en utilisant la syntaxe de Markdown. Il existe deux extensions de nom pour Rmarkdown: <code>.Rmd</code> et <code>.Rmarkdown</code>. On ne se soucie pas de la différence entre les deux ici, il faut juste savoir que <code>.Rmd</code> est l’extension de base quand on créé un nouveau fichier Rmarkdown.</p>
+</div>
+<div id="à-koi-ça-sert" class="section level3" number="9.1.2">
+<h3><span class="header-section-number">A.1.2</span> à koi ça sert?</h3>
+<p>Ca permet de construire des documents avec le code R directement dedans. C’est bien pour inclure dans le texte des tableaux, des graphiques, des modèles, des formules mathématiques…issus du code (et donc qui se mettrons à jour si on effectue un changement) au lieu de faire une capture d’écran, coller la capture sur Word ou perdre du temps à mettre des tableaux en forme.</p>
+<p>C’est aussi très utile pour pouvoir reproduire des résultats<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a>, quand on diffuse son fichier avec d’autres personnes.</p>
+</div>
+<div id="keske-je-peux-faire-avec" class="section level3" number="9.1.3">
+<h3><span class="header-section-number">A.1.3</span> keske je peux faire avec?</h3>
+<p>Beaucoup de choses, parmi lesquelles:</p>
 <ul>
-<li><span class="math inline">\(Y_i\)</span> est la variable dépendante, selon l’observation <span class="math inline">\(i\)</span>.</li>
-<li><span class="math inline">\(\beta_0\)</span> est le point à l’origine/l’intercept.</li>
-<li><span class="math inline">\(\beta_i\)</span> est le coefficient de la variable explicative <span class="math inline">\(X_i\)</span>.</li>
-<li><span class="math inline">\(\epsilon_i\)</span> est l’erreur-type/le résidu, propre à l’individu <span class="math inline">\(i\)</span>.</li>
+<li>un ou des fichiers HTML:
+<ul>
+<li>un fichier unique (comme on nous demande parfois dans le cadre du master),</li>
+<li>un site!</li>
+<li>des diapositives (il existe déjà des modèles dans R, à titre personnel j’utilise <a href="https://github.com/yihui/xaringan"><code>xaringan</code></a> parce que je n’aime pas ces modèles de base),</li>
+<li>un CV (par exemple avec <code>pagedown</code>),</li>
+<li>et autre…</li>
+</ul></li>
+<li>un fichier pdf (<span class="math inline">\(\LaTeX\)</span> doit être installé sur la machine). On peut exporter les fichiers HTML (dans le cas de CV et de diapos) en pdf avec <code>pagedown::chrome_print(fichier.Rmd)</code>.</li>
+<li>un document Word (bof).</li>
 </ul>
-<p>Le modèle de régression linéaire est estimé à partir de la méthode des Moindres Carrés Ordinaires (MCO). Cette méthode consiste à minimiser la somme des carrés des écarts<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>, écarts pondérés dans le cas multidimensionnel, entre chaque point du nuage de régression et son projeté, parallèlement à l’axe des ordonnées, sur la droite de régression. On estime les paramètres <span class="math inline">\(\beta_i\)</span> de telle sorte que <span class="math inline">\(\Sigma_i\epsilon_i^2\)</span> soit minimale (donc on cherche à réduire la place du hasard dans notre modèle).</p>
-<p><strong>Important pour les cours suivants</strong> – les MCO suivent 6 hypothèses:</p>
+<p>Dans l’<a href="rmarkdown.html#en-tete">en-tête du fichier</a> <code>.Rmd</code>, on définit le type de document qu’on souhaite obtenir, on écrit à gauche à droite, puis on compile!</p>
+</div>
+<div id="packages-utiles-pour-les-rendus" class="section level3" number="9.1.4">
+<h3><span class="header-section-number">A.1.4</span> Packages utiles pour les rendus</h3>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html"><code>kableExtra</code></a> pour les tableaux,</li>
+<li><code>stargazer</code> pour les régressions.</li>
+</ul>
+</div>
+</div>
+<div id="syntaxe" class="section level2" number="9.2">
+<h2><span class="header-section-number">A.2</span> Syntaxe</h2>
+<p><a href="https://www.markdownguide.org/basic-syntax/#lists-1">Source très complète</a> <code>[Source très complète](lien)</code> pour voir la syntaxe de base. La liste présentée ici n’est pas exhaustive.</p>
+<div id="texte" class="section level3" number="9.2.1">
+<h3><span class="header-section-number">A.2.1</span> Texte</h3>
+<ul>
+<li><p><strong>Gras</strong> : <code>**gras**</code></p></li>
+<li><p><em>Italique</em> : <code>_Italique_</code> ou <code>*Italique*</code></p></li>
+<li><p><code>code simple</code>: <code>`code simple`</code> qu’on utilise dans le corps du texte (par exemple: pour les noms de packages <code>tidyverse</code>). On utilise <code>``` code ```</code> pour créer un bloc.</p></li>
+<li><p><code>\r code</code> : <code>`\r code`</code> (sans l’anti-slash avant le r) pour que le code s’exécute dans le corps du texte. <code>`\r mean()`</code> écrira la moyenne.</p></li>
+<li><p><span class="math inline">\(a^2 + b^2 = c^2\)</span> : <code>`$ a^2 + b^2 = c^2 $`</code> pour les équations dans le corps du texte (sans les apostrophes avant et après les <code>$</code>, je n’arrive juste pas à les masquer ici). Pour qu’une équation prenne une ou plusieurs lignes à part, on encadre avec deux <code>$$</code> de chaque côté: <code>`$$ a^2 + b^2 = c^2 $$`</code> donne
+<span class="math display">\[ a^2 + b^2 = c^2 \]</span></p></li>
+<li><p>Les titres de différents niveaux, <code># Titre niveau 1</code>, <code>## Titre niveau 2</code>, etc. En règle générale, on n’utilise pas plus d’un titre de premier niveau par document.</p></li>
+<li><p>Note de bas de page<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a> : Note de bas de page[^1] (selon le package, c’est comme ça ou texte^[note de bas de page]).</p></li>
+</ul>
+<p>[^1]: Texte de la note de bas de page.</p>
+</div>
+<div id="liste" class="section level3" number="9.2.2">
+<h3><span class="header-section-number">A.2.2</span> Liste</h3>
+<ul>
+<li>This</li>
+<li>Is
+<ul>
+<li>How</li>
+<li>We
+<ul>
+<li>Do iiiit</li>
+</ul></li>
+</ul></li>
+<li>This is how we do it<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a></li>
+</ul>
+<div class="sourceCode" id="cb56"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb56-1"><a href="rmarkdown.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>This</span>
+<span id="cb56-2"><a href="rmarkdown.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>Is</span>
+<span id="cb56-3"><a href="rmarkdown.html#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>How</span>
+<span id="cb56-4"><a href="rmarkdown.html#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>We</span>
+<span id="cb56-5"><a href="rmarkdown.html#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>Do iiiit</span>
+<span id="cb56-6"><a href="rmarkdown.html#cb56-6" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>This is how we do it</span></code></pre></div>
 <ol style="list-style-type: decimal">
-<li>Linéarité des paramètres (relation linéaire entre <span class="math inline">\(Y\)</span> et <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span> continue).</li>
-<li>Absence d’autocorrélation des variables explicatives (il ne faut pas qu’une variable soit le multiple d’une autre, autrement les logiciels d’analyse les confondent et c’est pas top).</li>
-<li>Homoscédasticité des erreurs-types (la variance des erreur-types est la même pour toutes les observations).</li>
-<li>Absence d’autocorrélation des résidus (les résidus sont indépendants les uns des autres. Sinon voudrait dire que les observations sont corrélées entre elles).</li>
-<li>Normalité des résidus (moyenne des résidus égale à 0).</li>
-<li>Absence de corrélation entre les variables explicatives et le résidu <em>dans le modèle théorique</em> (risque de sur/sous-estimation du coefficient de la variable explicative).</li>
+<li>Kilomètre à pied
+<ol style="list-style-type: decimal">
+<li>Ca use,</li>
+<li>ça use</li>
+</ol></li>
+<li>Kilomètres à pied
+<ol style="list-style-type: decimal">
+<li>Ca use les souliers</li>
+</ol></li>
+<li>Kilomètres à pied…</li>
 </ol>
-<p>La violation d’une ou plusieurs de ces hypothèses implique un changement de variables, ou l’utilisation d’un différent modèle de régression.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb57-1"><a href="rmarkdown.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Kilomètre à pied</span>
+<span id="cb57-2"><a href="rmarkdown.html#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>Ca use,</span>
+<span id="cb57-3"><a href="rmarkdown.html#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    2. </span>ça use</span>
+<span id="cb57-4"><a href="rmarkdown.html#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Kilomètres à pied</span>
+<span id="cb57-5"><a href="rmarkdown.html#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>Ca use les souliers</span>
+<span id="cb57-6"><a href="rmarkdown.html#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Kilomètres à pied...</span></code></pre></div>
 </div>
-<div id="régressions-linéaires-simple-et-multiple" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Régressions linéaires simple et multiple</h2>
-<p>La <strong>régression linéaire</strong> prend comme variable dépendante/à expliquer (<span class="math inline">\(var\_dep\)</span>) une variable quantitative continue, telle que la température, le PIB, la distance…les variables explicatives/indépendantes peuvent être quantitatives ou qualitatives.</p>
-<p>Tu lis les coefficients de la régression de la manière suivante : “toutes choses égales par ailleurs, pour une unité de <span class="math inline">\(x_i\)</span> (<span class="math inline">\(var\_indep\)</span>) en plus, <span class="math inline">\(y_i\)</span> (<span class="math inline">\(var\_dep\)</span>) augmente/diminue de <span class="math inline">\(\beta_i\)</span> (le coefficient)” ou bien “toutes choses égales par ailleurs, pour un changement de catégorie de <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span> augmente/diminue de {coefficient}”.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="reg-lin.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># régression linéaire simple (une seule var indep)</span></span>
-<span id="cb5-2"><a href="reg-lin.html#cb5-2" aria-hidden="true" tabindex="-1"></a>model_1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_indep, <span class="at">data =</span> d)</span>
-<span id="cb5-3"><a href="reg-lin.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_1) <span class="co"># pour observer le modèle (coefficients, p.value [Pr(&gt;|z|)], deviance, etc.)</span></span>
-<span id="cb5-4"><a href="reg-lin.html#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="reg-lin.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># pour visualiser la régression</span></span>
-<span id="cb5-6"><a href="reg-lin.html#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(d<span class="sc">$</span>var_dep, d<span class="sc">$</span>var_indep)</span>
-<span id="cb5-7"><a href="reg-lin.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model_1)</span></code></pre></div>
-<p>On interprète seulement les coefficients statistiquement significatifs (avec des petites étoiles) : un coefficient statistiquement significatif veut dire qu’on peut rejeter l’hypothèse que la variable explicative n’influence pas la variable à expliquer. Toutefois ça peut être intéressant de dire “je suis surpris.e que cette variable n’est pas d’effet, ce qui va à l’encontre de mon hypothèse/de la littérature, blabla.”</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="reg-lin.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># régression linéraire multiple (plusieurs var indeps) sans interaction</span></span>
-<span id="cb6-2"><a href="reg-lin.html#cb6-2" aria-hidden="true" tabindex="-1"></a>model_2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3, <span class="at">data =</span> d)</span>
-<span id="cb6-3"><a href="reg-lin.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># si on souhaite obtenir un modèle pondéré</span></span>
-<span id="cb6-4"><a href="reg-lin.html#cb6-4" aria-hidden="true" tabindex="-1"></a>model_3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3, <span class="at">data =</span> d, <span class="at">weights =</span> poids)</span>
-<span id="cb6-5"><a href="reg-lin.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># on peut aussi &quot;mettre à jour&quot; le modèle 2</span></span>
-<span id="cb6-6"><a href="reg-lin.html#cb6-6" aria-hidden="true" tabindex="-1"></a>model_3 <span class="ot">&lt;-</span> <span class="fu">update</span>(model_2, <span class="at">weights=</span>poids)</span>
-<span id="cb6-7"><a href="reg-lin.html#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="reg-lin.html#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># régression linéaire multiple avec interaction</span></span>
-<span id="cb6-9"><a href="reg-lin.html#cb6-9" aria-hidden="true" tabindex="-1"></a>model_4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep <span class="sc">~</span> var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3 <span class="sc">+</span> var_indep1<span class="sc">*</span>var_indep2, <span class="at">data =</span> d, <span class="at">weights =</span> poids)</span>
-<span id="cb6-10"><a href="reg-lin.html#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ou</span></span>
-<span id="cb6-11"><a href="reg-lin.html#cb6-11" aria-hidden="true" tabindex="-1"></a>model_4 <span class="ot">&lt;-</span> <span class="fu">update</span>(model_3, . <span class="sc">~</span> . <span class="sc">+</span> var_indep1<span class="sc">*</span>var_indep2)</span></code></pre></div>
-<p>Le coefficient d’interaction s’additionne aux coefficients de base des catégories qui correspondent à ce nouveau coef.</p>
-<p>Par exemple, on interagit le PIB avec le taux de natalité. Tu obtiens les résultats suivants :</p>
+<div id="tableau" class="section level3" number="9.2.3">
+<h3><span class="header-section-number">A.2.3</span> Tableau</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Observation</th>
+<th>Variable 1</th>
+<th>Variable 2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(n_1\)</span></td>
+<td><span class="math inline">\(x_{1,1}\)</span></td>
+<td><span class="math inline">\(x_{1,2}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(n_2\)</span></td>
+<td><span class="math inline">\(x_{2,1}\)</span></td>
+<td><span class="math inline">\(x_{2,2}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(n_3\)</span></td>
+<td><span class="math inline">\(x_{3,1}\)</span></td>
+<td><span class="math inline">\(x_{3,2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<pre><code>|Observation|Variable 1|Variable 2|
+|-|-|-|
+|$n_1$|$x_{1,1}$|$x_{1,2}$|
+|$n_2$|$x_{2,1}$|$x_{2,2}$|
+|$n_3$|$x_{3,1}$|$x_{3,2}$|</code></pre>
+</div>
+<div id="bibliographie" class="section level3" number="9.2.4">
+<h3><span class="header-section-number">A.2.4</span> Bibliographie</h3>
+<p>RMarkdown gère aussi la bibliographie, en tandem avec Zotero ou autre logiciel de référencement. Toutefois je n’ai pas encore tenté, donc je n’en parle pas ici.</p>
+</div>
+</div>
+<div id="en-tete" class="section level2" number="9.3">
+<h2><span class="header-section-number">A.3</span> En-tête du fichier</h2>
+<p>En tête des documents RMarkdown, on trouve des lignes qui définissent le document (titre, auteur, date, apparence…), comprises entre six tirets. Cet en-tête est en YAML (<em>Yet Another Markup Language</em>).</p>
+<p>Par exemple, pour cette page il y a:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb59-1"><a href="rmarkdown.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb59-2"><a href="rmarkdown.html#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">linktitle</span><span class="kw">:</span><span class="at"> En-tête</span></span>
+<span id="cb59-3"><a href="rmarkdown.html#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> En-tête</span></span>
+<span id="cb59-4"><a href="rmarkdown.html#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="fu">type</span><span class="kw">:</span><span class="at"> book</span></span>
+<span id="cb59-5"><a href="rmarkdown.html#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="fu">weight</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span>
+<span id="cb59-6"><a href="rmarkdown.html#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div>
+<p>Pour un document pdf, il pourrait y avoir:</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb60-1"><a href="rmarkdown.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb60-2"><a href="rmarkdown.html#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;Titre&quot;</span></span>
+<span id="cb60-3"><a href="rmarkdown.html#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;Auteur&quot;</span></span>
+<span id="cb60-4"><a href="rmarkdown.html#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;13-12-2019&quot;</span></span>
+<span id="cb60-5"><a href="rmarkdown.html#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">output</span><span class="kw">:</span></span>
+<span id="cb60-6"><a href="rmarkdown.html#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf_document</span><span class="kw">:</span></span>
+<span id="cb60-7"><a href="rmarkdown.html#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep_tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb60-8"><a href="rmarkdown.html#cb60-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number_sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb60-9"><a href="rmarkdown.html#cb60-9" aria-hidden="true" tabindex="-1"></a><span class="fu">urlcolor</span><span class="kw">:</span><span class="at"> blue</span></span>
+<span id="cb60-10"><a href="rmarkdown.html#cb60-10" aria-hidden="true" tabindex="-1"></a><span class="fu">geometry</span><span class="kw">:</span><span class="at"> margin = 2cm</span></span>
+<span id="cb60-11"><a href="rmarkdown.html#cb60-11" aria-hidden="true" tabindex="-1"></a><span class="fu">fontsize</span><span class="kw">:</span><span class="at"> 11pt</span></span>
+<span id="cb60-12"><a href="rmarkdown.html#cb60-12" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div>
+<p>Pour un document HTML:</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb61-1"><a href="rmarkdown.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb61-2"><a href="rmarkdown.html#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;Titre&quot;</span></span>
+<span id="cb61-3"><a href="rmarkdown.html#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="fu">subtitle</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;Sous-titre&quot;</span></span>
+<span id="cb61-4"><a href="rmarkdown.html#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;Auteur&quot;</span></span>
+<span id="cb61-5"><a href="rmarkdown.html#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;02/11/2020&quot;</span></span>
+<span id="cb61-6"><a href="rmarkdown.html#cb61-6" aria-hidden="true" tabindex="-1"></a><span class="fu">output</span><span class="kw">:</span></span>
+<span id="cb61-7"><a href="rmarkdown.html#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html_document</span><span class="kw">:</span></span>
+<span id="cb61-8"><a href="rmarkdown.html#cb61-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb61-9"><a href="rmarkdown.html#cb61-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc_float</span><span class="kw">:</span></span>
+<span id="cb61-10"><a href="rmarkdown.html#cb61-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">collapsed</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb61-11"><a href="rmarkdown.html#cb61-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number_sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb61-12"><a href="rmarkdown.html#cb61-12" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div>
+<p>Il y a plein d’options à découvrir sur le World Wide Web.</p>
+</div>
+<div id="morceaux-de-code" class="section level2" number="9.4">
+<h2><span class="header-section-number">A.4</span> Morceaux de code</h2>
+<p>Dans les scripts R standards, le code prime sur le texte. Si on veut ajouter du texte, on doit faire des commentaires. Pour les fichiers RMarkdown, le texte a la priorité sur le code. Le fichier se présente alors ainsi: en-tête YAML - texte - code - texte…</p>
+<p>Pour insérer un morceau de code: soit on choisit dans le menu, soit <code>Ctrl + Alt + I</code>. On obtient un bloc vide:</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb62-1"><a href="rmarkdown.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-2"><a href="rmarkdown.html#cb62-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="rmarkdown.html#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<p>Dans les accolades, on peut donner un nom à ce bloc après <code>r</code>, puis on peut ajouter des options séparées par des virgules. Voici une liste non-exhaustive des options les plus utilisées:</p>
 <ul>
-<li><span class="math inline">\(\beta_1\)</span> le coefficient du PIB;</li>
-<li><span class="math inline">\(\beta_2\)</span> le coefficient du taux de natalité;</li>
-<li><span class="math inline">\(\beta_3\)</span> le coefficient de l’interaction entre les deux variables.</li>
+<li><code>echo = T/F</code> pour afficher le code dans le document final,</li>
+<li><code>eval = T/F</code> pour exécuter le code ou non,</li>
+<li><code>include = T/F</code> pour inclure le code <strong>et les résultats/messages</strong> dans le document final,</li>
+<li><code>message = T/F</code> pour afficher les messages (par exemple je mets <code>FALSE</code> quand je charge mes packages, parce que certains d’entre eux “parlent” beaucoup),</li>
+<li><code>results = 'ton choix'</code> pour afficher les résultats.</li>
 </ul>
-<p>Pour obtenir le vrai effet du PIB et du taux de natalité sur la <span class="math inline">\(var\_dep\)</span>, tu additionnes ces trois coefficients.</p>
-</div>
-<div id="régression-linéaire-de-probabilité" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> Régression linéaire de probabilité</h2>
-<p><em>Pas correct, please disregard. Je corrige ça un jour.</em></p>
-<p>Note KF: voir <a href="https://scpoecon.github.io/ScPoEconometrics/linreg.html#a-particular-rescaling-the-log-transform">ici</a> pour compléter cette partie.</p>
-<p>Cependant en sociologie, il est rare d’avoir une variable continue à expliquer. On a généralement des variables catégorielles (qui peuvent être une variable quanti transformée en variable quali). Le modèle de régression linéaire ne fonctionne plus dans ce cas, on se tourne vers le modèle de <strong>régression linéaire de probabilité</strong> qui prend comme variable dépendante une variable dichotomique<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
-<p>La ligne R reste la même, seule la nature de la <span class="math inline">\(var\_dep\)</span> change.<br />
-Tu lis le coefficient de cette manière : “toutes choses égales par ailleurs, pour une unité de plus/pour un changement de catégorie de <span class="math inline">\(x\)</span>, la probabilité que l’évènement <span class="math inline">\(y=1\)</span> se passe augmente (resp. diminue)<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.”</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="reg-lin.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># régression linéaire de probabilité</span></span>
-<span id="cb7-2"><a href="reg-lin.html#cb7-2" aria-hidden="true" tabindex="-1"></a>model_5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(var_dep_dicho <span class="sc">~</span> var_indep1 <span class="sc">+</span> var_indep2 <span class="sc">+</span> var_indep3, <span class="at">data =</span> d, <span class="at">weights =</span> poids)</span></code></pre></div>
+<p>On peut ajouter ces options à chaque bloc de code, individuellement. On peut aussi définir un comportement global des blocs, pour tout le document:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb63-1"><a href="rmarkdown.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include = FALSE}</span></span>
+<span id="cb63-2"><a href="rmarkdown.html#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::opts_chunk$set(echo = TRUE, ...)</span></span>
+<span id="cb63-3"><a href="rmarkdown.html#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<p>Si on a besoin qu’un bloc est un comportement différent de celui de défaut, il suffit simplement d’ajouter les options voulues dans les accolades de ce seul bloc.</p>
+<p>Il existe d’autres options pour la mise en page des images et graphiques, que je ne détaille pas ici.</p>
+<p>Pour visualiser le document final, il faut compiler le fichier Rmd en cliquant sur le bouton <code>Knit</code>, ou bien avec le raccourci <code>Ctrl + Maj + K</code>.</p>
 
 </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="footnotes">
 <hr />
-<ol start="2">
-<li id="fn2"><p>Ecart par rapport à la ligne de régression. On a un nuage de point, une droite qui traverse ces points. La plupart des points ne seront pas sur la droite: la distance entre la droite et le point est le résidu.<a href="reg-lin.html#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>Du coup on viole la première hypothèse des MCO sur la linéarité des paramètres.<a href="reg-lin.html#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p>Je suis pas sûre de la lecture exacte du coefficient, mais en gros ça fonctionne comme ça.<a href="reg-lin.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<ol start="11">
+<li id="fn11"><p>Par souci de transparence, pour prouver qu’on a vraiment fait ce qu’on présente.<a href="rmarkdown.html#fnref11" class="footnote-back">↩︎</a></p></li>
+<li id="fn12"><p><a href="https://youtu.be/dQw4w9WgXcQ">Coucou</a>.<a href="rmarkdown.html#fnref12" class="footnote-back">↩︎</a></p></li>
+<li id="fn13"><p>Pas besoin de changer les signes comme je l’ai fait ici, on peut utiliser <code>*</code> tout le temps si on le souhaite.<a href="rmarkdown.html#fnref13" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
@@ -338,8 +487,8 @@ Tu lis le coefficient de cette manière : “toutes choses égales par ailleurs,
           </div>
         </div>
       </div>
-<a href="nettoyage.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="reg-log.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="datamining.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -361,7 +510,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/pyrrhamide/regressions/blob/main/03_reg_lin.Rmd",
+"link": "https://github.com/pyrrhamide/regressions/blob/main/11_rmarkdown.Rmd",
 "text": "Edit"
 },
 "history": {
