@@ -39,5 +39,6 @@ Exemple : prenons une variable des mentions du bac qui est à l'origine sous la 
 ```{r}
 d$mentions <- factor(d$mentions, levels=c('Sans mention','Passable','Assez bien','Bien','Très bien'))
 
-# Note: il existe d'autres fonctions du pkg forcats pour accélérer l'ordonnancement des modalités. Je te laisse les découvrir, moi j'ai pas le time, j'ai curling sur gazon.
+# Note: il existe d'autres fonctions du pkg forcats pour accélérer l'ordonnancement des modalités. 
+# Je te laisse les découvrir, moi j'ai pas le time, j'ai curling sur gazon.
 ```

@@ -1,0 +1,7 @@
+# Les ingrédients {-}
+
+* R,
+* RStudio,
+* Préférence personnelle: un éditeur de texte. Je trouve ça très pratique quand je veux juste me concentrer sur la syntaxe du code, ou par exemple quand je rédige des rendus avant de les compiler. Jusqu'au début du mois de Mai, j'utilisais [Atom](https://atom.io/) pour modifier mes scripts. Maintenant je préfère [Visual Studio Code](https://code.visualstudio.com/) (après avoir déclaré un jour que je n'aimais pas VSCode. J'ai vu la lumière depuis).
+
+Je recommande très fortement de créer de nouveaux projets R pour chaque séminaire/projet spécifique, pour éviter de définir le répertoire de travail tout le temps. `setwd` m'horripile: dans mes souvenirs, le répertoire de travail ne changeait pas quand on terminait une session.

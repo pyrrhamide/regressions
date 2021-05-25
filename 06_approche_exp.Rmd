@@ -253,6 +253,7 @@ felm(y ~ x_endo + x1 + x2 |0| z1+ z2 |0, data, weights, ...)
 
 ## Econométrie des panels
 L'économétrie des panels rend visible et permet de traiter deux problèmes classiques :
+
 1. L'autocorrélation des résidus,
 2. L'hétérogénéité inobservée.
 
