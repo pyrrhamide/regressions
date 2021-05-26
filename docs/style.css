@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 p.caption {
   color: #777;
   margin-top: 10px;
@@ -11,4 +13,35 @@ pre {
 }
 pre code {
   white-space: inherit;
+}
+
+.book.font-family-1 {
+  font-family: 'Lato', sans-serif;
+}
+
+.summary {
+  font-family: 'Lato', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Lato', sans-serif;
+}
+
+.book .book-body .page-wrapper .page-inner section.normal a {
+  color: #157f8e;
+}
+
+.summary a:hover {
+  color: #3ea2aad9 !important;
+}
+
+.book .book-summary ul.summary li.active>a {
+  /*active TOC links*/
+  color: #379fa7 !important;
+  border-left: solid 4px;
+  border-color: #379fa7;
+  padding-left: 11px !important;
 }

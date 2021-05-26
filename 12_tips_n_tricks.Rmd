@@ -1,0 +1,31 @@
+# Trucs et astuces
+
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
+```
+
+J'ai découvert beaucoup de petites astuces sur R et RStudio qui ont rendu mon workflow plus rapide.
+
+## Raccourcis clavier
+
+* `Ctrl + 2` pour naviguer sur la console,
+* `Ctrl + Maj + N` pour un nouveau script,
+* `Ctrl + W` pour fermer la fenêtre ouverte,
+* `Ctrl + Alt + W` pour fermer toutes les fenêtres.
+
+## Pipes de `magrittr`
+
+```{r}
+library(magrittr)
+```
+
+* `%<>%`
+* `%$%`
+
+## Autres trucs 
+
+```{r}
+library(here)
+library(purrr) # inclut dans tidyverse
+```
+

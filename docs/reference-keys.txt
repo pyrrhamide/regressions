@@ -67,3 +67,7 @@ tableau
 bibliographie
 en-tete
 morceaux-de-code
+trucs-et-astuces
+raccourcis-clavier
+pipes-de-magrittr
+autres-trucs
