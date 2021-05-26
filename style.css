@@ -15,6 +15,7 @@ pre code {
   white-space: inherit;
 }
 
+/* --- police --- */
 .book.font-family-1 {
   font-family: 'Lato', sans-serif;
 }
@@ -30,18 +31,31 @@ h4 {
   font-family: 'Lato', sans-serif;
 }
 
+/* --- couleur des liens --- */
 .book .book-body .page-wrapper .page-inner section.normal a {
   color: #157f8e;
 }
 
+/* --- couleur quand on survole les liens --- */
 .summary a:hover {
   color: #3ea2aad9 !important;
 }
 
+/* --- apparence liens actifs dans table of contents --- */
 .book .book-summary ul.summary li.active>a {
   /*active TOC links*/
   color: #379fa7 !important;
   border-left: solid 4px;
   border-color: #379fa7;
   padding-left: 11px !important;
+}
+
+
+li.appendix span,
+li.part span {
+  /* for TOC part names */
+  margin-top: 1em;
+  color: #000000;
+  opacity: .9 !important;
+  /*text-transform: uppercase;*/
 }

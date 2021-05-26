@@ -6,7 +6,7 @@ output:
   bookdown::gitbook:
     config:
       toc:
-        collapse: subsection
+        collapse: section
       sharing: null
 documentclass: book
 link-citations: yes
