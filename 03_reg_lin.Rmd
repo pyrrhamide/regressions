@@ -15,7 +15,7 @@ $$Y_i = \beta_0 + \beta_iX_i + \epsilon_i$$ pour $i = 1,...,n$
 * $\beta_i$ est le coefficient de la variable explicative $X_i$.
 * $\epsilon_i$ est l'erreur-type/le résidu, propre à l'individu $i$.
 
-Le modèle de régression linéaire est estimé à partir de la méthode des Moindres Carrés Ordinaires (MCO). Cette méthode consiste à minimiser la somme des carrés des écarts^[Ecart par rapport à la ligne de régression. On a un nuage de point, une droite qui traverse ces points. La plupart des points ne seront pas sur la droite: la distance entre la droite et le point est le résidu.], écarts pondérés dans le cas multidimensionnel, entre chaque point du nuage de régression et son projeté, parallèlement à l'axe des ordonnées, sur la droite de régression. On estime les paramètres $\beta_i$ de telle sorte que $\Sigma_i\epsilon_i^2$ soit minimale (donc on cherche à réduire la place du hasard dans notre modèle).
+Le modèle de régression linéaire est estimé à partir de la méthode des Moindres Carrés Ordinaires (MCO). Cette méthode consiste à minimiser la somme des carrés des écarts^[Écart par rapport à la ligne de régression. On a un nuage de point et une droite qui traverse ces points. La plupart des points ne seront pas sur la droite: la distance entre la droite et le point est le résidu.], écarts pondérés dans le cas multidimensionnel, entre chaque point du nuage de régression et son projeté, parallèlement à l'axe des ordonnées, sur la droite de régression qui traverse le mieux les points. On estime les paramètres $\beta_i$ de telle sorte que la somme des résidus $\Sigma_i\epsilon_i^2$ soit minimale (donc on cherche à réduire la place du hasard dans notre modèle).
 
 **Important pour les cours suivants** -- les MCO suivent 6 hypothèses:
 
@@ -23,8 +23,8 @@ Le modèle de régression linéaire est estimé à partir de la méthode des Moi
 2. Absence d'autocorrélation des variables explicatives (il ne faut pas qu'une variable soit le multiple d'une autre, autrement les logiciels d'analyse les confondent et c'est pas top).
 3. Homoscédasticité des erreurs-types (la variance des erreur-types est la même pour toutes les observations).
 4. Absence d'autocorrélation des résidus (les résidus sont indépendants les uns des autres. Sinon voudrait dire que les observations sont corrélées entre elles).
-5. Normalité des résidus (moyenne des résidus égale à 0).
-6. Absence de corrélation entre les variables explicatives et le résidu *dans le modèle théorique* (risque de sur/sous-estimation du coefficient de la variable explicative).
+5. Normalité des résidus (moyenne des résidus égale à 0, indique que les résidus sont aléatoirement distribués).
+6. Absence de corrélation entre les variables explicatives et le résidu *dans le modèle théorique* (autrement, risque de sur/sous-estimation du coefficient de la variable explicative).
 
 La violation d'une ou plusieurs de ces hypothèses implique un changement de variables, ou l'utilisation d'un différent modèle de régression.
 
@@ -38,16 +38,19 @@ Tu lis les coefficients de la régression de la manière suivante : "toutes chos
 # régression linéaire simple (une seule var indep)
 model_1 <- lm(var_dep ~ var_indep, data = d)
 summary(model_1) # pour observer le modèle (coefficients, p.value [Pr(>|z|)], deviance, etc.)
+model_1$coefficients # pour afficher les coefficients seulement
 
 # pour visualiser la régression
 plot(d$var_dep, d$var_indep)
 abline(model_1)
 ```
 
-On interprète seulement les coefficients statistiquement significatifs (avec des petites étoiles) : un coefficient statistiquement significatif veut dire qu'on peut rejeter l'hypothèse que la variable explicative n'influence pas la variable à expliquer. Toutefois ça peut être intéressant de dire "je suis surpris.e que cette variable n'est pas d'effet, ce qui va à l'encontre de mon hypothèse/de la littérature, blabla."
+On interprète les coefficients statistiquement significatifs (avec des petites étoiles) : un coefficient statistiquement significatif veut dire qu'on peut rejeter l'hypothèse que la variable explicative n'influence pas la variable à expliquer. Toutefois ça peut être intéressant de dire "je suis surpris.e que cette variable n'est pas d'effet, ce qui va à l'encontre de mon hypothèse/de la littérature, blabla."
+
+Il est rare/impossible qu'une seule variable en explique une autre, on a plus souvent recourt à la régression linéaire multiple.
 
 ```{r eval=FALSE}
-# régression linéraire multiple (plusieurs var indeps) sans interaction
+# régression linéaire multiple (plusieurs var indeps) sans interaction
 model_2 <- lm(var_dep ~ var_indep1 + var_indep2 + var_indep3, data = d)
 # si on souhaite obtenir un modèle pondéré
 model_3 <- lm(var_dep ~ var_indep1 + var_indep2 + var_indep3, data = d, weights = poids)

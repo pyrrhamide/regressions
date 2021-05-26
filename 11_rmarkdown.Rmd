@@ -2,7 +2,8 @@
 
 # RMarkdown
 
-## Présentation de RMarkdown
+## Présentation 
+
 ### c koi?
 
 R + Markdown.
@@ -13,7 +14,7 @@ RMarkdown est un complément de Markdown: on peut exécuter des scripts R tout e
 
 ### à koi ça sert?
 
-Ca permet de construire des documents avec le code R directement dedans. C'est bien pour inclure dans le texte des tableaux, des graphiques, des modèles, des formules mathématiques...issus du code (et donc qui se mettrons à jour si on effectue un changement) au lieu de faire une capture d'écran, coller la capture sur Word ou perdre du temps à mettre des tableaux en forme.
+On peut construire des documents avec le code R directement dedans. C'est bien pour inclure dans le texte des tableaux, des graphiques, des modèles, des formules mathématiques...issus du code (et donc qui se mettrons à jour si on effectue un changement) au lieu de faire une capture d'écran, coller la capture sur Word ou perdre du temps à mettre des tableaux en forme.
 
 C'est aussi très utile pour pouvoir reproduire des résultats^[Par souci de transparence, pour prouver qu'on a vraiment fait ce qu'on présente.], quand on diffuse son fichier avec d'autres personnes.
 
@@ -35,7 +36,8 @@ Dans l'[en-tête du fichier](#en-tete) `.Rmd`, on définit le type de document q
 ### Packages utiles pour les rendus
 
 * [`kableExtra`](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html) pour les tableaux,
-* `stargazer` pour les régressions.
+* `stargazer` pour les régressions,
+* [`gtsummary`](https://github.com/ddsjoberg/gtsummary) pour les tableaux descriptifs et les régressions ! Je n'ai pas encore testé ce package.
 
 ## Syntaxe
 
@@ -46,8 +48,8 @@ Dans l'[en-tête du fichier](#en-tete) `.Rmd`, on définit le type de document q
 * **Gras** : `**gras**`
 * _Italique_ : `_Italique_` ou `*Italique*`
 * `code simple`: `` `code simple` `` qu'on utilise dans le corps du texte (par exemple: pour les noms de packages `tidyverse`). On utilise ```` ``` code ``` ```` pour créer un bloc.
-* `\r code` : `` `\r code` `` (sans l'anti-slash avant le r) pour que le code s'exécute dans le corps du texte. `` `\r mean()` `` écrira la moyenne.
-* $a^2 + b^2 = c^2$ : `` `$ a^2 + b^2 = c^2 $` `` pour les équations dans le corps du texte (sans les apostrophes avant et après les `$`, je n'arrive juste pas à les masquer ici). Pour qu'une équation prenne une ou plusieurs lignes à part, on encadre avec deux `$$` de chaque côté: `` `$$ a^2 + b^2 = c^2 $$` `` donne 
+* `` `\r code` `` (sans l'anti-slash avant le r) pour que le code s'exécute dans le corps du texte. `` `\r mean()` `` écrira la moyenne.
+* $a^2 + b^2 = c^2$ : `` `$ a^2 + b^2 = c^2 $` `` pour les équations dans le corps du texte (sans les apostrophes avant et après les `$`, je n'arrive pas à les masquer ici). Pour qu'une équation prenne une ou plusieurs lignes à part, on encadre avec deux `$$` de chaque côté: `` `$$ a^2 + b^2 = c^2 $$` `` donne 
 $$ a^2 + b^2 = c^2 $$
 
 * Les titres de différents niveaux, `# Titre niveau 1`, `## Titre niveau 2`, etc. En règle générale, on n'utilise pas plus d'un titre de premier niveau par document.
@@ -75,18 +77,18 @@ $$ a^2 + b^2 = c^2 $$
 ```
 
 1. Kilomètre à pied
-    1. Ca use,
+    1. ça use,
     2. ça use
 2. Kilomètres à pied
-    1. Ca use les souliers
+    1. ça use les souliers
 3. Kilomètres à pied...
 
 ```markdown
 1. Kilomètre à pied
-    1. Ca use,
+    1. ça use,
     2. ça use
 2. Kilomètres à pied
-    1. Ca use les souliers
+    1. ça use les souliers
 3. Kilomètres à pied...
 ```
 
@@ -114,13 +116,21 @@ RMarkdown gère aussi la bibliographie, en tandem avec Zotero ou autre logiciel 
 
 En tête des documents RMarkdown, on trouve des lignes qui définissent le document (titre, auteur, date, apparence...), comprises entre six tirets. Cet en-tête est en YAML (_Yet Another Markup Language_).
 
-Par exemple, pour cette page il y a:
+Par exemple, pour ce livre il y a:
 ```yaml
 ---
-linktitle: En-tête
-title: En-tête
-type: book
-weight: 3
+title: "Toutes les méthodes du master"
+author: "KF"
+site: bookdown::bookdown_site
+output: 
+  bookdown::gitbook:
+    config:
+      toc:
+        collapse: subsection
+      sharing: null
+documentclass: book
+link-citations: yes
+github-repo: pyrrhamide/regressions
 ---
 ```
 
@@ -194,4 +204,4 @@ Si on a besoin qu'un bloc est un comportement différent de celui de défaut, il
 
 Il existe d'autres options pour la mise en page des images et graphiques, que je ne détaille pas ici.
 
-Pour visualiser le document final, il faut compiler le fichier Rmd en cliquant sur le bouton `Knit`, ou bien avec le raccourci `Ctrl + Maj + K`.
+On rédige ensuite nos lignes de code et nos commentaires. Pour visualiser le document final, il faut compiler le fichier Rmd en cliquant sur le bouton `Knit`, ou bien avec le raccourci clavier `Ctrl + Maj + K`.

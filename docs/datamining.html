@@ -225,7 +225,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="appendix"><span><b>Appendice</b></span></li>
 <li class="chapter" data-level="A" data-path="rmarkdown.html"><a href="rmarkdown.html"><i class="fa fa-check"></i><b>A</b> RMarkdown</a>
 <ul>
-<li class="chapter" data-level="A.1" data-path="rmarkdown.html"><a href="rmarkdown.html#présentation-de-rmarkdown"><i class="fa fa-check"></i><b>A.1</b> Présentation de RMarkdown</a>
+<li class="chapter" data-level="A.1" data-path="rmarkdown.html"><a href="rmarkdown.html#présentation-1"><i class="fa fa-check"></i><b>A.1</b> Présentation</a>
 <ul>
 <li class="chapter" data-level="A.1.1" data-path="rmarkdown.html"><a href="rmarkdown.html#c-koi"><i class="fa fa-check"></i><b>A.1.1</b> c koi?</a></li>
 <li class="chapter" data-level="A.1.2" data-path="rmarkdown.html"><a href="rmarkdown.html#à-koi-ça-sert"><i class="fa fa-check"></i><b>A.1.2</b> à koi ça sert?</a></li>
@@ -263,32 +263,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">8</span> Datamining</h1>
 <div id="analyses-textuelles" class="section level2" number="8.1">
 <h2><span class="header-section-number">8.1</span> Analyses textuelles</h2>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="datamining.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R.temis)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="datamining.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R.temis)</span></code></pre></div>
 </div>
 <div id="webscrapping" class="section level2" number="8.2">
 <h2><span class="header-section-number">8.2</span> Webscrapping</h2>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="datamining.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="datamining.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span></code></pre></div>
 </div>
 <div id="cartographie" class="section level2" number="8.3">
 <h2><span class="header-section-number">8.3</span> Cartographie</h2>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="datamining.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb53-2"><a href="datamining.html#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)</span>
-<span id="cb53-3"><a href="datamining.html#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-4"><a href="datamining.html#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cartography)</span>
-<span id="cb53-5"><a href="datamining.html#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
-<span id="cb53-6"><a href="datamining.html#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-7"><a href="datamining.html#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="co"># et quelques palettes!</span></span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="datamining.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb54-2"><a href="datamining.html#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)</span>
+<span id="cb54-3"><a href="datamining.html#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="datamining.html#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cartography)</span>
+<span id="cb54-5"><a href="datamining.html#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb54-6"><a href="datamining.html#cb54-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-7"><a href="datamining.html#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="co"># et quelques palettes!</span></span></code></pre></div>
 <p>Charger un fichier shapefile/geopackage.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="datamining.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_read</span>(<span class="st">&quot;fichier.gpkg/shp&quot;</span>,</span>
-<span id="cb54-2"><a href="datamining.html#cb54-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">crs =</span> <span class="dv">4326</span>,</span>
-<span id="cb54-3"><a href="datamining.html#cb54-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb54-4"><a href="datamining.html#cb54-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="datamining.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>()</span>
-<span id="cb55-2"><a href="datamining.html#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>()</span>
-<span id="cb55-3"><a href="datamining.html#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_sf</span>()</span>
-<span id="cb55-4"><a href="datamining.html#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>()</span>
-<span id="cb55-5"><a href="datamining.html#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="fu">st_area</span>()</span>
-<span id="cb55-6"><a href="datamining.html#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="fu">st_join</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="datamining.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_read</span>(<span class="st">&quot;fichier.gpkg/shp&quot;</span>,</span>
+<span id="cb55-2"><a href="datamining.html#cb55-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">crs =</span> <span class="dv">4326</span>,</span>
+<span id="cb55-3"><a href="datamining.html#cb55-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb55-4"><a href="datamining.html#cb55-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="datamining.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>()</span>
+<span id="cb56-2"><a href="datamining.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>()</span>
+<span id="cb56-3"><a href="datamining.html#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_sf</span>()</span>
+<span id="cb56-4"><a href="datamining.html#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>()</span>
+<span id="cb56-5"><a href="datamining.html#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="fu">st_area</span>()</span>
+<span id="cb56-6"><a href="datamining.html#cb56-6" aria-hidden="true" tabindex="-1"></a><span class="fu">st_join</span>()</span></code></pre></div>
 
 </div>
 </div>

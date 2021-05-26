@@ -19,7 +19,7 @@ github-repo: pyrrhamide/regressions
 ## Le site {-}
 Ce site, crée avec [bookdown](https://bookdown.org/yihui/bookdown/), a pour vocation de répertorier (presque) toutes les méthodes enseignées lors de notre master. Nos cours ne sont pas généreux en sujet-verbe-COD, j'essaie d'y remédier ici. J'ai simplifié autant que je pouvais les 4 premiers chapitres, tandis que le reste est principalement copié-collé des diapos des profs. J'allégerais peut-être ça plus tard.
 
-Tu trouveras en tête des chapitres 3 à 6 les packages propres à chaque cours, au lieu d'au milieu du code. J'ai également présenter les fonctions avec du vocabulaire plus descriptif que celui de la documentation officielle, puis ai arrêté petit-à-petit parce que ça devenait trop répétitif.
+Tu trouveras en tête des chapitres 3 à 6 les packages propres à chaque cours, au lieu d'au milieu du code^[Il arrive parfois que j'écrive `package::fonction` pour rappeler quel package est utilisé. Cette syntaxe est aussi utile quand on veut utiliser une seule fois une fonction d'un package qu'on ne veut pas lancer pour la session entière.]. J'ai également présenter les fonctions avec du vocabulaire plus descriptif que celui de la documentation officielle, puis ai arrêté petit-à-petit parce que ça devenait trop répétitif.
 
 J'espère ajouter des chapitres sur l'analyse géométrique des données, sur le datamining, et sur RMarkdown. Si tu as des demandes particulières, n'hésite pas à m'en parler. En attendant, tu as tous les trucs de régressions ici.
 

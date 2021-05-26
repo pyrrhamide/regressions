@@ -5,6 +5,11 @@
 knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
 ```
 
+```{r}
+library(glm2) # pour effectuer régressions logistiques
+library(nnet) # pour effectuer régressions logistiques polytomiques
+```
+
 $$logit(p) = log(\frac{p}{1-p}) = \beta_0 + \sum_{j=1}^n \beta_j X_{ij}$$
 
 ## Régression logistique dichotomique
@@ -15,11 +20,13 @@ On lance d'abord le modèle de régression logistique à effets principaux, ou m
 
 ```{r}
 model_6 <- glm(var_dep_dicho ~ var_indep1 + var_indep2 + var_indep3, data = d, weights = poids, family=binomial)
+
+# note sur glm: c'est une fonction de base de R, je ne connais pas la différence avec glm2.
 ```
 
 *Petite note sur le modèle de l'indépendance totale* : c'est le modèle dans lequel tu balances tes variables explicatives sans interaction ou association, pour vérifier si les variables sont indépendantes entre elles, càd si `r emo::ji("sparkles")` *toutes choses égales par ailleurs* `r emo::ji("sparkles")` elles expliquent le phénomène à elles seules. Cependant, en socio, c'est inimaginable que la classe sociale et le sexe agissent indépendamment l'un de l'autre, c'est pour cette raison qu'on choisirait d'interagir ces variables entre elles.
 
-Pour vérifier si les variables sont indépendantes, tu regardes la *residual deviance* : si c'est un nb énorme^[Plus sérieusement, si la valeur dépasse largement le seuil critique de la distribution du khi-deux (selon les degrés de libertés of course), on rejette l'hypothèse de l'indépendance statistique entre les variables. Vu qu'il reste quand même un pâté de déviance à expliquer, on introduit des interactions dans le modèle de l'indépendance totale.], direction interaction-ville.
+Pour vérifier si les variables sont indépendantes, tu regardes la *residual deviance* : si c'est un nombre énorme^[Plus sérieusement, si la valeur dépasse largement le seuil critique de la distribution du khi-deux (selon les degrés de libertés of course), on rejette l'hypothèse de l'indépendance statistique entre les variables. Vu qu'il reste quand même un pâté de déviance à expliquer, on introduit des interactions dans le modèle de l'indépendance totale.], direction interaction-ville.
 
 ```{r}
 # On met le modèle précédent à jour, en ajoutant des interactions.
@@ -75,9 +82,9 @@ Si je me souviens bien, on ne s'est pas attardé dessus parce que la fonction é
 
 Passons à un truc dont on parle beaucoup en classe : les **odds ratio**. Les coefficients d'une régression logistique ne sont pas évidents à interpréter (dans le sens où c'est long de dire "le logit de probabilité" et que humainement, c'est moche). On passe donc les coefficients logit par la fonction exponentielle, ce qui nous donne les odds ratio (OR).
 
-Un OR est la chance qu'un évènement $y=1$ plutôt que $y=0$^[à vérifier.] se passe pour une condition B, par rapport à ce que cet évènement $y=1$ se passe pour une condition A (condition de ref).
+Un OR est la chance qu'un évènement $y=1$ plutôt que $y=0$^[à vérifier.] se passe pour une condition B, par rapport à ce que cet évènement $y=1$ se passe pour une condition A (condition de référence).
 
-L'OR est compris entre $[0;+\infty[$. Pour un OR compris entre 0 et 1, la chance que le truc se passe pour un groupe B est en fait moindre que la chance qu'il se passe pour le groupe A, mais on dira quand même "l'évènement a 0.14 fois plus de chance de se passer pour le groupe B que pour le groupe A". Après, il va de soi que multiplier quelque chose par une valeur inférieure à 1 diminue le résultat.
+L'OR est compris entre $[0;+\infty[$. Pour un OR compris entre 0 et 1, la chance que le truc se passe pour un groupe B est en fait moindre que la chance qu'il se passe pour le groupe A, mais on dira/je dis quand même "l'évènement a 0.14 fois plus de chance de se passer pour le groupe B que pour le groupe A". Après, il va de soi que multiplier quelque chose par une valeur inférieure à 1 diminue le résultat.
 
 Pour obtenir les coefficients de la régression en OR, on utilise la commande suivante :
 

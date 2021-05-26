@@ -1,21 +1,6 @@
 
 # Régression log-linéaire {#log-lin}
 
-------------------------------------------------------------------------
-
-Soit un modèle log-linéaire avec trois variables A, B et C ayant chacune des modalités indexées respectivement par les indices $i$, $j$ et $k$. La table de contingence contient les effectifs notés $m_{ijk}$.\
-Un modèle log-linéaire est une régression sur le log des effectifs dans chacun des cases du tableau de contingence, soit : $$log(m_{ijk}) = constante + \\ margeA_i + margeB_j + margeC_k + \\ interactionAB_{ij} + interactionAC_{ik} + interactionBC_{jk} + \\ interactionABC_{ijk}$$ Un modèle log-linéaire contient toujours la constante et toutes les marges du tableau de contingence. Puis on peut ensuite ajouter des interactions. Il s'agit quasiment toujours de modèles hiérarchiques, càd que, dès lors que l'on met une interaction d'ordre n entre un sous-groupe de variables, toutes les interactions d'ordre inférieur à n entre les variables de ce sous-groupe sont également incluses dans le modèle.\
-La constante permet d'estimer l'effectif total de la table. Les coefficients $margeA_i$ permettent d'estimer les effectifs de la $i^{ème}$ ligne de la table, qui correspond à la $i^{ème}$ modalité de A.
-
-------------------------------------------------------------------------
-
-Résumons les différents modèles de régression qu'on a vu jusqu'à maintenant :\
-- **régression linéaire simple/multiple** : variable à expliquer quantitative, toutes les variables sont dans leurs unités de bases.\
-- **régression linéaire de probabilité** : variable à expliquer dichotomique, toutes les variables sont dans leurs unités de bases.\
-- **régression logistique dichotomique/polytomique** : variable à expliquer dichotomique, toutes les variables sont mises à l'échelle logarithmique ($log(x)$).
-
-On passe maintenant à la **régression log-linéaire**, que je résume (rapidement et sans doute pas correctement) ainsi : la variable à expliquer est mise à l'échelle logarithmique, les variables explicatives restent dans leurs unités de bases. On fait un tri croisé avec ces variables. Ce modèle mesure l'indépendance (ou non) statistique. J'utilise maintenant l'exemple des admissions à Berkeley : $admissions*département*sexe$.
-
 ```{r results="hide", eval=TRUE}
 # Les packages et fonctions
 library(vcd)
@@ -24,7 +9,7 @@ library(DescTools)
 
 library(tidyverse)
 
-# source("f.util.cours.R") fonction créée par le prof
+# source("f.util.cours.R") fonction créée par Maxime Parodi
 stat_ajust <- function(...) {
   list_glm <- enquos(...)
   noms <- as.character(list_glm) %>% map_chr(~str_sub(.x, start = 2))
@@ -45,6 +30,24 @@ stat_ajust <- function(...) {
 # La base
 Berkeley <- UCBAdmissions %>% as.data.frame()
 ```
+
+------------------------------------------------------------------------
+
+_Copie du fichier `FormuleLogLin.Rmd` de Maxime Parodi._
+
+Soit un modèle log-linéaire avec trois variables A, B et C ayant chacune des modalités indexées respectivement par les indices $i$, $j$ et $k$. La table de contingence contient les effectifs notés $m_{ijk}$.\
+Un modèle log-linéaire est une régression sur le log des effectifs dans chacun des cases du tableau de contingence, soit : $$log(m_{ijk}) = constante + \\ margeA_i + margeB_j + margeC_k + \\ interactionAB_{ij} + interactionAC_{ik} + interactionBC_{jk} + \\ interactionABC_{ijk}$$ Un modèle log-linéaire contient toujours la constante et toutes les marges du tableau de contingence. Puis on peut ensuite ajouter des interactions. Il s'agit quasiment toujours de modèles hiérarchiques, càd que, dès lors que l'on met une interaction d'ordre n entre un sous-groupe de variables, toutes les interactions d'ordre inférieur à n entre les variables de ce sous-groupe sont également incluses dans le modèle.\
+La constante permet d'estimer l'effectif total de la table. Les coefficients $margeA_i$ permettent d'estimer les effectifs de la $i^{ème}$ ligne de la table, qui correspond à la $i^{ème}$ modalité de A.
+
+------------------------------------------------------------------------
+
+Résumons les différents modèles de régression qu'on a vu jusqu'à maintenant :\
+- **régression linéaire simple/multiple** : variable à expliquer quantitative, toutes les variables sont dans leurs unités de bases.\
+- **régression linéaire de probabilité** : variable à expliquer dichotomique, toutes les variables sont dans leurs unités de bases.\
+- **régression logistique dichotomique/polytomique** : variable à expliquer dichotomique, toutes les variables sont mises à l'échelle logarithmique ($log(x)$).
+
+On passe maintenant à la **régression log-linéaire**, que je résume (rapidement et sans doute pas correctement) ainsi : la variable à expliquer est mise à l'échelle logarithmique, les variables explicatives restent dans leurs unités de bases. On fait un tri croisé avec ces variables. Ce modèle mesure l'indépendance (ou non) statistique. J'utilise maintenant l'exemple des admissions à Berkeley : $admissions*département*sexe$.
+
 
 ## Modèle de l'indépendance
 
