@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Zilla+Slab:ital,wght@0,400;0,600;1,400;1,600&family=Bitter:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Zilla+Slab:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 p.caption {
   color: #777;
@@ -116,4 +116,16 @@ li.part span {
 
 .book .book-summary ul.summary li.divider {
   height: 0px;
+}
+
+/* format titre h1 pour que ça POP OUT BRUV */
+.book .book-body .page-wrapper .page-inner section.normal h1:not(.title, .h1-rmd) {
+  color: #379fa7;
+  border-left: solid 7px;
+  border-color: #379fa7;
+  padding-left: 11px !important;
+}
+
+.title {
+  
 }

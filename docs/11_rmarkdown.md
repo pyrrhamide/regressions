@@ -81,7 +81,7 @@ Les titres de différents niveaux, `# Titre niveau 1`, `## Titre niveau 2`, etc.
 </div>
 <div class = "no-anchor">
 
-<h1 style="margin-top: 0em;">Niv. 1 - La planète Terre</h1>
+<h1 class="h1-rmd" style="margin-top: 0em;">Niv. 1 - La planète Terre</h1>
 <h2 style="margin-top: 0em;">Niv. 2 - L'Europe</h2>
 <h3 style="margin-top: 0em;">Niv. 3 - La France</h3>
 <h4 style="margin-top: 0em;">Niv. 4 - L'Auvergne-Rhône-Alpes</h4>
