@@ -13,7 +13,7 @@ library(plm)
 library(lmtest)
 ```
 
-Je mets immédiatement les lignes de codes complètes ici. Je recommande d'utiliser la fonction `felm()` du package `lfe` pour toutes les techniques de ce cours, mais il est aussi possible d'utiliser `lm()`, `plm::plm()` ou `ivreg()` pour de petites vérifications.
+Je mets immédiatement les lignes de codes complètes ici. Je recommande d'utiliser la fonction `felm()` du package `lfe` pour toutes les techniques de ce cours, mais il est aussi possible d'utiliser `lm()`, `plm::plm()` ou `AER::ivreg()` pour de petites vérifications.
 
 La fonction `felm()` fait tout: les effets fixes, les effets aléatoires, les variables instrumentales, la clusterisation des erreurs-types...it's the GOAT 🐐.
 

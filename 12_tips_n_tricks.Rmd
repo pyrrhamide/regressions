@@ -18,7 +18,7 @@ Mes préférés:
 * `Ctrl + Maj + N` pour un nouveau script,
 * `Ctrl + W` pour fermer la fenêtre ouverte,
 * `Ctrl + Maj + W` pour fermer toutes les fenêtres,
-* `Ctrl + Maj + C` dé/commenter une ligne (!!!).
+* `Ctrl + Maj + C` pour dé/commenter une ligne (!!!).
 
 ## Pipes de `magrittr`
 
@@ -26,10 +26,10 @@ Mes préférés:
 library(magrittr)
 ```
 
-`magrittr` contient plusieurs pipes différents de `%>%` que je trouve utile:
+`magrittr` contient plusieurs pipes différents de `%>%` que je trouve utiles:
 
 * `%<>%` pour assigner directement des changements à une base. De `d <- d %>% mutate()`, on passe à `d %<>% mutate()`.
-* `%$%` pour utiliser une fonction qui n'est pas compatible avec le tidyverse, comme si oui. Je suis une flemmarde, et je trouve qu'une répétition de `base$variable` est moche. De `fonction(d$x, d$y, d$z)`, on passe à `d %$% freq(x, y, z)`.
+* `%$%` pour utiliser une fonction qui n'est pas compatible avec le tidyverse, comme si oui. Je suis une flemmarde, et je trouve qu'une répétition de `base$variable` est moche. De `fonction(d$x, d$y, d$z)`, on passe à `d %$% fonction(x, y, z)`.
 
 ## Autres trucs 
 
@@ -38,3 +38,6 @@ library(here)
 library(purrr) # inclut dans tidyverse
 ```
 
+```{r}
+d %>% select(x, y, z) %>% map(~ fonction(.))
+```

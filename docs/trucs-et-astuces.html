@@ -282,22 +282,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>Ctrl + Maj + N</code> pour un nouveau script,</li>
 <li><code>Ctrl + W</code> pour fermer la fenêtre ouverte,</li>
 <li><code>Ctrl + Maj + W</code> pour fermer toutes les fenêtres,</li>
-<li><code>Ctrl + Maj + C</code> dé/commenter une ligne (!!!).</li>
+<li><code>Ctrl + Maj + C</code> pour dé/commenter une ligne (!!!).</li>
 </ul>
 </div>
 <div id="pipes-de-magrittr" class="section level2" number="10.2">
 <h2><span class="header-section-number">B.2</span> Pipes de <code>magrittr</code></h2>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="trucs-et-astuces.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span></code></pre></div>
-<p><code>magrittr</code> contient plusieurs pipes différents de <code>%&gt;%</code> que je trouve utile:</p>
+<p><code>magrittr</code> contient plusieurs pipes différents de <code>%&gt;%</code> que je trouve utiles:</p>
 <ul>
 <li><code>%&lt;&gt;%</code> pour assigner directement des changements à une base. De <code>d &lt;- d %&gt;% mutate()</code>, on passe à <code>d %&lt;&gt;% mutate()</code>.</li>
-<li><code>%$%</code> pour utiliser une fonction qui n’est pas compatible avec le tidyverse, comme si oui. Je suis une flemmarde, et je trouve qu’une répétition de <code>base$variable</code> est moche. De <code>fonction(d$x, d$y, d$z)</code>, on passe à <code>d %$% freq(x, y, z)</code>.</li>
+<li><code>%$%</code> pour utiliser une fonction qui n’est pas compatible avec le tidyverse, comme si oui. Je suis une flemmarde, et je trouve qu’une répétition de <code>base$variable</code> est moche. De <code>fonction(d$x, d$y, d$z)</code>, on passe à <code>d %$% fonction(x, y, z)</code>.</li>
 </ul>
 </div>
 <div id="autres-trucs" class="section level2" number="10.3">
 <h2><span class="header-section-number">B.3</span> Autres trucs</h2>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="trucs-et-astuces.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
 <span id="cb67-2"><a href="trucs-et-astuces.html#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr) <span class="co"># inclut dans tidyverse</span></span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="trucs-et-astuces.html#cb68-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> <span class="fu">select</span>(x, y, z) <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">fonction</span>(.))</span></code></pre></div>
 
 </div>
 </div>

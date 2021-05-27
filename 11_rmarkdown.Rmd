@@ -13,7 +13,7 @@ knitr::opts_chunk$set(fig.align="center")
 
 R + Markdown.
 
-Markdown est un langage simple pour mettre en forme des documents. C'est pratique si on veut construire des pages web sans connaître HTML, CSS et tout ça^[Sauf qu'une fois que tu utilises RMarkdown d'une manière intensive, tu commences à te lasser des modèles par défaut, et donc tu commences à explorer HTML et CSS. _Next thing you know_, tout est coloré.].
+Markdown est un langage simple pour mettre en forme des documents. C'est pratique si on veut construire des pages web sans connaître HTML, CSS et tout ça^[Sauf qu'une fois que tu utilises RMarkdown d'une manière intensive, tu commences à te lasser des modèles par défaut, et donc tu commences à explorer HTML et CSS. _Next thing you know_, tout est coloré et tu as une police préférée.].
 
 RMarkdown est un complément de Markdown: on peut exécuter des scripts R tout en utilisant la syntaxe de Markdown. Il existe deux extensions de nom pour Rmarkdown: `.Rmd` et `.Rmarkdown`. On ne se soucie pas de la différence entre les deux ici, il faut juste savoir que `.Rmd` est l'extension de base quand on créé un nouveau fichier Rmarkdown.
 
@@ -117,19 +117,21 @@ Les titres de différents niveaux, `# Titre niveau 1`, `## Titre niveau 2`, etc.
 
 1. Kilomètre à pied
     1. ça use,
-    2. ça use
-2. Kilomètres à pied
+    1. ça use
+1. Kilomètres à pied
     1. ça use les souliers
-3. Kilomètres à pied...
+1. Kilomètres à pied...
 
 ```markdown
 1. Kilomètre à pied
     1. ça use,
-    2. ça use
-2. Kilomètres à pied
+    1. ça use
+1. Kilomètres à pied
     1. ça use les souliers
-3. Kilomètres à pied...
+1. Kilomètres à pied...
 ```
+
+Que des 1 et la numérotation se fait quand même automatiquement !
 
 ### Tableau
 
@@ -166,7 +168,11 @@ output:
     config:
       toc:
         collapse: section
-      sharing: null
+      sharing:
+        github: yes
+        facebook: no
+        twitter: yes
+        all: no
 documentclass: book
 link-citations: yes
 github-repo: pyrrhamide/regressions
