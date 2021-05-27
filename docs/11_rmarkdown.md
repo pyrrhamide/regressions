@@ -1,9 +1,6 @@
 # (APPENDIX) Annexe {-}
 
-```{r, include = FALSE}
-source("common.R")
-knitr::opts_chunk$set(fig.align="center")
-```
+
 
 # RMarkdown
 
@@ -213,11 +210,10 @@ Dans les scripts R standards, le code prime sur le texte. Si on veut ajouter du 
 
 Pour insérer un morceau de code: soit on choisit dans le menu, soit `Ctrl + Alt + I`. On obtient un bloc vide:
 ````markdown
-`r ''````{r}
+```{r}
 
 ```
-```{r chunk}
-```
+
 ````
 Dans les accolades, on peut donner un nom à ce bloc après `r`, puis on peut ajouter des options séparées par des virgules. Voici une liste non-exhaustive des options les plus utilisées:
 
@@ -230,11 +226,10 @@ Dans les accolades, on peut donner un nom à ce bloc après `r`, puis on peut aj
 On peut ajouter ces options à chaque bloc de code, individuellement. On peut aussi définir un comportement global des blocs, pour tout le document:
 
 ````markdown
-`r ''````{r setup, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, ...)
 ```
-```{r chunk2}
-```
+
 ````
 
 

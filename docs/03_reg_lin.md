@@ -2,9 +2,7 @@
 
 # Régressions linéaires {#reg-lin}
 
-```{r include=FALSE}
-knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
-```
+
 
 ## Moindres Carrés Ordinaires - hypothèses
 
@@ -34,7 +32,8 @@ La **régression linéaire** prend comme variable dépendante/à expliquer ($var
 
 Tu lis les coefficients de la régression de la manière suivante : "toutes choses égales par ailleurs, pour une unité de $x_i$ ($var\_indep$) en plus, $y_i$ ($var\_dep$) augmente/diminue de $\beta_i$ (le coefficient)" ou bien "toutes choses égales par ailleurs, pour un changement de catégorie de $x$, $y$ augmente/diminue de {coefficient}".
 
-```{r eval=FALSE}
+
+```r
 # régression linéaire simple (une seule var indep)
 model_1 <- lm(var_dep ~ var_indep, data = d)
 summary(model_1) # pour observer le modèle (coefficients, p.value [Pr(>|z|)], deviance, etc.)
@@ -49,7 +48,8 @@ On interprète les coefficients statistiquement significatifs (avec des petites 
 
 Il est rare/impossible qu'une seule variable en explique une autre, on a plus souvent recourt à la régression linéaire multiple.
 
-```{r eval=FALSE}
+
+```r
 # régression linéaire multiple (plusieurs var indeps) sans interaction
 model_2 <- lm(var_dep ~ var_indep1 + var_indep2 + var_indep3, data = d)
 # si on souhaite obtenir un modèle pondéré
@@ -84,7 +84,8 @@ Cependant en sociologie, il est rare d'avoir une variable continue à expliquer.
 La ligne R reste la même, seule la nature de la $var\_dep$ change.\
 Tu lis le coefficient de cette manière : "toutes choses égales par ailleurs, pour une unité de plus/pour un changement de catégorie de $x$, la probabilité que l'évènement $y=1$ se passe augmente (resp. diminue)^[Je suis pas sûre de la lecture exacte du coefficient, mais en gros ça fonctionne comme ça.]."
 
-```{r eval=FALSE}
+
+```r
 # régression linéaire de probabilité
 model_5 <- lm(var_dep_dicho ~ var_indep1 + var_indep2 + var_indep3, data = d, weights = poids)
 ```

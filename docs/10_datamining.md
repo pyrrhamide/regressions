@@ -1,0 +1,49 @@
+# Datamining {#datamining}
+
+
+
+## Analyses textuelles
+
+
+```r
+library(R.temis)
+```
+
+## Webscrapping
+
+
+```r
+library(rvest)
+```
+
+## Cartographie
+
+
+```r
+library(sf)
+library(mapview)
+
+library(cartography)
+library(tmap)
+
+# et quelques palettes!
+```
+
+Charger un fichier shapefile/geopackage.
+
+```r
+st_read("fichier.gpkg/shp",
+        crs = 4326,
+        stringsAsFactors = FALSE,
+        quiet = TRUE)
+```
+
+
+```r
+st_crs()
+st_drop_geometry()
+st_as_sf()
+st_transform()
+st_area()
+st_join()
+```

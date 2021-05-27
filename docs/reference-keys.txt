@@ -62,6 +62,7 @@ keske-je-peux-faire-avec
 packages-utiles-pour-les-rendus
 syntaxe
 texte
+titres
 liste
 tableau
 bibliographie

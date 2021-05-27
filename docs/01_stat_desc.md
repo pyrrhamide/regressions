@@ -2,11 +2,10 @@
 
 # Statistiques descriptives {- #stat-desc}
 
-```{r include=FALSE}
-knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
-```
 
-```{r}
+
+
+```r
 ## Packages à charger, nécessaire pour l'analyse ##
 library(tidyverse)
 library(questionr) # pour effectuer des tris à plat et des tris croisés
@@ -15,7 +14,8 @@ library(survey) # pour travailler avec des données pondérées
 
 On importe les données puis on les observe. Ci-dessous j'ai mis des fonctions de bases avec un dataframe qui n'existe pas. J'ai lu récemment que ce n'était pas très *data analyst* que de faire `View(data_frame)` pour visualiser les données. À la place, il faut utiliser la console (ou ton script) pour en apprendre le plus possible sur tes données^[Après, ce n'est pas la fin du monde si tu décides de visualiser ta base entièrement. Personnellement, je le fais.]
 
-```{r}
+
+```r
 dim(d) # nb lignes (observations) et nb colonnes (variables-normalement)
 names(d) 
 str(d) # type des variables

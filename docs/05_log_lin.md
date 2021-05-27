@@ -1,11 +1,10 @@
 
 # Régression log-linéaire {#log-lin}
 
-```{r include=FALSE}
-knitr::opts_chunk$set(message = FALSE,comment = "")
-```
 
-```{r results="hide", eval=TRUE}
+
+
+```r
 # Les packages et fonctions
 library(vcd)
 library(vcdExtra)
@@ -55,13 +54,49 @@ On passe maintenant à la **régression log-linéaire**, que je résume (rapidem
 
 ## Modèle de l'indépendance
 
-```{r eval=TRUE}
+
+```r
 # Modèle log-linéaire
 # Modèle de l'indépendance totale
 M0 <- glm(Freq ~ Gender + Admit + Dept, family = poisson, data = UCBAdmissions)
 # La différence avec la reg logit est la famille de la distribution. Pour la reg logit, on avait family=binomial, ici on a family=poisson.
 
 summary(M0)
+```
+
+```
+
+Call:
+glm(formula = Freq ~ Gender + Admit + Dept, family = poisson, 
+    data = UCBAdmissions)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-18.170   -7.719   -1.008    4.734   17.153  
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept)    5.37111    0.03964 135.498  < 2e-16 ***
+GenderFemale  -0.38287    0.03027 -12.647  < 2e-16 ***
+AdmitRejected  0.45674    0.03051  14.972  < 2e-16 ***
+DeptB         -0.46679    0.05274  -8.852  < 2e-16 ***
+DeptC         -0.01621    0.04649  -0.349 0.727355    
+DeptD         -0.16384    0.04832  -3.391 0.000696 ***
+DeptE         -0.46850    0.05276  -8.879  < 2e-16 ***
+DeptF         -0.26752    0.04972  -5.380 7.44e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 2650.1  on 23  degrees of freedom
+Residual deviance: 2097.7  on 16  degrees of freedom
+AIC: 2272.7
+
+Number of Fisher Scoring iterations: 5
+```
+
+```r
 # Residual deviance = 2097.7 on 16 degrees of freedom.
 ```
 
@@ -69,7 +104,8 @@ Il reste beaucoup trop d'information à expliquer que le modèle de l'indépenda
 
 ## Modèles avec interaction
 
-```{r eval=TRUE}
+
+```r
 # une interaction prise en compte
 M1_GD <- update(M0, . ~ . + Gender:Dept) # choix du département est genré
 M1_GA <- update(M0, . ~ . + Gender:Admit) # admission discriminante en fonction du sexe
@@ -92,8 +128,34 @@ Tous les modèles sont stockés dans la mémoire de R, on veut maintenant voir l
 
 ## Analyse de deviance {#analyse-de-deviance}
 
-```{r eval=TRUE}
+
+```r
 anova(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)
+```
+
+```
+Analysis of Deviance Table
+
+Model 1: Freq ~ Gender + Admit + Dept
+Model 2: Freq ~ Gender + Admit + Dept + Gender:Admit
+Model 3: Freq ~ Gender + Admit + Dept + Admit:Dept
+Model 4: Freq ~ Gender + Admit + Dept + Gender:Dept
+Model 5: Freq ~ Gender + Admit + Dept + Admit:Dept + Gender:Admit
+Model 6: Freq ~ Gender + Admit + Dept + Gender:Dept + Gender:Admit
+Model 7: Freq ~ Gender + Admit + Dept + Gender:Dept + Admit:Dept
+Model 8: Freq ~ Gender + Admit + Dept + Gender:Dept + Admit:Dept + Gender:Admit
+Model 9: Freq ~ Gender + Admit + Dept + Gender:Admit + Gender:Dept + Admit:Dept + 
+    Gender:Admit:Dept
+  Resid. Df Resid. Dev Df Deviance
+1        16    2097.67            
+2        15    2004.22  1    93.45
+3        11    1242.35  4   761.87
+4        11     877.06  0   365.29
+5        10    1148.90  1  -271.84
+6        10     783.61  0   365.29
+7         6      21.74  4   761.87
+8         5      20.20  1     1.53
+9         0       0.00  5    20.20
 ```
 
 En regardant la dernière colonne, "Deviance", on peut voir que les modèles 3 (les départements sont sélectifs) et 7 (les départements sont sélectifs et genrés) sont ceux grâce auxquels on a gagné le plus d'information. Le modèle 3 indique l'interaction qui explique le mieux la variance du tableau. Le modèle 7 est le best overall, ayant le moins de residual deviance, c'est donc le modèle qui expliquerait le mieux la variance des données. Visiblement, la sélectivité des départements et leurs compositions sont des éléments importants à inclure dans la régression.
@@ -102,8 +164,24 @@ Pourquoi ne pas prendre le modèle 9 ? Parce que le modèle 9 est saturé (toute
 
 Revenons en au modèle 7. Comment peut-on s'assurer que le gain d'info est réel et pas dû au hasard (n'est pas du bruit)?
 
-```{r eval=TRUE}
+
+```r
 stat_ajust(M0, M1_GA, M1_AD, M1_GD, M2_AD.GA, M2_GD.GA, M2_GD.AD, M3, M4)
+```
+
+```
+# A tibble: 9 x 7
+  model           G2   ddl p.value.G2 dissimilarity   AIC   BIC
+  <chr>        <dbl> <int>      <dbl>         <dbl> <dbl> <dbl>
+1 M0        2.10e+ 3    16    0            2.60e- 1 2273. 2324.
+2 M1_GA     2.00e+ 3    15    0            2.57e- 1 2181. 2239.
+3 M1_AD     1.24e+ 3    11    0            2.13e- 1 1427. 1511.
+4 M1_GD     8.77e+ 2    11    0            1.69e- 1 1062. 1146.
+5 M2_AD.GA  1.15e+ 3    10    0            1.89e- 1 1336. 1426.
+6 M2_GD.GA  7.84e+ 2    10    0            1.56e- 1  971. 1061.
+7 M2_GD.AD  2.17e+ 1     6    0.00135      1.64e- 2  217.  332.
+8 M3        2.02e+ 1     5    0.00114      1.67e- 2  217.  339.
+9 M4       -3.38e-14     0    1            1.81e-15  207.  361.
 ```
 
 (1) Regardons la colonne "p.value.G2": une $p.value$ de 0 est suspicieux, on ne prend pas en compte les modèles qui ont cette valeur ;\

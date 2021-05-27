@@ -1,8 +1,6 @@
 # Trucs et astuces
 
-```{r include=FALSE}
-knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
-```
+
 
 J'ai découvert beaucoup de petites astuces sur R et RStudio qui ont rendu mon workflow plus rapide et confortable. J'ai présenté les principales par-ci par-là dans le texte, maintenant je leurs dédie un chapitre entier.
 
@@ -22,7 +20,8 @@ Mes préférés:
 
 ## Pipes de `magrittr`
 
-```{r}
+
+```r
 library(magrittr)
 ```
 
@@ -33,7 +32,8 @@ library(magrittr)
 
 ## Autres trucs 
 
-```{r}
+
+```r
 library(here)
 library(purrr) # inclut dans tidyverse
 ```

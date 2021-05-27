@@ -1,0 +1,119 @@
+
+# Régressions logistiques {#reg-log}
+
+
+
+
+```r
+library(glm2) # pour effectuer régressions logistiques
+library(nnet) # pour effectuer régressions logistiques polytomiques
+```
+
+$$logit(p) = log(\frac{p}{1-p}) = \beta_0 + \sum_{j=1}^n \beta_j X_{ij}$$
+
+## Régression logistique dichotomique
+
+Pour une raison qui m'échappe parce que je suis pas très fraîche, et tout simplement parce que je ne sais pas, on n'utilise pas le modèle de **régression linéaire de probabilité** mais plutôt le modèle de **régression logistique dichotomique**. Pour les coefficients, on parlera de l'effet du logit de probabilité que l'évènement $y=1$ se passe.
+
+On lance d'abord le modèle de régression logistique à effets principaux, ou modèle de l'indépendance :
+
+
+```r
+model_6 <- glm(var_dep_dicho ~ var_indep1 + var_indep2 + var_indep3, data = d, weights = poids, family=binomial)
+
+# note sur glm: c'est une fonction de base de R, je ne connais pas la différence avec glm2.
+```
+
+*Petite note sur le modèle de l'indépendance totale* : c'est le modèle dans lequel tu balances tes variables explicatives sans interaction ou association, pour vérifier si les variables sont indépendantes entre elles, càd si ✨ *toutes choses égales par ailleurs* ✨ elles expliquent le phénomène à elles seules. Cependant, en socio, c'est inimaginable que la classe sociale et le sexe agissent indépendamment l'un de l'autre, c'est pour cette raison qu'on choisirait d'interagir ces variables entre elles.
+
+Pour vérifier si les variables sont indépendantes, tu regardes la *residual deviance* : si c'est un nombre énorme^[Plus sérieusement, si la valeur dépasse largement le seuil critique de la distribution du khi-deux (selon les degrés de libertés of course), on rejette l'hypothèse de l'indépendance statistique entre les variables. Vu qu'il reste quand même un pâté de déviance à expliquer, on introduit des interactions dans le modèle de l'indépendance totale.], direction interaction-ville.
+
+
+```r
+# On met le modèle précédent à jour, en ajoutant des interactions.
+
+# pour une unique interaction
+model_7 <- update(model_6, . ~ . + var_indep1*var_indep2)
+
+# pour interagir toutes les modalités de toutes les variables entre elles (interaction d'ordre 2)
+model_8 <- glm(var_dep_dicho ~ (var_indep1 + var_indep2 + var_indep3)^2, data = d, weights = poids, family=binomial)
+
+# pour interagir var_indep3 avec var_indep1 et var_indep2 [plus rapide que d'écrire individuellement chaque interaction]
+model_9 <- glm(var_dep_dicho ~ (var_indep1 + var_indep2)*var_indep3, data = d, weights = poids, family=binomial)
+
+# le modèle saturé (interaction d'ordre 3 - toutes les interactions inférieures seront automatiquement là)
+model_10 <- glm(var_dep_dicho ~ var_indep1*var_indep2*var_indep3,d,binomial)
+```
+
+Le coefficient d'interaction s'additionne aux coefficients de base des catégories qui correspondent à ce nouveau coef.
+
+Par exemple, on interagit le sexe et le niveau de diplôme. Tu obtiens les résultats suivants :
+
+- $\beta_1$ le coefficient pour sexe=1 (par exemple les filles);
+- $\beta_2$ le coefficient du niveau de diplôme=1 (par exemple ceux qui ont obtenu une licence);
+- $\beta_3$ le coefficient de l'interaction entre les deux **modalités**.
+
+Pour obtenir le vrai effet de l'obtention de la licence chez les filles sur la $var\_dep$, tu additionnes ces trois coefficients. Tu ne peux pas additionner le coefficient d'interaction pour les garçons avec licence, ou les filles sans licence.
+
+On veut voir si l'ajout de ces interactions est statistiquement significative (il y a la méthode qui suit, et [une autre qu'on a vu plus tard](#analyse-de-deviance)). On effectue un test statistique sur l'interaction, qui est distribué comme une loi du khi-deux, sur la différence de vraisemblance entre les modèles d'indépendance et d'interaction.
+
+
+```r
+test <- 2*(logLik(model_7)-logLik(model_6)) [1]
+# Entre ces deux modèles, il n'y a qu'une variable/modalité en plus, donc le degré de liberté est de 1 (je sais plus pourquoi).
+1-pchisq(test,1) # (test,1), 1 étant le ddl.
+```
+
+On obtient la probabilité que l'interaction soit due au hasard. Si la valeur est inférieure ou égale à 0.10, on peut rejeter l'hypothèse que l'interaction soit due au hasard.
+
+## Régression logistique polytomique
+
+On a vu la **régression logistique dichotomique**. Mais pour une variable à expliquer qui contient plus de 2 modalités, on utilise le modèle de **régression logistique polytomique**.
+
+Imaginons que tu ais une variable $n$ à expliquer avec des modalités 1 (modalité de référence), 2 et 3, et une variable $m$ explicative avec des modalités A (modalité de ref), B et C. Tu interpréteras un coefficient ainsi : "toutes choses égales par ailleurs, le logit de probabilité que l'évènement $y=2$ se produise, par rapport à l'évènement $y=1$, pour le groupe B augmente/diminue par rapport au groupe A".
+
+C'est une phrase assez dégueulasse. Toutefois c'est un modèle de régression sur lequel on ne s'est pas attardés l'année dernière donc je n'en dis pas plus. Voici la commande pour lancer le modèle.
+
+
+```r
+model_10 <- multinom(var_dep_poly ~ var_indep1 + var_indep2 + var_indep3, data=d, weights=poids)
+```
+
+Si je me souviens bien, on ne s'est pas attardé dessus parce que la fonction était cassée. Le package `qessmasteR` (en cours de développement) contient la fonction `multi_mpl` pour effectuer ce type de régression.
+
+## Odds ratio {#odds-ratio-complet}
+
+Passons à un truc dont on parle beaucoup en classe : les **odds ratio**. Les coefficients d'une régression logistique ne sont pas évidents à interpréter (dans le sens où c'est long de dire "le logit de probabilité" et que humainement, c'est moche). On passe donc les coefficients logit par la fonction exponentielle, ce qui nous donne les odds ratio (OR).
+
+Un OR est la chance qu'un évènement $y=1$ plutôt que $y=0$^[à vérifier.] se passe pour une condition B, par rapport à ce que cet évènement $y=1$ se passe pour une condition A (condition de référence).
+
+L'OR est compris entre $[0;+\infty[$. Pour un OR compris entre 0 et 1, la chance que le truc se passe pour un groupe B est en fait moindre que la chance qu'il se passe pour le groupe A, mais on dira/je dis quand même "l'évènement a 0.14 fois plus de chance de se passer pour le groupe B que pour le groupe A". Après, il va de soi que multiplier quelque chose par une valeur inférieure à 1 diminue le résultat.
+
+Pour obtenir les coefficients de la régression en OR, on utilise la commande suivante :
+
+
+```r
+exp(model_7$coefficients)
+# ou
+model_7$coefficients %>% exp # au choix
+```
+
+Les odds ratios se calculent également à partir des effectifs attendus, estimés par le modèle (`model$fitted.values`). Imaginons qu'on ait le tableau de contingence suivant, avec les effectifs estimés:
+
+| |Je suis à l'heure|Je suis en retard|
+|-|-|-|
+|Il y a une feuille sur les rails|$m_{1,1}$|$m_{1,2}$|
+|RAS sur les rails|$m_{2,1}$|$m_{2,2}$|
+
+La formule pour calculer l'OR est la suivante:
+$$ OR = \frac{m_{1,1} \times m_{2,2}}{m_{2,1} \times m_{1,2}} $$
+
+Là j'ai calculé l'odds ratio/la chance que je sois à l'heure sachant qu'il y a une feuille sur les rails.
+
+Il existe trois relations selon la valeur de l'OR:
+
+* OR < 1: indique une relation négative entre deux variables (moins de chance que).
+* OR = 1: indique une relation neutre entre deux variables (même chance que).
+* OR > 1: indique une relation positive entre les deux variables (plus de chance que).
+
+Pour obtenir l'odds ratio inverse de celui qu'on a dans les mains, on peut diviser 1 par l'OR. Attention à l'interprétation!

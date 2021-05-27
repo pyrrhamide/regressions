@@ -1,12 +1,11 @@
 # (PART\*) Autres méthodes {-}
 
-```{r include=FALSE}
-knitr::opts_chunk$set(eval = FALSE,message = FALSE,comment = "")
-```
+
 
 # Analyses de réseaux {#an-res}
 
-```{r}
+
+```r
 library(igraph)
 
 graph <- graph.data.frame(links,nodes,directed=TRUE)
@@ -19,7 +18,8 @@ graph <- graph.adjacency(df,mode="directed")
   - Arêtes (liens, *edges*) : relations
 - Réseaux *complets* v réseaux *personnels* (réseaux **égo-centrés**)
 
-```{r}
+
+```r
 # Taille du réseau = nombre de noeuds
 length(V(graph))
 
@@ -59,7 +59,8 @@ Ou comment un réseau s'organise.
 - Clique : sous-ensemble de noeuds où toutes les paires de noeuds existants sont connectés.
   - *Modularité* : mesure segmentation d'un réseau en *modules*. Réseau à modularité élevée a densité élevée entre les noeuds qui font partie d'un même module, densité faible entre noeuds appartenant à modules différents.
 
-```{r}
+
+```r
 # Trois algorithmes de modularité
 wtc <- walktrap.community(graph)
 grd <- fastgreedy.community(graph) # fonctionne uniquement pour liens non-orientés
@@ -87,7 +88,8 @@ modularity(graph, membership(spn))
 - **Eccentricité** : distance depuis un noeud de départ vers le noeud le plus loin dans le réseau.
 - **Rayon** : eccentricité minimale des noeuds. La plus petite distance à laquelle puisse se trouver un noeud de tous les autres (infini si graphe est non connecté)
 
-```{r}
+
+```r
 shortest.paths(graph, algorithm="unweighted")
 
 # Shortest path entre deux noeuds
@@ -107,7 +109,6 @@ eccentricity(graph)
 
 # Rayon : eccentricité la plus faible
 radius(graph)
-
 ```
 
 ## Mesures basiques de cohésion
@@ -124,7 +125,8 @@ Tous les noeuds sont-ils liés entre eux? Quels types de liens existent dans le 
   - Mesure *locale* : on mesure d'abord pour chaque noeud *i*, le $Cl_{i}$ ensuite on prend la moyenne $\sum_{i = 1}^{n}$$\frac{Cl_{i}}{n}$. Tends to 1.
   - Mesure *globale* : $\sum_{i=1}^{n}$$\frac{nombre.liens.existants.entre.amis.de.i}{nombre.liens.possibles.entre.amis.de.i}$. Tends to 0 => transitivité.
 
-```{r}
+
+```r
 # Transitivité du réseau
 transitivity(graph)
 
@@ -147,7 +149,8 @@ Tous mes groupes sont-ils représentés proportionnellement dans mon réseau?
 - **Indice de diversité de Blau** $\in[0;\frac{k-1}{k}]$ Une seule catégorie représentée => toutes les catégories représentées équitablement (utile si plus de 2 catégories - variante de l'indice Herfindahl-Hirschmann (HHI))
 - **Indice de variation qualitative, IQV** $\in[0;1]$ Une seule catégorie représentée => toutes les catégories représentées équitablement (**un indice POUR CHAQUE ATTRIBUT d'intérêt**)
 
-```{r}
+
+```r
 get.Blau.index <- function(x, type) {
   x <- factor(x, levels = type);
   return(1 - sum(prop.table(table(x))^2))}
@@ -188,7 +191,8 @@ Y a-t-il un noeud ou groupe de noeuds qui a une plus grande importance/qui est l
   - Des indicateurs de "centralisation" agrégés.
     - mesure de centralisation de Freeman
 
-```{r}
+
+```r
 # Centralité de degré
 degree(graph,mode="all")
 degree(graph,mode="in")
