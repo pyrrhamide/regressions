@@ -1,6 +1,6 @@
 ---
 title: "Toutes les méthodes du master"
-author: "KF"
+author: "Kanto Fiaferana"
 site: bookdown::bookdown_site
 output: 
   bookdown::gitbook:

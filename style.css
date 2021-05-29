@@ -125,3 +125,7 @@ li.part span {
   border-color: #379fa7;
   padding-left: 11px !important;
 }
+
+.title {
+  letter-spacing: 0.04em;
+}
