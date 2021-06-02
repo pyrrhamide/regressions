@@ -15,6 +15,7 @@ output:
 documentclass: book
 link-citations: yes
 github-repo: pyrrhamide/regressions
+favicon: favicon.ico
 ---
 
 
